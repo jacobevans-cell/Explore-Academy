@@ -34,3 +34,24 @@ PRODUCTION ITEMS TO COMPLETE
 4. Replace remote Wix photo URLs with locally hosted school-owned originals.
 5. Expand Spanish coverage into a full translated mirror if desired.
 6. Verify every external Google document/form remains the current source of truth.
+
+ATHLETICS UPDATE
+- Integrated the official 2026–27 athletics pathways and dates.
+- Grades 4–5 and Grades 6–8 are shown separately.
+- Boys Volleyball includes the grade-6 bridge option.
+- Middle-school fall Girls Volleyball / Coed Flag Football overlap is noted.
+- Esports and Chess are listed as grades 4–8 with dates TBA.
+- Athletics portal: https://jacobevans-cell.github.io/explore-athletics/
+
+
+UPDATED IN V5
+- Added local campus photos: Grand Canyon, iFLY, ASU immersive lab, and Eagle assembly.
+- Homepage, Student Life, Why Explore, and Academics pages now use real Explore Academy Peoria photography.
+
+
+UPDATED IN V6
+- Added first-day principal/student photo to Home and Why Explore.
+- Added classroom microscope and STEM-building photos to Home and Academics.
+- Added Applebee's fundraiser to Home and Student Life.
+- Added staff appreciation photo to Student Life and Staff.
+- Corrected wrapper classes in V5 photo sections.

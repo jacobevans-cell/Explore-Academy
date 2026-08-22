@@ -1,0 +1,21 @@
+{
+  "version": "v5",
+  "local_photos": [
+    "grand-canyon-field-trip.jpg",
+    "ifly-field-trip.jpg",
+    "asu-immersive-lab.jpg",
+    "eagle-assembly.jpg"
+  ],
+  "updated_pages": [
+    "index.html",
+    "student-life.html",
+    "why-explore.html",
+    "academics.html"
+  ],
+  "notes": [
+    "Homepage hero uses Grand Canyon field trip photo",
+    "Student Life uses iFLY image and a four-photo campus experience gallery",
+    "Why Explore uses Eagle assembly photo",
+    "Academics includes ASU School of Earth and Space Exploration immersive lab image"
+  ]
+}

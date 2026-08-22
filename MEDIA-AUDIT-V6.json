@@ -1,0 +1,18 @@
+{
+  "version": "v6",
+  "added_photos": [
+    "first-day-principal-student.png",
+    "applebees-community-fundraiser.jpg",
+    "stem-microscope-learning.jpg",
+    "stem-building-project.jpg",
+    "teacher-appreciation-community.jpg"
+  ],
+  "updated_pages": [
+    "index.html",
+    "academics.html",
+    "student-life.html",
+    "why-explore.html",
+    "staff.html"
+  ],
+  "layout_fix": "Replaced accidental .container wrappers with the site .wrap class in photo sections."
+}
