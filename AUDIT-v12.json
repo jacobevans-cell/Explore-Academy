@@ -1,0 +1,33 @@
+{
+  "version": "v12-calendar-corrected",
+  "page_count": 20,
+  "missing_internal_links": [],
+  "links_to_old_explore_site": [],
+  "informational_google_doc_links_remaining": [],
+  "missing_local_images": [],
+  "pages_with_stale_K11": [],
+  "pages_with_mojibake_markers": [],
+  "html_structure_issues": [],
+  "external_drive_links_remaining": [
+    [
+      "careers.html",
+      "https://drive.google.com/file/d/1tH_Pw0DHXYfLDrRB6oAKOja7i-6U18_7/view?usp=drive_link"
+    ],
+    [
+      "governance.html",
+      "https://drive.google.com/drive/folders/1Cu1ZQBaLth2F7dRMbIqY9gnSpTrQKwun?usp=share_link"
+    ],
+    [
+      "governance.html",
+      "https://drive.google.com/file/d/16bj2V5Y5JPc5SRTrFJ6uAX_tGtaNdeIs/view?usp=drive_link"
+    ]
+  ],
+  "google_forms_remaining": [
+    "https://docs.google.com/forms/d/e/1FAIpQLSceclMxM8MX019zoszdShXOAorBazmpvb_3iXCR6Nx8txyTlA/viewform?usp=send_form",
+    "https://docs.google.com/forms/d/e/1FAIpQLSdHvkSJBu7IrUMPMbK-inVDC61BG0I6nesewSXUQS1Tzb8Nwg/viewform",
+    "https://docs.google.com/forms/d/e/1FAIpQLSdI5ModozAyY27m2OwDbZl7F3XRBf7KKmg5CBCMVI4pRm4YYA/viewform?usp=send_form"
+  ],
+  "package_note": "V12 replaces the prior proposed calendar with the current school-provided EA PEO 6-12 SY26/27 calendar. External Drive links remain limited to official archive/audit/salary PDF resources; Google Forms remain for transactional submissions.",
+  "pages_with_proposed_calendar_language": [],
+  "old_proposed_calendar_pdf_references": []
+}
