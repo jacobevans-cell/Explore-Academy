@@ -31,7 +31,7 @@
     <div class="card"><span class="metric-label">Profile</span><div id="profilePct" class="metric">0%</div><div class="progress"><span id="profileBar" style="width:0"></span></div></div>
     <div class="card"><span class="metric-label">Balance Due</span><div id="amountDue" class="metric">$0</div></div>
     <div class="card"><span class="metric-label">Eligibility</span><div id="eligibilityStatus" class="metric" style="font-size:22px">Eligible</div></div>
-    <div class="card"><span class="metric-label">Documents</span><div id="docMetric" class="metric">0/2</div></div>
+    <div class="card"><span class="metric-label">Clearance</span><div id="docMetric" class="metric">0/6</div><small id="clearanceStatus">Not Cleared</small></div>
   </div>
 
   <div class="grid grid-2" style="margin-top:18px">
@@ -65,19 +65,24 @@
       </div>
 
       <div class="card">
-        <h2>Required Documents</h2>
-        <div id="docList"></div>
+        <h2>Athletics Clearance Packet</h2>
+        <p>All six Explore Academy athletics requirements must be approved before an athlete is cleared for practices and competitions.</p>
+        <div id="clearanceChecklist" class="checklist"></div>
+        <div id="docList" style="margin-top:12px"></div>
         <form id="uploadForm" class="upload-box" style="margin-top:14px">
           <div class="fields" style="grid-template-columns:1fr">
-            <label class="field">Document Type<select id="docType" required>
+            <label class="field">Requirement<select id="docType" required>
               <option value="">Choose</option>
-              <option value="birth-certificate">Birth Certificate</option>
-              <option value="physical">Sports Physical</option>
-              <option value="insurance">Insurance Card</option>
+              <option value="medical-exam">AIA Medical Examination Form</option>
+              <option value="medical-questionnaire">AIA Medical Evaluation Questionnaire</option>
+              <option value="concussion-certificate">NFHS Concussion Awareness Certificate</option>
+              <option value="participation-agreement">Explore Academy Participation Agreement</option>
+              <option value="code-of-conduct">Explore Academy Code of Conduct</option>
+              <option value="insurance">Proof of Insurance</option>
             </select></label>
             <div id="physicalDates" class="grid grid-2 hidden">
-              <label class="field">Physical Exam Date<input id="physicalExamDate" type="date"></label>
-              <label class="field">Physical Expiration<input id="physicalExpirationDate" type="date"></label>
+              <label class="field">Exam / Certificate Date<input id="physicalExamDate" type="date"></label>
+              <label class="field">Expiration Date (if listed)<input id="physicalExpirationDate" type="date"></label>
             </div>
             <label class="field">File<input id="docFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" required><small>PDF/JPG/PNG/WEBP • max 10 MB</small></label>
             <button class="btn btn-secondary">Upload Securely</button>
@@ -87,6 +92,14 @@
       </div>
 
       <div class="card"><h2>Sports Fees</h2>
+        <p>$45 per approved athlete for the 2026–27 athletics year, plus participation in one fundraiser.</p>
+        <div id="squarePaymentBox" class="notice info" style="margin-bottom:12px">
+          <strong>Square Payment</strong>
+          <div id="squarePaymentText" style="margin:6px 0">Payment status will appear here.</div>
+          <button id="squarePayBtn" type="button" class="btn btn-primary hidden">Pay $45 with Square</button>
+          <a id="squareFallbackLink" class="btn btn-secondary hidden" target="_blank" rel="noopener" href="https://square.link/u/3hFFv2EU">Open Square Payment Page</a>
+          <div id="squarePaymentStatus" class="status"></div>
+        </div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>Fee</th><th>Due</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead><tbody id="paymentRows"></tbody></table></div>
       </div>
 
