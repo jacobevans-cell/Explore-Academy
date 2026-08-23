@@ -1,6 +1,7 @@
 import { db, storage } from "./firebase.js";
 import { requireVerifiedUser, ensureUserDoc, logout } from "./auth.js";
 import { teams as fallbackTeams, windowMap, gradeCompatible, genderCompatible, athleteOpportunityConflict } from "./seed-data.js";
+import { requiredDocsFor, normalizeDocType, docLabel } from "./clearance-policy.js";
 import {
  collection,getDocs,doc,getDoc,setDoc,deleteDoc,serverTimestamp,query,where
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -155,23 +156,7 @@ async function loadPayments(){
 async function loadDocuments(){
  const snap=await getDocs(collection(db,"athletes",athlete.id,"documents"));
  documents=snap.docs.map(d=>({id:d.id,...d.data()}));
- const hasCAA=registrations
-   .filter(r=>!["declined","withdrawn"].includes(r.status))
-   .some(r=>{
-     const t=teams.find(x=>x.id===r.teamId);
-     return String(t?.leagueLabel||t?.league||"").toUpperCase().includes("CAA");
-   });
-
- const required=[
-   ["medical-exam","AIA Medical Examination Form"],
-   ["medical-questionnaire","AIA Medical Evaluation Questionnaire"],
-   ["participation-agreement","Explore Academy Participation Agreement"],
-   ["code-of-conduct","Explore Academy Code of Conduct"]
- ];
-
- if(hasCAA){
-   required.push(["concussion-certificate","NFHS Concussion Awareness Certificate"]);
- }
+ const required=requiredDocsFor(registrations,teams);
  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>normalizeDocType(d.type)));
  const complete=required.filter(([id])=>approved.has(id)).length;
  const overridden=Boolean(athlete.clearanceOverride);
@@ -229,16 +214,6 @@ async function loadSchedule(){
 function name(a){return `${a?.firstName||""} ${a?.lastName||""}`.trim()||"Unnamed Athlete"}
 function fmt(v){if(!v)return "TBA";const [y,m,d]=v.split("-").map(Number);return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric"}).format(new Date(y,m-1,d))}
 function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n||0))}
-function normalizeDocType(v){return v==="physical"?"medical-exam":v}
-function labelDoc(v){
- const n=normalizeDocType(v);
- return n==="medical-exam"?"AIA Medical Examination Form":
- n==="medical-questionnaire"?"AIA Medical Evaluation Questionnaire":
- n==="concussion-certificate"?"NFHS Concussion Awareness Certificate":
- n==="participation-agreement"?"Explore Academy Participation Agreement":
- n==="code-of-conduct"?"Explore Academy Code of Conduct":
- n==="insurance"?"Proof of Insurance":
- n==="birth-certificate"?"Birth Certificate (legacy / optional)":"Document";
-}
+function labelDoc(v){return docLabel(v)}
 function flash(id,text,type){const el=$(id);el.textContent=text;el.className=`notice ${type} status show`;setTimeout(()=>el.classList.remove("show"),5500)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}

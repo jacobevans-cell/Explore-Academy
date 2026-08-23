@@ -3,6 +3,7 @@ import { requireVerifiedUser } from "./auth.js";
 import {
   teams as fallbackTeams, windowMap, gradeCompatible, genderCompatible
 } from "./seed-data.js";
+import { requiredDocsFor, normalizeDocType } from "./clearance-policy.js";
 import {
   collection,getDocs,doc,setDoc,updateDoc,deleteDoc,serverTimestamp,getDoc
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -27,9 +28,9 @@ function teamById(id){return teams.find(t=>t.id===id)}
 function athleteById(id){return athletes.find(a=>a.id===id)}
 function requiredDocs(aid){
   const docs=docsByAthlete.get(aid)||[];
-  const approved=new Set(docs.filter(d=>d.reviewStatus==="approved").map(d=>d.type==="physical"?"medical-exam":d.type));
-  const required=["medical-exam","medical-questionnaire","concussion-certificate","participation-agreement","code-of-conduct","insurance"];
-  return {approved:required.filter(x=>approved.has(x)).length};
+  const approved=new Set(docs.filter(d=>d.reviewStatus==="approved").map(d=>normalizeDocType(d.type)));
+  const required=requiredDocsFor(registrations.filter(r=>r.athleteId===aid),teams);
+  return {approved:required.filter(([id])=>approved.has(id)).length,total:required.length};
 }
 function balance(aid){
   return (paymentsByAthlete.get(aid)||[]).reduce((sum,p)=>sum+Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)),0);
@@ -116,7 +117,7 @@ function render(){
       <td>${esc(a.grade||"—")}</td>
       <td><strong>${esc(t.displayName||t.name||r.teamName||r.teamId)}</strong><br><small>${esc(t.leagueLabel||t.league||"")}</small></td>
       <td>${esc(windowMap[r.windowId||t.windowId]?.label||"—")}</td>
-      <td>${docs.approved}/6 ${docs.approved===6?'<span class="badge badge-green">Ready</span>':'<span class="badge badge-gold">Missing</span>'}</td>
+      <td>${docs.approved}/${docs.total} ${docs.approved===docs.total?'<span class="badge badge-green">Ready</span>':'<span class="badge badge-gold">Missing</span>'}</td>
       <td>${money(balance(r.athleteId))}</td>
       <td>${conflicts==="None"?"None":`<span class="badge badge-gold">⚠ ${esc(conflicts)}</span>`}</td>
       <td><strong>${esc(status)}</strong></td>
@@ -147,7 +148,7 @@ async function review(aid,rid,action){
     }
     const docs=requiredDocs(aid);
     if(docs.approved<2){
-      if(!confirm(`${name(a)} has only ${docs.approved}/6 required documents approved. Add to roster anyway?`))return;
+      if(!confirm(`${name(a)} has only ${docs.approved}/${docs.total} required documents approved. Add to roster anyway?`))return;
     }
 
     await setDoc(doc(db,"teams",t.id,"roster",aid),{

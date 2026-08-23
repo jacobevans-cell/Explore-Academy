@@ -4,7 +4,13 @@ import { programWindows, teams as fallbackTeams, windowMap, gradeCompatible, gen
 import {
  collection,getDocs,doc,getDoc,setDoc,updateDoc,deleteDoc,serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-import { ref,getBlob } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
+// NOTE: Athletes, Registrations, Documents/Compliance, and Payments panels are
+// owned by admin-athletes.js, admin-registrations.js, admin-compliance.js, and
+// admin-payments.js respectively. This file only owns Teams, Schedules, the
+// Overview attention list, and the shared team catalog seed button — it must
+// not render into #athleteRows, #registrationRows, #paymentRows, or
+// #complianceRows, since those modules already own that DOM.
 
 const $=id=>document.getElementById(id);
 const user=await requireVerifiedUser({admin:true});
@@ -19,13 +25,6 @@ queueMicrotask(()=>{
     fillTeamSelects();
   }catch(e){ console.warn("Initial local team preview deferred",e); }
 });
-
-for(const b of document.querySelectorAll("[data-panel]")) b.onclick=()=>{
- const target=$(b.dataset.panel);
- if(!target) return;
- document.querySelectorAll("[data-panel]").forEach(x=>x.classList.toggle("active",x===b));
- document.querySelectorAll(".admin-panel").forEach(x=>x.classList.toggle("active",x===target));
-};
 
 try {
  await ensureUserDoc(user);
@@ -77,7 +76,7 @@ try {
 
 async function refresh(){
  await loadTeams();await loadAthletes();await Promise.all([loadRegs(),loadDocs(),loadPayments(),loadEvents()]);
- renderAthletes();renderAttention();
+ renderAttention();
 }
 async function loadTeams(){
  const s=await getDocs(collection(db,"teams"));teams=s.empty?fallbackTeams:s.docs.map(d=>({id:d.id,...d.data()}));
@@ -87,93 +86,24 @@ async function loadTeams(){
 }
 async function loadAthletes(){
  const s=await getDocs(collection(db,"athletes"));athletes=s.docs.map(d=>({id:d.id,...d.data()}));
- $("athleteCount").textContent=athletes.length;fillAthleteSelects();
 }
 async function loadRegs(){
  regs=[];
  for(const a of athletes){const s=await getDocs(collection(db,"athletes",a.id,"registrations"));s.forEach(d=>regs.push({id:d.id,athleteId:a.id,athlete:name(a),grade:a.grade||"",...d.data()}))}
- $("registrationCount").textContent=regs.filter(r=>r.status==="submitted").length;renderRegs();
 }
 async function loadDocs(){
  documents=[];
  for(const a of athletes){const s=await getDocs(collection(db,"athletes",a.id,"documents"));s.forEach(d=>documents.push({id:d.id,athleteId:a.id,athlete:name(a),...d.data()}))}
- $("documentPending").textContent=documents.filter(d=>(d.reviewStatus||"pending")==="pending").length;renderDocs();
 }
 async function loadPayments(){
  payments=[];
  for(const a of athletes){const s=await getDocs(collection(db,"athletes",a.id,"payments"));s.forEach(d=>payments.push({id:d.id,athleteId:a.id,athlete:name(a),...d.data()}))}
- renderPayments();
 }
 async function loadEvents(){
  events=[];
  for(const t of teams){const s=await getDocs(collection(db,"teams",t.id,"events"));s.forEach(d=>events.push({id:d.id,teamId:t.id,teamName:t.name,...d.data()}))}
  renderEvents();
 }
-
-function renderAthletes(){
- const q=$("athleteSearch").value.toLowerCase(),gf=$("athleteGradeFilter").value;
- const rows=athletes.filter(a=>(!q||`${name(a)} ${a.guardianName||""}`.toLowerCase().includes(q))&&(!gf||String(a.grade)===gf));
- $("athleteRows").innerHTML=rows.map(a=>{
-  const bal=balance(a.id),comp=compliance(a.id);
-  return `<tr><td><strong>${esc(name(a))}</strong><br><small>${esc(a.email||"")}</small></td><td>${esc(a.grade||"")}</td><td>${esc(a.gender||"")}</td><td>${esc(a.guardianName||"")}</td><td>${comp.approved}/2</td><td>${money(bal)}</td><td><button class="btn btn-secondary" data-athlete="${a.id}">Open</button></td></tr>`;
- }).join("")||'<tr><td colspan="7">No athletes yet.</td></tr>';
- document.querySelectorAll("[data-athlete]").forEach(b=>b.onclick=()=>openAthlete(b.dataset.athlete));
-}
-$("athleteSearch").oninput=renderAthletes;$("athleteGradeFilter").onchange=renderAthletes;
-function openAthlete(id){
- const a=athletes.find(x=>x.id===id);if(!a)return;
- $("selectedAthleteId").value=id;$("selectedAthlete").textContent=name(a);
- $("adminEligibility").value=a.adminEligibility||"eligible";$("adminNote").value=a.adminNote||"";
- $("athleteDetail").innerHTML=`<div class="grid grid-4"><div><span class="metric-label">Grade</span><div class="metric">${esc(a.grade||"—")}</div></div><div><span class="metric-label">Balance</span><div class="metric">${money(balance(id))}</div></div><div><span class="metric-label">Documents</span><div class="metric">${compliance(id).approved}/2</div></div><div><span class="metric-label">Interests</span><div class="metric">${regs.filter(r=>r.athleteId===id).length}</div></div></div>`;
- $("athleteEditor").classList.remove("hidden");document.querySelector('[data-panel="athletesPanel"]').click();
-}
-$("athleteAdminForm").onsubmit=async e=>{
- e.preventDefault();const id=$("selectedAthleteId").value;if(!id)return;
- await setDoc(doc(db,"athletes",id),{adminEligibility:$("adminEligibility").value,adminNote:$("adminNote").value.trim(),adminUpdatedAt:serverTimestamp()},{merge:true});
- toast("Athlete status saved.","success");await refresh();openAthlete(id);
-};
-
-function renderRegs(){
- $("registrationRows").innerHTML=regs.map(r=>`<tr><td>${esc(r.athlete)}</td><td>${esc(r.grade)}</td><td>${esc(teamName(r.teamId))}</td><td>${esc(windowMap[r.windowId]?.label||"")}</td><td>${conflictLabel(r)}</td><td>${esc(r.status||"submitted")}</td><td><button class="btn btn-secondary" data-reg="${r.athleteId}|${r.id}|approved">Approve</button> <button class="btn btn-secondary" data-reg="${r.athleteId}|${r.id}|waitlist">Waitlist</button> <button class="btn btn-danger" data-reg="${r.athleteId}|${r.id}|declined">Decline</button></td></tr>`).join("")||'<tr><td colspan="7">No sport interests yet.</td></tr>';
- document.querySelectorAll("[data-reg]").forEach(b=>b.onclick=()=>reviewReg(...b.dataset.reg.split("|")));
-}
-async function reviewReg(aid,id,status){
- const r=regs.find(x=>x.athleteId===aid&&x.id===id),t=teams.find(x=>x.id===r?.teamId),a=athletes.find(x=>x.id===aid);if(!r||!t||!a)return;
- if(status==="approved"){
-   const valid=gradeCompatible(t,a.grade,{adminOverride:true})&&genderCompatible(t,a.gender);
-   if(!valid&&!confirm("This athlete is outside normal team eligibility. Use admin override anyway?"))return;
-   await setDoc(doc(db,"teams",t.id,"roster",aid),{athleteId:aid,athleteName:name(a),grade:a.grade||"",gender:a.gender||"",addedAt:serverTimestamp()},{merge:true});
-   if(Number(t.sportsFee||0)>0){
-     const p=doc(db,"athletes",aid,"payments",`team-${t.id}`),ps=await getDoc(p),paid=ps.exists()?Number(ps.data().amountPaid||0):0,due=Number(t.sportsFee||0);
-     await setDoc(p,{teamId:t.id,label:`${t.name} Sports Fee`,amountDue:due,amountPaid:paid,status:paymentStatus(due,paid),updatedAt:serverTimestamp()},{merge:true});
-   }
- }
- await updateDoc(doc(db,"athletes",aid,"registrations",id),{status,reviewedAt:serverTimestamp(),reviewedBy:user.email});
- toast(`Interest ${status}.`,"success");await refresh();
-}
-function conflictLabel(r){return Array.isArray(r.conflictTeamIds)&&r.conflictTeamIds.length?`⚠ ${r.conflictTeamIds.map(teamName).join(", ")}`:"None"}
-
-function renderDocs(){
- $("documentRows").innerHTML=documents.map(d=>`<tr><td>${esc(d.athlete)}</td><td>${esc(labelDoc(d.type))}</td><td>${d.physicalExpirationDate?esc(d.physicalExpirationDate):"—"}</td><td>${esc(d.reviewStatus||"pending")}</td><td><button class="btn btn-secondary" data-file="${escAttr(d.storagePath||"")}">Open</button> <button class="btn btn-secondary" data-doc="${d.athleteId}|${d.id}|approved">Approve</button> <button class="btn btn-danger" data-doc="${d.athleteId}|${d.id}|rejected">Reject</button></td></tr>`).join("")||'<tr><td colspan="5">No documents.</td></tr>';
- document.querySelectorAll("[data-file]").forEach(b=>b.onclick=async()=>{try{const blob=await getBlob(ref(storage,b.dataset.file)),url=URL.createObjectURL(blob);window.open(url,"_blank","noopener");setTimeout(()=>URL.revokeObjectURL(url),60000)}catch(e){toast("Unable to open file.","danger")}});
- document.querySelectorAll("[data-doc]").forEach(b=>b.onclick=async()=>{const [aid,id,status]=b.dataset.doc.split("|");await updateDoc(doc(db,"athletes",aid,"documents",id),{reviewStatus:status,reviewedAt:serverTimestamp()});await refresh()});
-}
-function renderPayments(){
- let due=0,paid=0;payments.forEach(p=>{due+=Number(p.amountDue||0);paid+=Number(p.amountPaid||0)});
- $("paymentsDue").textContent=money(Math.max(0,due-paid));$("paymentsPaid").textContent=money(paid);
- $("paymentRows").innerHTML=payments.map(p=>`<tr><td>${esc(p.athlete)}</td><td>${esc(p.label||"Sports Fee")}</td><td>${money(p.amountDue)}</td><td>${money(p.amountPaid)}</td><td>${money(Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)))}</td><td>${esc(p.status||"due")}</td></tr>`).join("")||'<tr><td colspan="6">No fees posted.</td></tr>';
-}
-function fillAthleteSelects(){
- $("paymentAthlete").innerHTML='<option value="">Choose athlete</option>'+athletes.map(a=>`<option value="${a.id}">${esc(name(a))}</option>`).join("");
-}
-$("paymentForm").onsubmit=async e=>{
- e.preventDefault();const aid=$("paymentAthlete").value,id=$("paymentRecord").value;if(!aid||!id)return;
- const refp=doc(db,"athletes",aid,"payments",id),snap=await getDoc(refp);if(!snap.exists())return toast("Payment record not found.","danger");
- const p=snap.data(),amount=Number($("paymentAmount").value||0),newPaid=Number(p.amountPaid||0)+amount;
- const tx=[...(p.transactions||[]),{amount,method:$("paymentMethod").value,reference:$("paymentReference").value.trim(),date:new Date().toISOString()}];
- await updateDoc(refp,{amountPaid:newPaid,status:paymentStatus(Number(p.amountDue||0),newPaid),transactions:tx,updatedAt:serverTimestamp()});
- e.target.reset();toast("Payment posted.","success");await refresh();
-};
 
 function renderTeams(){
  $("teamRows").innerHTML=teams.map(t=>`<tr><td><strong>${esc(t.name)}</strong></td><td>${esc(t.audience||"")}</td><td>${esc(t.grades)}</td><td>${esc(windowMap[t.windowId]?.label||"")}</td><td>${(rosters[t.id]||[]).length}/${t.targetRoster||"—"}</td><td>${money(t.costEstimate||0)}</td><td>${esc(t.status||"")}</td><td><button class="btn btn-secondary" data-team="${t.id}">Manage</button></td></tr>`).join("");
@@ -228,18 +158,10 @@ function renderAttention(){
  }
  $("attentionList").innerHTML=out.length?out.map(x=>`<div class="check"><span>⚠️</span><strong>${esc(x)}</strong></div>`).join(""):'<div class="notice success">Nothing currently needs attention.</div>';
 }
-function compliance(id){const ds=documents.filter(d=>d.athleteId===id&&d.reviewStatus==="approved"),set=new Set(ds.map(d=>d.type));return{approved:["birth-certificate","physical"].filter(x=>set.has(x)).length}}
 function balance(id){return payments.filter(p=>p.athleteId===id).reduce((n,p)=>n+Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)),0)}
-function paymentStatus(due,paid){if(due<=0)return"waived";if(paid<=0)return"due";if(paid<due)return"partial";return"paid"}
-function fillAthleteSelects(){ $("paymentAthlete").innerHTML='<option value="">Choose athlete</option>'+athletes.map(a=>`<option value="${a.id}">${esc(name(a))}</option>`).join("") }
-$("paymentAthlete").onchange=()=>{const aid=$("paymentAthlete").value;$("paymentRecord").innerHTML='<option value="">Choose fee</option>'+payments.filter(p=>p.athleteId===aid).map(p=>`<option value="${p.id}">${esc(p.label||p.id)} • ${money(Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)))}</option>`).join("")};
-function teamName(id){return teams.find(t=>t.id===id)?.name||id}
 function athleteName(id){return name(athletes.find(a=>a.id===id)||{})}
 function name(a){return `${a?.firstName||""} ${a?.lastName||""}`.trim()||"Unnamed Athlete"}
-function labelDoc(v){return v==="birth-certificate"?"Birth Certificate":v==="physical"?"Sports Physical":v==="insurance"?"Insurance":"Document"}
 function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n||0))}
-function toast(text,type){const e=$("adminStatus");e.textContent=text;e.className=`notice ${type}
+function toast(text,type){const e=$("adminStatus");if(!e)return;e.textContent=text;e.className=`notice ${type} status show`;setTimeout(()=>e.classList.remove("show"),5500)}
 function persistentStatus(text,type="info"){const e=$("adminStatus");if(!e)return;e.textContent=text;e.className=`notice ${type} status show`;}
- status show`;setTimeout(()=>e.classList.remove("show"),5500)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function escAttr(v){return esc(v)}

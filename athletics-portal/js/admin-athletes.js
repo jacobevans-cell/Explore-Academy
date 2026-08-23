@@ -3,11 +3,14 @@ import { requireVerifiedUser } from "./auth.js";
 import {
   collection, getDocs, doc, setDoc, updateDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { teams as fallbackTeams } from "./seed-data.js";
+import { requiredDocsFor, normalizeDocType, docLabel } from "./clearance-policy.js";
 
 const $ = id => document.getElementById(id);
 const user = await requireVerifiedUser({admin:true});
 
 let athletes = [];
+let teams = fallbackTeams;
 let detailCache = new Map();
 
 const money = n => new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n||0));
@@ -59,10 +62,10 @@ async function detailsFor(a){
   return result;
 }
 
-function complianceSummary(documents){
-  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>d.type==="physical"?"medical-exam":d.type));
-  const req=["medical-exam","medical-questionnaire","concussion-certificate","participation-agreement","code-of-conduct","insurance"];
-  return {approved:req.filter(x=>approved.has(x)).length};
+function complianceSummary(documents,registrations){
+  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>normalizeDocType(d.type)));
+  const required=requiredDocsFor(registrations,teams);
+  return {approved:required.filter(([id])=>approved.has(id)).length,total:required.length};
 }
 function balanceSummary(payments){
   return payments.reduce((sum,p)=>sum+Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)),0);
@@ -71,8 +74,9 @@ function balanceSummary(payments){
 async function loadAthletes(){
   status("Loading athlete records…","info");
   try{
-    const snap=await getDocs(collection(db,"athletes"));
+    const [snap,ts]=await Promise.all([getDocs(collection(db,"athletes")),getDocs(collection(db,"teams"))]);
     athletes=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>athleteName(a).localeCompare(athleteName(b)));
+    if(!ts.empty) teams=ts.docs.map(d=>({id:d.id,...d.data()}));
     detailCache.clear();
     await renderAthletes();
     if($("athleteCount")) $("athleteCount").textContent=athletes.length;
@@ -106,7 +110,7 @@ async function renderAthletes(){
   const rows=[];
   for(const a of visible){
     const d=await detailsFor(a);
-    const comp=complianceSummary(d.documents);
+    const comp=complianceSummary(d.documents,d.registrations);
     const bal=balanceSummary(d.payments);
     const activeRegs=d.registrations.filter(r=>!["declined","withdrawn"].includes(r.status)).length;
     rows.push(`<tr>
@@ -114,7 +118,7 @@ async function renderAthletes(){
       <td>${esc(a.grade||"—")}</td>
       <td>${esc(a.guardianName||"—")}<br><small>${esc(a.guardianEmail||a.email||"")}</small></td>
       <td>${activeRegs}</td>
-      <td>${comp.approved}/6</td>
+      <td>${comp.approved}/${comp.total}</td>
       <td>${money(bal)}</td>
       <td>${esc(a.adminEligibility||"eligible")}</td>
       <td><button class="btn btn-secondary" data-admin-athlete="${esc(a.id)}">Open</button></td>
@@ -136,13 +140,13 @@ async function openAthlete(id){
     ? '<span class="badge badge-green">Family linked</span>'
     : '<span class="badge badge-gold">Admin-created / not yet family linked</span>';
 
-  const comp=complianceSummary(d.documents);
+  const comp=complianceSummary(d.documents,d.registrations);
   const bal=balanceSummary(d.payments);
   $("athleteDetail").innerHTML=`
     <div class="grid grid-4" style="margin-top:12px">
       <div><span class="metric-label">Grade</span><div class="metric">${esc(a.grade||"—")}</div></div>
       <div><span class="metric-label">Sports Choices</span><div class="metric">${d.registrations.length}</div></div>
-      <div><span class="metric-label">Documents</span><div class="metric">${comp.approved}/6</div></div>
+      <div><span class="metric-label">Documents</span><div class="metric">${comp.approved}/${comp.total}</div></div>
       <div><span class="metric-label">Balance</span><div class="metric">${money(bal)}</div></div>
     </div>
     <div class="grid grid-2" style="margin-top:14px">
@@ -165,9 +169,6 @@ async function openAthlete(id){
   $("athleteEditor").classList.remove("hidden");
 }
 
-function docLabel(v){
-  return v==="birth-certificate"?"Birth Certificate":v==="physical"?"Sports Physical":v==="insurance"?"Insurance":"Document";
-}
 
 $("adminAddAthleteBtn")?.addEventListener("click",()=>{
   $("adminAddAthleteCard").classList.remove("hidden");
