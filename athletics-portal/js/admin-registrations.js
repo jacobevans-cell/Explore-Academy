@@ -27,12 +27,9 @@ function teamById(id){return teams.find(t=>t.id===id)}
 function athleteById(id){return athletes.find(a=>a.id===id)}
 function requiredDocs(aid){
   const docs=docsByAthlete.get(aid)||[];
-  const approved=new Set(docs.filter(d=>d.reviewStatus==="approved").map(d=>d.type));
-  return {
-    approved:["birth-certificate","physical"].filter(x=>approved.has(x)).length,
-    birth:approved.has("birth-certificate"),
-    physical:approved.has("physical")
-  };
+  const approved=new Set(docs.filter(d=>d.reviewStatus==="approved").map(d=>d.type==="physical"?"medical-exam":d.type));
+  const required=["medical-exam","medical-questionnaire","concussion-certificate","participation-agreement","code-of-conduct","insurance"];
+  return {approved:required.filter(x=>approved.has(x)).length};
 }
 function balance(aid){
   return (paymentsByAthlete.get(aid)||[]).reduce((sum,p)=>sum+Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)),0);
@@ -119,7 +116,7 @@ function render(){
       <td>${esc(a.grade||"—")}</td>
       <td><strong>${esc(t.displayName||t.name||r.teamName||r.teamId)}</strong><br><small>${esc(t.leagueLabel||t.league||"")}</small></td>
       <td>${esc(windowMap[r.windowId||t.windowId]?.label||"—")}</td>
-      <td>${docs.approved}/2 ${docs.approved===2?'<span class="badge badge-green">Ready</span>':'<span class="badge badge-gold">Missing</span>'}</td>
+      <td>${docs.approved}/6 ${docs.approved===6?'<span class="badge badge-green">Ready</span>':'<span class="badge badge-gold">Missing</span>'}</td>
       <td>${money(balance(r.athleteId))}</td>
       <td>${conflicts==="None"?"None":`<span class="badge badge-gold">⚠ ${esc(conflicts)}</span>`}</td>
       <td><strong>${esc(status)}</strong></td>
@@ -150,7 +147,7 @@ async function review(aid,rid,action){
     }
     const docs=requiredDocs(aid);
     if(docs.approved<2){
-      if(!confirm(`${name(a)} has only ${docs.approved}/2 required documents approved. Add to roster anyway?`))return;
+      if(!confirm(`${name(a)} has only ${docs.approved}/6 required documents approved. Add to roster anyway?`))return;
     }
 
     await setDoc(doc(db,"teams",t.id,"roster",aid),{

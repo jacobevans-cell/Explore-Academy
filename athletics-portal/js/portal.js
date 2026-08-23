@@ -21,7 +21,7 @@ try{
 
 $("addAthleteBtn").onclick=()=>$("addAthleteModal").classList.remove("hidden");
 $("cancelAddAthlete").onclick=()=>$("addAthleteModal").classList.add("hidden");
-$("docType").onchange=()=>$("physicalDates").classList.toggle("hidden",$("docType").value!=="physical");
+$("docType").onchange=()=>$("physicalDates").classList.toggle("hidden",!["medical-exam","concussion-certificate"].includes($("docType").value));
 
 $("addAthleteForm").onsubmit=async e=>{
  e.preventDefault();
@@ -141,33 +141,72 @@ async function loadPayments(){
  $("paymentRows").innerHTML=payments.length?payments.map(p=>{
    const b=Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0));balance+=b;
    return `<tr><td>${esc(p.label||"Sports Fee")}</td><td>${money(p.amountDue)}</td><td>${money(p.amountPaid)}</td><td>${money(b)}</td><td>${esc(p.status||"due")}</td></tr>`;
- }).join(""):'<tr><td colspan="5">No fees posted.</td></tr>';
+ }).join(""):'<tr><td colspan="5">No fees posted yet.</td></tr>';
  $("amountDue").textContent=money(balance);
+ const annual=payments.find(p=>p.id==="athletics-2026-27");
+ const due=annual?Math.max(0,Number(annual.amountDue||45)-Number(annual.amountPaid||0)):0;
+ const fundraiserDone=Boolean(annual?.fundraiserComplete);
+ $("squarePaymentText").textContent=annual
+   ? `${due>0?money(due)+" due":"Fee paid"} • Fundraiser ${fundraiserDone?"complete":"still required"}`
+   : "The $45 payment obligation appears after an athletics registration is approved.";
+ $("squarePayBtn").classList.toggle("hidden",!(annual&&due>0));
+ $("squareFallbackLink").classList.add("hidden");
 }
 async function loadDocuments(){
  const snap=await getDocs(collection(db,"athletes",athlete.id,"documents"));
  documents=snap.docs.map(d=>({id:d.id,...d.data()}));
- const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>d.type));
- $("docMetric").textContent=`${["birth-certificate","physical"].filter(x=>approved.has(x)).length}/2`;
+ const required=[
+   ["medical-exam","AIA Medical Examination Form"],
+   ["medical-questionnaire","AIA Medical Evaluation Questionnaire"],
+   ["concussion-certificate","NFHS Concussion Awareness Certificate"],
+   ["participation-agreement","Explore Academy Participation Agreement"],
+   ["code-of-conduct","Explore Academy Code of Conduct"],
+   ["insurance","Proof of Insurance"]
+ ];
+ const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>normalizeDocType(d.type)));
+ const complete=required.filter(([id])=>approved.has(id)).length;
+ const overridden=Boolean(athlete.clearanceOverride);
+ const cleared=complete===required.length||overridden;
+ $("docMetric").textContent=`${complete}/6`;
+ $("clearanceStatus").textContent=overridden?"Cleared by Admin Override":cleared?"Cleared to Play":"Not Cleared";
+ $("clearanceStatus").className=cleared?"badge badge-green":"badge badge-gold";
+ $("clearanceChecklist").innerHTML=required.map(([id,label])=>{
+   const items=documents.filter(d=>normalizeDocType(d.type)===id);
+   const best=items.find(d=>d.reviewStatus==="approved")||items[0];
+   const status=best?.reviewStatus||"missing";
+   const cls=status==="approved"?"badge-green":status==="pending"?"badge-gold":"";
+   return `<div class="check"><div style="flex:1"><strong>${esc(label)}</strong><small>${status==="missing"?"Not uploaded":esc(status)}</small></div><span class="badge ${cls}">${status==="approved"?"✓ Approved":status==="pending"?"Pending":status==="rejected"?"Rejected":"Missing"}</span></div>`;
+ }).join("")+(overridden?`<div class="notice warning" style="margin-top:10px"><strong>Admin clearance override active.</strong>${athlete.clearanceOverrideReason?` ${esc(athlete.clearanceOverrideReason)}`:""}</div>`:"");
  $("docList").innerHTML=documents.length?documents.map(d=>`
- <div class="doc-row"><div><strong>${esc(labelDoc(d.type))}</strong><small style="display:block">${esc(d.fileName||"")}${d.physicalExpirationDate?` • Expires ${esc(d.physicalExpirationDate)}`:""}</small></div><span class="badge ${d.reviewStatus==="approved"?"badge-green":"badge-gold"}">${esc(d.reviewStatus||"pending")}</span></div>`).join(""):'<p>No documents uploaded.</p>';
+ <div class="doc-row"><div><strong>${esc(labelDoc(d.type))}</strong><small style="display:block">${esc(d.fileName||"")}${d.physicalExpirationDate?` • Expires ${esc(d.physicalExpirationDate)}`:""}</small></div><span class="badge ${d.reviewStatus==="approved"?"badge-green":"badge-gold"}">${esc(d.reviewStatus||"pending")}</span></div>`).join(""):'';
 }
-$("uploadForm").onsubmit=async e=>{
- e.preventDefault();
- const type=$("docType").value,file=$("docFile").files[0];if(!type||!file)return;
- if(file.size>=10*1024*1024)return flash("uploadStatus","File must be under 10 MB.","danger");
- const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"), path=`athlete-documents/${athlete.id}/${type}/${Date.now()}-${safe}`;
- await uploadBytes(ref(storage,path),file,{contentType:file.type});
- const id=`${type}-${Date.now()}`;
- await setDoc(doc(db,"athletes",athlete.id,"documents",id),{
-   type,fileName:file.name,storagePath:path,reviewStatus:"pending",
-   physicalExamDate:type==="physical"?$("physicalExamDate").value:"",
-   physicalExpirationDate:type==="physical"?$("physicalExpirationDate").value:"",
-   uploadedAt:serverTimestamp()
- });
- e.target.reset();$("physicalDates").classList.add("hidden");await loadDocuments();
- flash("uploadStatus","Uploaded securely and sent for review.","success");
+
+const SQUARE_FUNCTION_URL="https://us-central1-explore-sports-interest.cloudfunctions.net/createAthleticsPaymentLink";
+$("squarePayBtn").onclick=async()=>{
+ if(!athlete)return;
+ const btn=$("squarePayBtn"),old=btn.textContent;
+ btn.disabled=true;btn.textContent="Opening Square...";
+ try{
+   const token=await user.getIdToken();
+   const res=await fetch(SQUARE_FUNCTION_URL,{
+     method:"POST",
+     headers:{"Content-Type":"application/json","Authorization":`Bearer ${token}`},
+     body:JSON.stringify({athleteId:athlete.id})
+   });
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||!data.url)throw new Error(data.error||`Checkout service returned ${res.status}`);
+   window.location.assign(data.url);
+ }catch(e){
+   console.error("Square checkout automation unavailable",e);
+   $("squarePaymentStatus").textContent="Automatic checkout is not configured yet. The school Square page is available as a fallback.";
+   $("squarePaymentStatus").className="notice warning status show";
+   $("squareFallbackLink").classList.remove("hidden");
+ }finally{btn.disabled=false;btn.textContent=old}
 };
+if(new URLSearchParams(location.search).get("payment")==="return"){
+ setTimeout(()=>flash("squarePaymentStatus","Square payment submitted. Status updates automatically when Square confirms completion.","success"),200);
+}
+
 async function loadSchedule(){
  const approved=registrations.filter(r=>r.status==="approved");
  const rows=[];
@@ -181,6 +220,16 @@ async function loadSchedule(){
 function name(a){return `${a?.firstName||""} ${a?.lastName||""}`.trim()||"Unnamed Athlete"}
 function fmt(v){if(!v)return "TBA";const [y,m,d]=v.split("-").map(Number);return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric"}).format(new Date(y,m-1,d))}
 function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n||0))}
-function labelDoc(v){return v==="birth-certificate"?"Birth Certificate":v==="physical"?"Sports Physical":v==="insurance"?"Insurance":"Document"}
+function normalizeDocType(v){return v==="physical"?"medical-exam":v}
+function labelDoc(v){
+ const n=normalizeDocType(v);
+ return n==="medical-exam"?"AIA Medical Examination Form":
+ n==="medical-questionnaire"?"AIA Medical Evaluation Questionnaire":
+ n==="concussion-certificate"?"NFHS Concussion Awareness Certificate":
+ n==="participation-agreement"?"Explore Academy Participation Agreement":
+ n==="code-of-conduct"?"Explore Academy Code of Conduct":
+ n==="insurance"?"Proof of Insurance":
+ n==="birth-certificate"?"Birth Certificate (legacy / optional)":"Document";
+}
 function flash(id,text,type){const el=$(id);el.textContent=text;el.className=`notice ${type} status show`;setTimeout(()=>el.classList.remove("show"),5500)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}

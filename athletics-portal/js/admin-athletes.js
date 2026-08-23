@@ -60,8 +60,9 @@ async function detailsFor(a){
 }
 
 function complianceSummary(documents){
-  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>d.type));
-  return {approved:["birth-certificate","physical"].filter(x=>approved.has(x)).length};
+  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>d.type==="physical"?"medical-exam":d.type));
+  const req=["medical-exam","medical-questionnaire","concussion-certificate","participation-agreement","code-of-conduct","insurance"];
+  return {approved:req.filter(x=>approved.has(x)).length};
 }
 function balanceSummary(payments){
   return payments.reduce((sum,p)=>sum+Math.max(0,Number(p.amountDue||0)-Number(p.amountPaid||0)),0);
@@ -113,7 +114,7 @@ async function renderAthletes(){
       <td>${esc(a.grade||"—")}</td>
       <td>${esc(a.guardianName||"—")}<br><small>${esc(a.guardianEmail||a.email||"")}</small></td>
       <td>${activeRegs}</td>
-      <td>${comp.approved}/2</td>
+      <td>${comp.approved}/6</td>
       <td>${money(bal)}</td>
       <td>${esc(a.adminEligibility||"eligible")}</td>
       <td><button class="btn btn-secondary" data-admin-athlete="${esc(a.id)}">Open</button></td>
@@ -141,7 +142,7 @@ async function openAthlete(id){
     <div class="grid grid-4" style="margin-top:12px">
       <div><span class="metric-label">Grade</span><div class="metric">${esc(a.grade||"—")}</div></div>
       <div><span class="metric-label">Sports Choices</span><div class="metric">${d.registrations.length}</div></div>
-      <div><span class="metric-label">Documents</span><div class="metric">${comp.approved}/2</div></div>
+      <div><span class="metric-label">Documents</span><div class="metric">${comp.approved}/6</div></div>
       <div><span class="metric-label">Balance</span><div class="metric">${money(bal)}</div></div>
     </div>
     <div class="grid grid-2" style="margin-top:14px">
