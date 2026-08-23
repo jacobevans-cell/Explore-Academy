@@ -8,7 +8,6 @@ import { ref,getBlob } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-
 
 const $=id=>document.getElementById(id);
 const user=await requireVerifiedUser({admin:true});
-await ensureUserDoc(user);
 $("adminEmail").textContent=user.email;$("logoutBtn").onclick=logout;
 
 let athletes=[],teams=fallbackTeams,regs=[],documents=[],payments=[],rosters={},events=[];
@@ -17,6 +16,13 @@ for(const b of document.querySelectorAll("[data-panel]")) b.onclick=()=>{
  document.querySelectorAll("[data-panel]").forEach(x=>x.classList.remove("active"));b.classList.add("active");
  document.querySelectorAll(".admin-panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");
 };
+
+try {
+ await ensureUserDoc(user);
+} catch(e) {
+ console.error("User doc setup failed",e);
+ toast(`Account setup warning: ${e.code||e.message||e}`,"danger");
+}
 
 $("seedBtn").onclick=async()=>{
  const btn=$("seedBtn"),old=btn.textContent;btn.disabled=true;btn.textContent="Refreshing...";
@@ -28,7 +34,12 @@ $("seedBtn").onclick=async()=>{
  finally{btn.disabled=false;btn.textContent=old}
 };
 
-await refresh();
+try {
+ await refresh();
+} catch(e) {
+ console.error("Initial admin refresh failed",e);
+ toast(`Admin data load failed: ${e.code||e.message||e}`,"danger");
+}
 
 async function refresh(){
  await loadTeams();await loadAthletes();await Promise.all([loadRegs(),loadDocs(),loadPayments(),loadEvents()]);
