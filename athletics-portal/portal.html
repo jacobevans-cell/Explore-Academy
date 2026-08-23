@@ -31,7 +31,7 @@
     <div class="card"><span class="metric-label">Profile</span><div id="profilePct" class="metric">0%</div><div class="progress"><span id="profileBar" style="width:0"></span></div></div>
     <div class="card"><span class="metric-label">Balance Due</span><div id="amountDue" class="metric">$0</div></div>
     <div class="card"><span class="metric-label">Eligibility</span><div id="eligibilityStatus" class="metric" style="font-size:22px">Eligible</div></div>
-    <div class="card"><span class="metric-label">Clearance</span><div id="docMetric" class="metric">0/6</div><small id="clearanceStatus">Not Cleared</small></div>
+    <div class="card"><span class="metric-label">Clearance</span><div id="docMetric" class="metric">–</div><small id="clearanceStatus">Not Cleared</small></div>
   </div>
 
   <div class="grid grid-2" style="margin-top:18px">
@@ -66,7 +66,7 @@
 
       <div class="card">
         <h2>Athletics Clearance Packet</h2>
-        <p>All six Explore Academy athletics requirements must be approved before an athlete is cleared for practices and competitions.</p>
+        <p>All athletes need four core Explore Academy clearance items. Athletes participating in a CAA sport also need the NFHS Concussion Awareness Certificate before they are cleared for practices and competitions.</p>
         <div id="clearanceChecklist" class="checklist"></div>
         <div id="docList" style="margin-top:12px"></div>
         <form id="uploadForm" class="upload-box" style="margin-top:14px">
@@ -78,7 +78,6 @@
               <option value="concussion-certificate">NFHS Concussion Awareness Certificate</option>
               <option value="participation-agreement">Explore Academy Participation Agreement</option>
               <option value="code-of-conduct">Explore Academy Code of Conduct</option>
-              <option value="insurance">Proof of Insurance</option>
             </select></label>
             <div id="physicalDates" class="grid grid-2 hidden">
               <label class="field">Exam / Certificate Date<input id="physicalExamDate" type="date"></label>

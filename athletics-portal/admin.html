@@ -131,7 +131,7 @@
   </div>
 </section>
 <section id="documentsPanel" class="admin-panel" style="padding:0">
-  <div class="section-head"><div><h2>Athletics Clearance</h2><p>Six required Explore Academy items. All six must be approved before practices or competitions unless an admin override is recorded.</p></div></div>
+  <div class="section-head"><div><h2>Athletics Clearance</h2><p>Four core Explore Academy items are required for every athlete. Athletes with an active CAA sport also need the NFHS Concussion Awareness Certificate. All required items must be approved before practices or competitions unless an admin override is recorded.</p></div></div>
   <div id="complianceAdminStatus" class="status"></div>
   <div class="grid grid-4" style="margin-bottom:15px">
     <div class="card"><span class="metric-label">Cleared</span><div id="clearanceClearedCount" class="metric">0</div></div>
@@ -140,19 +140,19 @@
     <div class="card"><span class="metric-label">Overrides</span><div id="clearanceOverrideCount" class="metric">0</div></div>
   </div>
   <div class="filters"><input id="complianceSearch" placeholder="Search athlete..."><select id="complianceFilter"><option value="">All clearance statuses</option><option value="cleared">Cleared</option><option value="not-cleared">Not cleared</option><option value="override">Admin override</option></select></div>
-  <div class="table-wrap"><table class="data-table"><thead><tr><th>Athlete</th><th>Progress</th><th>Medical Exam</th><th>Questionnaire</th><th>Concussion</th><th>Agreement</th><th>Conduct</th><th>Insurance</th><th>Clearance</th><th></th></tr></thead><tbody id="complianceRows"></tbody></table></div>
+  <div class="table-wrap"><table class="data-table"><thead><tr><th>Athlete</th><th>Progress</th><th>Medical Exam</th><th>Questionnaire</th><th>Agreement</th><th>Conduct</th><th>Concussion</th><th>Clearance</th><th></th></tr></thead><tbody id="complianceRows"></tbody></table></div>
   <div id="complianceEditor" class="form-card hidden" style="margin-top:15px">
     <input id="complianceAthleteId" type="hidden">
     <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><h2 id="complianceAthleteName"></h2><div id="complianceHeadline"></div></div><button id="closeComplianceEditor" class="btn btn-secondary" type="button">Close</button></div>
     <div id="complianceRequirementList" class="checklist" style="margin-top:14px"></div><hr>
     <div class="grid grid-2">
-      <form id="adminComplianceUploadForm" class="fields" style="grid-template-columns:1fr"><h3>Upload on Behalf of Family</h3><label class="field">Requirement<select id="adminComplianceType" required><option value="">Choose</option><option value="medical-exam">AIA Medical Examination Form</option><option value="medical-questionnaire">AIA Medical Evaluation Questionnaire</option><option value="concussion-certificate">NFHS Concussion Awareness Certificate</option><option value="participation-agreement">Explore Academy Participation Agreement</option><option value="code-of-conduct">Explore Academy Code of Conduct</option><option value="insurance">Proof of Insurance</option></select></label><label class="field">File<input id="adminComplianceFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" required></label><button class="btn btn-primary">Upload & Send to Review</button></form>
+      <form id="adminComplianceUploadForm" class="fields" style="grid-template-columns:1fr"><h3>Upload on Behalf of Family</h3><label class="field">Requirement<select id="adminComplianceType" required><option value="">Choose</option><option value="medical-exam">AIA Medical Examination Form</option><option value="medical-questionnaire">AIA Medical Evaluation Questionnaire</option><option value="concussion-certificate">NFHS Concussion Awareness Certificate</option><option value="participation-agreement">Explore Academy Participation Agreement</option><option value="code-of-conduct">Explore Academy Code of Conduct</option></select></label><label class="field">File<input id="adminComplianceFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" required></label><button class="btn btn-primary">Upload & Send to Review</button></form>
       <form id="clearanceOverrideForm" class="fields" style="grid-template-columns:1fr"><h3>Admin Override</h3><label class="field"><input id="clearanceOverrideEnabled" type="checkbox"> Clear athlete despite missing items</label><label class="field">Reason<textarea id="clearanceOverrideReason" placeholder="Required when override is enabled"></textarea></label><button class="btn btn-navy">Save Clearance Override</button></form>
     </div>
   </div>
   <table style="display:none"><tbody id="documentRows"></tbody></table>
 </section>
-<section id="paymentsPanel"<section id="paymentsPanel" class="admin-panel" style="padding:0">
+<section id="paymentsPanel" class="admin-panel" style="padding:0">
   <div class="section-head">
     <div>
       <h2>Payments & Fundraiser</h2>
