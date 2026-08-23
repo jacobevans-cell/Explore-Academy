@@ -155,19 +155,28 @@ async function loadPayments(){
 async function loadDocuments(){
  const snap=await getDocs(collection(db,"athletes",athlete.id,"documents"));
  documents=snap.docs.map(d=>({id:d.id,...d.data()}));
+ const hasCAA=registrations
+   .filter(r=>!["declined","withdrawn"].includes(r.status))
+   .some(r=>{
+     const t=teams.find(x=>x.id===r.teamId);
+     return String(t?.leagueLabel||t?.league||"").toUpperCase().includes("CAA");
+   });
+
  const required=[
    ["medical-exam","AIA Medical Examination Form"],
    ["medical-questionnaire","AIA Medical Evaluation Questionnaire"],
-   ["concussion-certificate","NFHS Concussion Awareness Certificate"],
    ["participation-agreement","Explore Academy Participation Agreement"],
-   ["code-of-conduct","Explore Academy Code of Conduct"],
-   ["insurance","Proof of Insurance"]
+   ["code-of-conduct","Explore Academy Code of Conduct"]
  ];
+
+ if(hasCAA){
+   required.push(["concussion-certificate","NFHS Concussion Awareness Certificate"]);
+ }
  const approved=new Set(documents.filter(d=>d.reviewStatus==="approved").map(d=>normalizeDocType(d.type)));
  const complete=required.filter(([id])=>approved.has(id)).length;
  const overridden=Boolean(athlete.clearanceOverride);
  const cleared=complete===required.length||overridden;
- $("docMetric").textContent=`${complete}/6`;
+ $("docMetric").textContent=`${complete}/${required.length}`;
  $("clearanceStatus").textContent=overridden?"Cleared by Admin Override":cleared?"Cleared to Play":"Not Cleared";
  $("clearanceStatus").className=cleared?"badge badge-green":"badge badge-gold";
  $("clearanceChecklist").innerHTML=required.map(([id,label])=>{
