@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Athlete / Family Portal • Explore Athletics</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="topbar"><div class="container nav">
+<a class="brand" href="../athletics.html"><img src="assets/explore-mark.svg" alt=""><div>Explore Athletics<small>FAMILY PORTAL</small></div></a>
+<nav class="nav-links"><span id="userEmail" style="color:#cfe7fa;font-size:12px"></span><button id="logoutBtn">Sign Out</button></nav>
+</div></div>
+
+<main>
+<section class="hero" style="padding-bottom:24px"><div class="container">
+<span class="eyebrow">SECURE FAMILY PORTAL</span>
+<h1 style="font-size:clamp(38px,6vw,62px)">Your athletes. Their opportunities.</h1>
+<p>Add each athlete in your family, complete the profile once, then select every sport they are interested in. The portal flags actual schedule conflicts only when the same athlete is eligible for both overlapping programs.</p>
+</div></section>
+
+<section><div class="container">
+<div class="section-head">
+  <div><h2>Family Athletes</h2><p>One family account can manage multiple athletes.</p></div>
+  <button id="addAthleteBtn" class="btn btn-primary">Add Athlete</button>
+</div>
+<div id="athleteCards" class="grid grid-3"></div>
+
+<div id="athleteWorkspace" class="hidden" style="margin-top:22px">
+  <div class="grid grid-4">
+    <div class="card"><span class="metric-label">Profile</span><div id="profilePct" class="metric">0%</div><div class="progress"><span id="profileBar" style="width:0"></span></div></div>
+    <div class="card"><span class="metric-label">Balance Due</span><div id="amountDue" class="metric">$0</div></div>
+    <div class="card"><span class="metric-label">Eligibility</span><div id="eligibilityStatus" class="metric" style="font-size:22px">Eligible</div></div>
+    <div class="card"><span class="metric-label">Documents</span><div id="docMetric" class="metric">0/2</div></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:18px">
+    <div class="form-card">
+      <h2 id="profileHeading">Athlete Profile</h2>
+      <form id="profileForm" class="fields">
+        <label class="field">First Name<input id="firstName" name="firstName" required></label>
+        <label class="field">Last Name<input id="lastName" name="lastName" required></label>
+        <label class="field">Date of Birth<input id="dob" name="dob" type="date" required></label>
+        <label class="field">Grade<select id="grade" name="grade" required><option value="">Choose</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></label>
+        <label class="field">Gender<select id="gender" name="gender" required><option value="">Choose</option><option>Boy</option><option>Girl</option></select></label>
+        <label class="field">Athlete Phone<input id="phone" name="phone" type="tel"></label>
+        <label class="field">Parent / Guardian<input id="guardianName" name="guardianName" required></label>
+        <label class="field">Guardian Email<input id="guardianEmail" name="guardianEmail" type="email"></label>
+        <label class="field">Guardian Phone<input id="guardianPhone" name="guardianPhone" type="tel" required></label>
+        <label class="field">Emergency Contact<input id="emergencyName" name="emergencyName" required></label>
+        <label class="field">Emergency Phone<input id="emergencyPhone" name="emergencyPhone" type="tel" required></label>
+        <label class="field">Shirt Size<select id="shirtSize" name="shirtSize"><option value="">Choose</option><option>YS</option><option>YM</option><option>YL</option><option>YXL</option><option>AS</option><option>AM</option><option>AL</option><option>AXL</option></select></label>
+        <label class="field full">Medical / accommodation note<textarea id="medicalNotes" name="medicalNotes"></textarea></label>
+        <div class="field full"><button class="btn btn-primary">Save Profile</button><div id="profileStatus" class="status"></div></div>
+      </form>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Sports Pathway</h2>
+        <p>Select every sport this athlete is interested in. Confirmed overlaps are shown before submission.</p>
+        <div id="sportsPathway"></div>
+        <div id="registrationStatus" class="status"></div>
+        <div id="registrationList" class="checklist" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <h2>Required Documents</h2>
+        <div id="docList"></div>
+        <form id="uploadForm" class="upload-box" style="margin-top:14px">
+          <div class="fields" style="grid-template-columns:1fr">
+            <label class="field">Document Type<select id="docType" required>
+              <option value="">Choose</option>
+              <option value="birth-certificate">Birth Certificate</option>
+              <option value="physical">Sports Physical</option>
+              <option value="insurance">Insurance Card</option>
+            </select></label>
+            <div id="physicalDates" class="grid grid-2 hidden">
+              <label class="field">Physical Exam Date<input id="physicalExamDate" type="date"></label>
+              <label class="field">Physical Expiration<input id="physicalExpirationDate" type="date"></label>
+            </div>
+            <label class="field">File<input id="docFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" required><small>PDF/JPG/PNG/WEBP • max 10 MB</small></label>
+            <button class="btn btn-secondary">Upload Securely</button>
+            <div id="uploadStatus" class="status"></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card"><h2>Sports Fees</h2>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Fee</th><th>Due</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead><tbody id="paymentRows"></tbody></table></div>
+      </div>
+
+      <div class="card"><h2>Upcoming Schedule</h2><div id="athleteEventList" class="checklist"></div></div>
+    </div>
+  </div>
+</div>
+</div></section>
+</main>
+
+<div id="addAthleteModal" class="modal hidden">
+<div class="modal-card">
+<h2>Add Athlete</h2>
+<form id="addAthleteForm" class="fields" style="grid-template-columns:1fr">
+<label class="field">First Name<input id="newFirst" required></label>
+<label class="field">Last Name<input id="newLast" required></label>
+<label class="field">Grade<select id="newGrade" required><option value="">Choose</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></label>
+<label class="field">Gender<select id="newGender" required><option value="">Choose</option><option>Boy</option><option>Girl</option></select></label>
+<div class="actions"><button class="btn btn-primary">Add Athlete</button><button type="button" id="cancelAddAthlete" class="btn btn-secondary">Cancel</button></div>
+</form>
+</div></div>
+
+<footer><div class="container footer-inner"><span>Explore Academy Athletics • 2026–27</span><span>Secure family portal</span></div></footer>
+<script type="module" src="js/portal.js"></script>
+</body></html>
