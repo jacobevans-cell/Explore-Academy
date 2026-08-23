@@ -53,6 +53,7 @@ try {
 }
 
 buildTeamsPanel();
+buildSchedulePanel();
 installCatalogRefresh();
 
 try {
@@ -204,6 +205,25 @@ function buildTeamsPanel(){
             <input id="teamTargetRoster" type="number" min="0">
           </label>
 
+          <label class="field">
+            Schedule Source
+            <select id="teamScheduleSource">
+              <option value="manual">Explore / Manual</option>
+              <option value="bound">CAA / Bound</option>
+            </select>
+            <small>CAA competition schedules can point to Bound. IYAC/Internal stay managed here.</small>
+          </label>
+
+          <label class="field">
+            Bound Schedule URL
+            <input id="teamBoundScheduleUrl" type="url" placeholder="https://www.gobound.com/.../schedule">
+          </label>
+
+          <label class="field full">
+            Bound Standings URL
+            <input id="teamBoundStandingsUrl" type="url" placeholder="https://www.gobound.com/.../standings">
+          </label>
+
           <button class="btn btn-navy field full" type="submit">Save Team Settings</button>
         </form>
 
@@ -302,6 +322,7 @@ function buildTeamsPanel(){
   };
 
   $("teamSettingsForm").onsubmit = saveTeamSettings;
+  $("teamScheduleSource").onchange = toggleBoundTeamFields;
   $("teamAddAthleteBtn").onclick = addAthleteToRoster;
 }
 
@@ -396,6 +417,7 @@ async function loadTeams(){
 
   fillTeamFilters();
   fillTeamSelects();
+  fillScheduleControls();
 }
 
 async function loadAthletes(){
@@ -629,6 +651,10 @@ function openTeam(id, {switchPanel=true} = {}){
   $("teamFee").value = t.sportsFee || "";
   $("teamMinRoster").value = t.minRoster || "";
   $("teamTargetRoster").value = t.targetRoster || "";
+  $("teamScheduleSource").value = t.scheduleSource || (String(t.leagueLabel || t.league || "").toUpperCase().includes("CAA") ? "bound" : "manual");
+  $("teamBoundScheduleUrl").value = t.boundScheduleUrl || "";
+  $("teamBoundStandingsUrl").value = t.boundStandingsUrl || "";
+  toggleBoundTeamFields();
 
   fillApprovedRosterAdds(t);
   renderRoster(t);
@@ -884,6 +910,9 @@ async function saveTeamSettings(e){
         sportsFee:Number($("teamFee").value || 0),
         minRoster:Number($("teamMinRoster").value || 0),
         targetRoster:Number($("teamTargetRoster").value || 0),
+        scheduleSource:$("teamScheduleSource").value || "manual",
+        boundScheduleUrl:$("teamBoundScheduleUrl").value.trim(),
+        boundStandingsUrl:$("teamBoundStandingsUrl").value.trim(),
         updatedAt:serverTimestamp(),
         updatedBy:user.email
       },
@@ -1017,61 +1046,426 @@ function fillTeamSelects(){
   if (teams.some(t => t.id === current)) select.value = current;
 }
 
-function renderEvents(){
-  if (!$("eventList")) return;
+function buildSchedulePanel(){
+  const panel = $("schedulePanel");
+  if (!panel) return;
 
-  events.sort((a,b) =>
+  panel.innerHTML = `
+    <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+      <div>
+        <h2>Schedules & Games</h2>
+        <p>CAA competition schedules can use Bound as the official source. IYAC, Internal, practices, meetings, travel notes, and local updates are managed here.</p>
+      </div>
+      <button id="scheduleRefreshBtn" class="btn btn-secondary" type="button">Refresh Schedule</button>
+    </div>
+
+    <div class="grid grid-4" style="margin-bottom:15px">
+      <div class="card"><span class="metric-label">Upcoming Events</span><div id="scheduleUpcomingMetric" class="metric">0</div></div>
+      <div class="card"><span class="metric-label">Games</span><div id="scheduleGamesMetric" class="metric">0</div></div>
+      <div class="card"><span class="metric-label">Practices</span><div id="schedulePracticesMetric" class="metric">0</div></div>
+      <div class="card"><span class="metric-label">CAA / Bound Teams</span><div id="scheduleBoundMetric" class="metric">0</div></div>
+    </div>
+
+    <div class="filters">
+      <input id="scheduleSearch" placeholder="Search opponent, team, location...">
+      <select id="scheduleTeamFilter"><option value="">All teams</option></select>
+      <select id="scheduleTypeFilter">
+        <option value="">All event types</option>
+        <option value="game">Games</option>
+        <option value="practice">Practices</option>
+        <option value="tournament">Tournaments</option>
+        <option value="meeting">Meetings</option>
+        <option value="scrimmage">Scrimmages</option>
+      </select>
+      <select id="scheduleTimeFilter">
+        <option value="upcoming">Upcoming</option>
+        <option value="all">All events</option>
+        <option value="past">Past</option>
+      </select>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:15px;align-items:start">
+      <div>
+        <div id="boundScheduleCards" class="grid" style="margin-bottom:15px"></div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Team</th><th>Event</th><th>Opponent / Details</th>
+                <th>Time</th><th>Location</th><th>Status</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="scheduleRows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div>
+            <h2 id="eventFormHeading" style="margin-bottom:4px">Add Practice / Game</h2>
+            <p style="margin:0;color:#65758b">Use this for IYAC/Internal games and all Explore-managed practices, meetings, travel details, and local updates.</p>
+          </div>
+          <button id="eventCancelEdit" type="button" class="btn btn-secondary hidden">Cancel Edit</button>
+        </div>
+
+        <form id="eventForm" class="fields" style="grid-template-columns:1fr;margin-top:14px">
+          <input id="eventId" type="hidden">
+
+          <label class="field">Team<select id="eventTeamId" required></select></label>
+
+          <label class="field">Type
+            <select id="eventType">
+              <option value="game">Game</option>
+              <option value="practice">Practice</option>
+              <option value="tournament">Tournament</option>
+              <option value="scrimmage">Scrimmage</option>
+              <option value="meeting">Meeting</option>
+            </select>
+          </label>
+
+          <label class="field">Title<input id="eventTitle" required placeholder="Girls Volleyball vs South Valley Prep"></label>
+          <label class="field">Opponent<input id="eventOpponent" placeholder="Leave blank for practice/meeting"></label>
+
+          <div class="grid grid-2">
+            <label class="field">Home / Away
+              <select id="eventHomeAway">
+                <option value="">N/A</option>
+                <option value="Home">Home</option>
+                <option value="Away">Away</option>
+                <option value="Neutral">Neutral</option>
+              </select>
+            </label>
+            <label class="field">Status
+              <select id="eventStatus">
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="postponed">Postponed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field">Date<input id="eventDate" type="date" required></label>
+
+          <div class="grid grid-3">
+            <label class="field">Arrival<input id="eventArrival" type="time"></label>
+            <label class="field">Start<input id="eventStart" type="time"></label>
+            <label class="field">End<input id="eventEnd" type="time"></label>
+          </div>
+
+          <label class="field">Location / Venue<input id="eventLocation" placeholder="School or gym name"></label>
+          <label class="field">Street Address<input id="eventAddress" placeholder="Used for family directions"></label>
+
+          <div class="grid grid-2">
+            <label class="field">Leave By<input id="eventLeaveBy" type="time"></label>
+            <label class="field">Drive Estimate<input id="eventDriveEstimate" placeholder="45–60 min"></label>
+          </div>
+
+          <label class="field">Transportation<input id="eventTransportation" placeholder="Family transport, school van, meet there..."></label>
+
+          <div class="grid grid-2">
+            <label class="field">Our Score<input id="eventOurScore" type="number" min="0"></label>
+            <label class="field">Opponent Score<input id="eventOpponentScore" type="number" min="0"></label>
+          </div>
+
+          <label class="field">Result / Set Scores<input id="eventResult" placeholder="Final 2–0 • 15–13, 15–11"></label>
+          <label class="field">Notes<textarea id="eventNotes" placeholder="Arrival instructions, uniforms, special notes..."></textarea></label>
+
+          <button id="eventSubmitBtn" class="btn btn-primary">Add Event</button>
+        </form>
+      </div>
+    </div>
+  `;
+
+  $("scheduleRefreshBtn").onclick = async () => {
+    const b = $("scheduleRefreshBtn");
+    const old = b.textContent;
+    b.disabled = true;
+    b.textContent = "Refreshing...";
+    try {
+      await loadEvents();
+      renderScheduleManager();
+      toast("Schedule refreshed.", "success");
+    } finally {
+      b.disabled = false;
+      b.textContent = old;
+    }
+  };
+
+  $("scheduleSearch").oninput = renderScheduleManager;
+  $("scheduleTeamFilter").onchange = renderScheduleManager;
+  $("scheduleTypeFilter").onchange = renderScheduleManager;
+  $("scheduleTimeFilter").onchange = renderScheduleManager;
+  $("eventCancelEdit").onclick = resetEventForm;
+  $("eventForm").onsubmit = saveEvent;
+}
+
+function fillScheduleControls(){
+  const filter = $("scheduleTeamFilter");
+  const eventSelect = $("eventTeamId");
+
+  const options = teams.map(t =>
+    `<option value="${escAttr(t.id)}">${esc(t.name)} • ${esc(t.leagueLabel || t.league || t.audience || "")}</option>`
+  ).join("");
+
+  if (filter) {
+    const current = filter.value;
+    filter.innerHTML = '<option value="">All teams</option>' + options;
+    if (teams.some(t => t.id === current)) filter.value = current;
+  }
+
+  if (eventSelect) {
+    const current = eventSelect.value;
+    eventSelect.innerHTML = '<option value="">Choose team</option>' + options;
+    if (teams.some(t => t.id === current)) eventSelect.value = current;
+  }
+}
+
+function toggleBoundTeamFields(){
+  const isBound = $("teamScheduleSource")?.value === "bound";
+  if ($("teamBoundScheduleUrl")) {
+    $("teamBoundScheduleUrl").disabled = !isBound;
+    $("teamBoundScheduleUrl").parentElement.style.opacity = isBound ? "1" : ".55";
+  }
+  if ($("teamBoundStandingsUrl")) {
+    $("teamBoundStandingsUrl").disabled = !isBound;
+    $("teamBoundStandingsUrl").parentElement.style.opacity = isBound ? "1" : ".55";
+  }
+}
+
+function renderEvents(){
+  renderScheduleManager();
+}
+
+function renderScheduleManager(){
+  if (!$("scheduleRows")) return;
+
+  fillScheduleControls();
+
+  const q = ($("scheduleSearch")?.value || "").trim().toLowerCase();
+  const teamFilter = $("scheduleTeamFilter")?.value || "";
+  const typeFilter = $("scheduleTypeFilter")?.value || "";
+  const timeFilter = $("scheduleTimeFilter")?.value || "upcoming";
+  const today = new Date().toISOString().slice(0,10);
+
+  let visible = events.filter(e => {
+    const hay = `${e.teamName || ""} ${e.title || ""} ${e.opponent || ""} ${e.location || ""} ${e.address || ""}`.toLowerCase();
+    if (q && !hay.includes(q)) return false;
+    if (teamFilter && e.teamId !== teamFilter) return false;
+    if (typeFilter && e.type !== typeFilter) return false;
+    if (timeFilter === "upcoming" && String(e.date || "") < today && e.status !== "postponed") return false;
+    if (timeFilter === "past" && String(e.date || "") >= today) return false;
+    return true;
+  });
+
+  visible.sort((a,b) =>
     String(a.date || "").localeCompare(String(b.date || "")) ||
     String(a.start || "").localeCompare(String(b.start || ""))
   );
 
-  $("eventList").innerHTML = events.map(e =>
-    `<div class="check">
-      <div>
-        <strong>${esc(e.date || "")} • ${esc(e.title || "")}</strong>
-        <small>
-          ${esc(e.teamName)}
-          ${e.opponent ? " • " + esc(e.opponent) : ""}
-          ${e.start ? " • " + esc(e.start) : ""}
-          ${e.location ? " • " + esc(e.location) : ""}
-        </small>
-      </div>
-    </div>`
-  ).join("") || "<p>No events yet.</p>";
+  $("scheduleRows").innerHTML = visible.map(e => {
+    const maps = e.address
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.address)}`
+      : "";
+
+    const score = e.status === "completed"
+      ? (e.result || (e.ourScore !== "" && e.ourScore != null
+        ? `${e.ourScore}–${e.opponentScore ?? "?"}`
+        : "Completed"))
+      : "";
+
+    return `<tr>
+      <td><strong>${esc(prettyDate(e.date))}</strong></td>
+      <td><strong>${esc(e.teamName || "")}</strong></td>
+      <td>
+        <strong>${esc(e.title || titleForEvent(e))}</strong>
+        <br><small>${esc((e.type || "event").toUpperCase())}${e.homeAway ? " • " + esc(e.homeAway) : ""}</small>
+      </td>
+      <td>
+        ${e.opponent ? `<strong>${esc(e.opponent)}</strong>` : "—"}
+        ${score ? `<br><span class="badge badge-green">${esc(score)}</span>` : ""}
+      </td>
+      <td>
+        ${e.start ? esc(formatTime(e.start)) : "TBA"}
+        ${e.arrival ? `<br><small>Arrive ${esc(formatTime(e.arrival))}</small>` : ""}
+      </td>
+      <td>
+        ${esc(e.location || "TBA")}
+        ${maps ? `<br><a href="${escAttr(maps)}" target="_blank" rel="noopener">Directions</a>` : ""}
+      </td>
+      <td>${statusBadge(e.status || "scheduled")}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-secondary" data-event-edit="${escAttr(e.teamId)}|${escAttr(e.id)}" type="button">Edit</button>
+        <button class="btn btn-danger" data-event-delete="${escAttr(e.teamId)}|${escAttr(e.id)}" type="button">Delete</button>
+      </td>
+    </tr>`;
+  }).join("") || '<tr><td colspan="8">No matching events.</td></tr>';
+
+  $("scheduleRows").querySelectorAll("[data-event-edit]").forEach(b => {
+    b.onclick = () => editEvent(...b.dataset.eventEdit.split("|"));
+  });
+
+  $("scheduleRows").querySelectorAll("[data-event-delete]").forEach(b => {
+    b.onclick = () => deleteEvent(...b.dataset.eventDelete.split("|"));
+  });
+
+  renderBoundScheduleCards();
+  renderScheduleMetrics();
 }
 
-if ($("eventForm")) {
-  $("eventForm").onsubmit = async e => {
-    e.preventDefault();
+function renderBoundScheduleCards(){
+  const box = $("boundScheduleCards");
+  if (!box) return;
 
-    const tid = $("eventTeamId").value;
-    if (!tid) return;
+  const boundTeams = teams.filter(t =>
+    (t.scheduleSource === "bound" || String(t.leagueLabel || t.league || "").toUpperCase().includes("CAA")) &&
+    (t.boundScheduleUrl || t.boundStandingsUrl)
+  );
 
-    const id = crypto.randomUUID();
+  box.innerHTML = boundTeams.map(t => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <div>
+          <span class="badge badge-blue">CAA / BOUND</span>
+          <h3 style="margin:8px 0 4px">${esc(t.name)}</h3>
+          <small>${esc(windowMap[t.windowId]?.label || "")} • Grades ${esc(t.grades || "")}</small>
+        </div>
+        <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          ${t.boundScheduleUrl ? `<a class="btn btn-primary" href="${escAttr(t.boundScheduleUrl)}" target="_blank" rel="noopener">Official Schedule</a>` : ""}
+          ${t.boundStandingsUrl ? `<a class="btn btn-secondary" href="${escAttr(t.boundStandingsUrl)}" target="_blank" rel="noopener">Standings</a>` : ""}
+        </div>
+      </div>
+      <p style="margin:10px 0 0;color:#65758b">Bound is the official competition source. Add Explore-managed practices, arrival instructions, travel details, meetings, or corrections below without duplicating every CAA game.</p>
+    </div>
+  `).join("");
+}
 
-    await setDoc(
-      doc(db, "teams", tid, "events", id),
-      {
-        type:$("eventType").value,
-        title:$("eventTitle").value.trim(),
-        opponent:$("eventOpponent").value.trim(),
-        homeAway:$("eventHomeAway").value,
-        date:$("eventDate").value,
-        arrival:$("eventArrival").value,
-        start:$("eventStart").value,
-        end:$("eventEnd").value,
-        location:$("eventLocation").value.trim(),
-        transportation:$("eventTransportation").value.trim(),
-        notes:$("eventNotes").value.trim(),
-        createdAt:serverTimestamp(),
-        createdBy:user.email
-      }
-    );
+function renderScheduleMetrics(){
+  const today = new Date().toISOString().slice(0,10);
+  const upcoming = events.filter(e => String(e.date || "") >= today && e.status !== "cancelled").length;
+  const games = events.filter(e => ["game","tournament","scrimmage"].includes(e.type)).length;
+  const practices = events.filter(e => e.type === "practice").length;
+  const boundTeams = teams.filter(t => t.scheduleSource === "bound" || String(t.leagueLabel || t.league || "").toUpperCase().includes("CAA")).length;
 
-    e.target.reset();
-    toast("Event added.", "success");
-    await loadEvents();
+  $("scheduleUpcomingMetric").textContent = upcoming;
+  $("scheduleGamesMetric").textContent = games;
+  $("schedulePracticesMetric").textContent = practices;
+  $("scheduleBoundMetric").textContent = boundTeams;
+}
+
+async function saveEvent(e){
+  e.preventDefault();
+
+  const tid = $("eventTeamId").value;
+  if (!tid) return;
+
+  const id = $("eventId").value || crypto.randomUUID();
+  const payload = {
+    type:$("eventType").value,
+    title:$("eventTitle").value.trim(),
+    opponent:$("eventOpponent").value.trim(),
+    homeAway:$("eventHomeAway").value,
+    status:$("eventStatus").value || "scheduled",
+    date:$("eventDate").value,
+    arrival:$("eventArrival").value,
+    start:$("eventStart").value,
+    end:$("eventEnd").value,
+    location:$("eventLocation").value.trim(),
+    address:$("eventAddress").value.trim(),
+    leaveBy:$("eventLeaveBy").value,
+    driveEstimate:$("eventDriveEstimate").value.trim(),
+    transportation:$("eventTransportation").value.trim(),
+    ourScore:$("eventOurScore").value === "" ? "" : Number($("eventOurScore").value),
+    opponentScore:$("eventOpponentScore").value === "" ? "" : Number($("eventOpponentScore").value),
+    result:$("eventResult").value.trim(),
+    notes:$("eventNotes").value.trim(),
+    updatedAt:serverTimestamp(),
+    updatedBy:user.email
   };
+
+  if (!$("eventId").value) {
+    payload.createdAt = serverTimestamp();
+    payload.createdBy = user.email;
+  }
+
+  await setDoc(doc(db, "teams", tid, "events", id), payload, {merge:true});
+
+  resetEventForm();
+  toast($("eventId").value ? "Event updated." : "Event saved.", "success");
+  await loadEvents();
+}
+
+function editEvent(teamId, eventId){
+  const e = events.find(x => x.teamId === teamId && x.id === eventId);
+  if (!e) return;
+
+  $("eventId").value = e.id;
+  $("eventTeamId").value = e.teamId;
+  $("eventType").value = e.type || "game";
+  $("eventTitle").value = e.title || "";
+  $("eventOpponent").value = e.opponent || "";
+  $("eventHomeAway").value = e.homeAway || "";
+  $("eventStatus").value = e.status || "scheduled";
+  $("eventDate").value = e.date || "";
+  $("eventArrival").value = e.arrival || "";
+  $("eventStart").value = e.start || "";
+  $("eventEnd").value = e.end || "";
+  $("eventLocation").value = e.location || "";
+  $("eventAddress").value = e.address || "";
+  $("eventLeaveBy").value = e.leaveBy || "";
+  $("eventDriveEstimate").value = e.driveEstimate || "";
+  $("eventTransportation").value = e.transportation || "";
+  $("eventOurScore").value = e.ourScore ?? "";
+  $("eventOpponentScore").value = e.opponentScore ?? "";
+  $("eventResult").value = e.result || "";
+  $("eventNotes").value = e.notes || "";
+
+  $("eventFormHeading").textContent = "Edit Event";
+  $("eventSubmitBtn").textContent = "Save Changes";
+  $("eventCancelEdit").classList.remove("hidden");
+  $("eventForm").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+async function deleteEvent(teamId, eventId){
+  const e = events.find(x => x.teamId === teamId && x.id === eventId);
+  if (!e) return;
+  if (!confirm(`Delete ${e.title || "this event"}?`)) return;
+
+  await deleteDoc(doc(db, "teams", teamId, "events", eventId));
+  toast("Event deleted.", "success");
+  await loadEvents();
+}
+
+function resetEventForm(){
+  $("eventForm").reset();
+  $("eventId").value = "";
+  $("eventFormHeading").textContent = "Add Practice / Game";
+  $("eventSubmitBtn").textContent = "Add Event";
+  $("eventCancelEdit").classList.add("hidden");
+  fillScheduleControls();
+}
+
+function prettyDate(v){
+  if (!v) return "TBA";
+  const [y,m,d] = String(v).split("-").map(Number);
+  if (!y || !m || !d) return v;
+  return new Intl.DateTimeFormat("en-US", {month:"short", day:"numeric", year:"numeric"}).format(new Date(y,m-1,d));
+}
+
+function formatTime(v){
+  if (!v) return "";
+  const [h,m] = v.split(":").map(Number);
+  const d = new Date(2000,0,1,h,m||0);
+  return new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit"}).format(d);
+}
+
+function titleForEvent(e){
+  if (e.type === "practice") return "Practice";
+  if (e.type === "meeting") return "Team Meeting";
+  if (e.opponent) return `vs ${e.opponent}`;
+  return e.type || "Event";
 }
 
 function renderAttention(){
