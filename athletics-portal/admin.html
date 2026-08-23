@@ -21,4 +21,94 @@
     activatePanel(button.dataset.panel);
   });
 })();
-</script><script type="module" src="js/admin.js"></script></body></html>
+</script>
+<script type="module">
+import { db } from "./js/firebase.js";
+import { programWindows, teams, windowMap } from "./js/seed-data.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+
+function showSeedStatus(message, type="info"){
+  const box = $("adminStatus");
+  if(!box) return;
+  box.textContent = message;
+  box.className = `notice ${type} status show`;
+}
+
+function money(value){
+  return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number(value||0));
+}
+
+function safe(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function renderApprovedCatalog(){
+  const rows = $("teamRows");
+  if(!rows) return;
+  rows.innerHTML = teams.map(t => `
+    <tr>
+      <td><strong>${safe(t.name)}</strong></td>
+      <td>${safe(t.leagueLabel || t.league || "")}</td>
+      <td>${safe(t.grades || "")}</td>
+      <td>0</td>
+      <td>${money(t.costEstimate || 0)}</td>
+      <td>${safe(t.status || "")}</td>
+      <td><span style="color:#60748a;font-size:.85rem">${safe(windowMap[t.windowId]?.label || "")}</span></td>
+    </tr>
+  `).join("");
+  if($("teamCount")) $("teamCount").textContent = teams.length;
+}
+
+renderApprovedCatalog();
+
+const seedButton = $("seedBtn");
+if(seedButton){
+  seedButton.addEventListener("click", async event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const oldText = seedButton.textContent;
+    seedButton.disabled = true;
+    seedButton.textContent = "Refreshing...";
+    renderApprovedCatalog();
+    showSeedStatus(`Loaded ${teams.length} approved programs locally. Saving them to Firebase...`, "info");
+
+    try{
+      for(const window of programWindows){
+        await setDoc(
+          doc(db, "seasons", window.id),
+          {...window, updatedAt: serverTimestamp()},
+          {merge:true}
+        );
+      }
+
+      for(const team of teams){
+        await setDoc(
+          doc(db, "teams", team.id),
+          {...team, updatedAt: serverTimestamp()},
+          {merge:true}
+        );
+      }
+
+      showSeedStatus(
+        `SUCCESS: Firebase saved ${programWindows.length} season windows and ${teams.length} programs.`,
+        "success"
+      );
+      renderApprovedCatalog();
+    }catch(error){
+      console.error("Standalone catalog refresh failed:", error);
+      const code = error?.code || "unknown";
+      const message = error?.message || String(error);
+      showSeedStatus(`FIREBASE SAVE FAILED (${code}): ${message}`, "danger");
+    }finally{
+      seedButton.disabled = false;
+      seedButton.textContent = oldText;
+    }
+  }, true);
+}
+</script>
+<script type="module" src="js/admin.js"></script></body></html>
