@@ -13,8 +13,10 @@ $("adminEmail").textContent=user.email;$("logoutBtn").onclick=logout;
 let athletes=[],teams=fallbackTeams,regs=[],documents=[],payments=[],rosters={},events=[];
 
 for(const b of document.querySelectorAll("[data-panel]")) b.onclick=()=>{
- document.querySelectorAll("[data-panel]").forEach(x=>x.classList.remove("active"));b.classList.add("active");
- document.querySelectorAll(".admin-panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");
+ const target=$(b.dataset.panel);
+ if(!target) return;
+ document.querySelectorAll("[data-panel]").forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".admin-panel").forEach(x=>x.classList.toggle("active",x===target));
 };
 
 try {
