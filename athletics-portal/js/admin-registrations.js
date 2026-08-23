@@ -158,18 +158,23 @@ async function review(aid,rid,action){
       sourceRegistrationId:rid,addedAt:serverTimestamp(),addedBy:user.email
     },{merge:true});
 
-    const athleteFee=Number(t.sportsFee||0);
-    if(athleteFee>0){
-      const pref=doc(db,"athletes",aid,"payments",`team-${t.id}`);
-      const existing=await getDoc(pref);
-      const paid=existing.exists()?Number(existing.data().amountPaid||0):0;
-      await setDoc(pref,{
-        teamId:t.id,label:`${t.displayName||t.name} Sports Fee`,
-        amountDue:athleteFee,amountPaid:paid,
-        status:paid>=athleteFee?"paid":paid>0?"partial":"due",
-        updatedAt:serverTimestamp()
-      },{merge:true});
-    }
+    // Explore family athletics obligation:
+    // $45 participation fee + one fundraiser participation per approved athlete.
+    // Program operating cost estimates (e.g. $1,000) are NEVER billed to families.
+    const pref=doc(db,"athletes",aid,"payments","athletics-2026-27");
+    const existing=await getDoc(pref);
+    const paid=existing.exists()?Number(existing.data().amountPaid||0):0;
+    await setDoc(pref,{
+      label:"2026–27 Athletics Participation Fee",
+      schoolYear:"2026-27",
+      amountDue:45,
+      amountPaid:paid,
+      status:paid>=45?"paid":paid>0?"partial":"due",
+      fundraiserRequired:true,
+      fundraiserComplete:existing.exists()?Boolean(existing.data().fundraiserComplete):false,
+      fundraiserLabel:"One fundraiser participation",
+      updatedAt:serverTimestamp()
+    },{merge:true});
 
     await updateDoc(doc(db,"athletes",aid,"registrations",rid),{
       status:"approved",reviewedAt:serverTimestamp(),reviewedBy:user.email
