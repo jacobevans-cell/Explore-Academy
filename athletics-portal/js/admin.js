@@ -11,6 +11,14 @@ const user=await requireVerifiedUser({admin:true});
 $("adminEmail").textContent=user.email;$("logoutBtn").onclick=logout;
 
 let athletes=[],teams=fallbackTeams,regs=[],documents=[],payments=[],rosters={},events=[];
+for(const t of teams) rosters[t.id]=[];
+queueMicrotask(()=>{
+  try{
+    $("teamCount").textContent=teams.length;
+    renderTeams();
+    fillTeamSelects();
+  }catch(e){ console.warn("Initial local team preview deferred",e); }
+});
 
 for(const b of document.querySelectorAll("[data-panel]")) b.onclick=()=>{
  const target=$(b.dataset.panel);
@@ -27,13 +35,37 @@ try {
 }
 
 $("seedBtn").onclick=async()=>{
- const btn=$("seedBtn"),old=btn.textContent;btn.disabled=true;btn.textContent="Refreshing...";
+ const btn=$("seedBtn"),old=btn.textContent;
+ btn.disabled=true;
+ btn.textContent="Refreshing...";
+ // Always show the approved catalog immediately. This proves the button and
+ // local athletics model are working even if Firestore rejects the write.
+ teams=[...fallbackTeams];
+ rosters={};
+ for(const t of teams) rosters[t.id]=rosters[t.id]||[];
+ $("teamCount").textContent=teams.length;
+ renderTeams();
+ fillTeamSelects();
+ persistentStatus(`Loaded ${fallbackTeams.length} programs locally. Saving to Firebase...`,"info");
+
  try{
-  for(const w of programWindows) await setDoc(doc(db,"seasons",w.id),{...w,updatedAt:serverTimestamp()},{merge:true});
-  for(const t of fallbackTeams) await setDoc(doc(db,"teams",t.id),{...t,updatedAt:serverTimestamp()},{merge:true});
-  toast(`Catalog refreshed: ${programWindows.length} windows and ${fallbackTeams.length} programs.`,"success");await refresh();
- }catch(e){console.error(e);toast(`${e.code||"Error"}: ${e.message||e}`,"danger")}
- finally{btn.disabled=false;btn.textContent=old}
+  for(const w of programWindows){
+    await setDoc(doc(db,"seasons",w.id),{...w,updatedAt:serverTimestamp()},{merge:true});
+  }
+  for(const t of fallbackTeams){
+    await setDoc(doc(db,"teams",t.id),{...t,updatedAt:serverTimestamp()},{merge:true});
+  }
+  persistentStatus(`SUCCESS: Firebase catalog saved. ${programWindows.length} season windows and ${fallbackTeams.length} programs are now live.`,"success");
+  await refresh();
+ }catch(e){
+  console.error("Team catalog Firebase save failed",e);
+  const code=e?.code||"unknown";
+  const message=e?.message||String(e);
+  persistentStatus(`FIREBASE SAVE FAILED (${code}): ${message}. The teams shown below are the local approved catalog only.`,"danger");
+ }finally{
+  btn.disabled=false;
+  btn.textContent=old;
+ }
 };
 
 try {
@@ -206,6 +238,8 @@ function athleteName(id){return name(athletes.find(a=>a.id===id)||{})}
 function name(a){return `${a?.firstName||""} ${a?.lastName||""}`.trim()||"Unnamed Athlete"}
 function labelDoc(v){return v==="birth-certificate"?"Birth Certificate":v==="physical"?"Sports Physical":v==="insurance"?"Insurance":"Document"}
 function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n||0))}
-function toast(text,type){const e=$("adminStatus");e.textContent=text;e.className=`notice ${type} status show`;setTimeout(()=>e.classList.remove("show"),5500)}
+function toast(text,type){const e=$("adminStatus");e.textContent=text;e.className=`notice ${type}
+function persistentStatus(text,type="info"){const e=$("adminStatus");if(!e)return;e.textContent=text;e.className=`notice ${type} status show`;}
+ status show`;setTimeout(()=>e.classList.remove("show"),5500)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function escAttr(v){return esc(v)}
