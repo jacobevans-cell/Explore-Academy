@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20260904-2';
 
 function esc(value=''){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
 function teamById(id){return Object.values(TEAM_DATA).find(team=>team.id===id);}
