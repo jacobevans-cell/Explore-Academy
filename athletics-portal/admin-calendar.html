@@ -1,16 +1,210 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Athletics Admin Calendar | Explore Academy</title><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="css/styles.css"><style>.calendar-shell{max-width:1280px;margin:auto;padding:24px}.calendar-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}.calendar-head h1{margin:0;color:var(--navy);letter-spacing:-.04em}.calendar-actions{display:flex;gap:8px;flex-wrap:wrap}.calendar-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}.calendar-section{margin-top:24px}.calendar-section h2{margin:0 0 12px;color:var(--navy)}.calendar-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.event{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-time{font-weight:950;color:var(--navy)}.event-title{font-weight:900;color:var(--ink)}.event-meta{font-size:12px;color:var(--muted);margin-top:3px}.conflict{border-left:5px solid var(--danger);background:#fff7f7}.conflict strong{color:var(--danger)}.warning{border-left:5px solid #d59b24;background:#fffaf0}.shared-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.shared-chip{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eaf4ff;color:#0d4e86;font-size:11px;font-weight:850}.team-pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eef2f7;color:#40546d;font-size:11px;font-weight:850;white-space:nowrap}.empty{color:var(--muted);padding:14px 0}.note{font-size:12px;color:var(--muted);line-height:1.45}.schedule-team{margin-top:14px}.schedule-team h3{margin:0 0 6px}.unknown{color:#8c6112;font-weight:850}.day-table{width:100%;border-collapse:collapse}.day-table th,.day-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.day-table th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}@media(max-width:900px){.calendar-metrics,.calendar-grid{grid-template-columns:1fr 1fr}.event{grid-template-columns:100px 1fr}}@media(max-width:620px){.calendar-shell{padding:14px}.calendar-metrics,.calendar-grid{grid-template-columns:1fr}.event{grid-template-columns:1fr}.event .team-pill{justify-self:start}}</style></head><body><main class="calendar-shell"><div class="calendar-head"><div><div class="eyebrow">Admin only</div><h1>Athletics Master Calendar</h1><p class="note">All known team practices and games in one place. Conflicts include shared athletes and overlapping team schedules.</p><small id="adminEmail"></small></div><div class="calendar-actions"><a class="btn btn-secondary" href="admin.html">← Athletics Admin</a><button id="logoutBtn" class="btn btn-secondary">Sign Out</button></div></div><div class="calendar-metrics"><div class="card"><span class="metric-label">Teams</span><div id="teamMetric" class="metric">0</div></div><div class="card"><span class="metric-label">Known Games</span><div id="gameMetric" class="metric">0</div></div><div class="card"><span class="metric-label">Shared Athletes</span><div id="sharedMetric" class="metric">0</div></div><div class="card"><span class="metric-label">Conflicts</span><div id="conflictMetric" class="metric">0</div></div></div><section class="calendar-section"><h2>Conflicts & Warnings</h2><div id="conflicts"></div></section><section class="calendar-section"><h2>Shared Athletes</h2><div id="sharedAthletes" class="calendar-grid"></div></section><section class="calendar-section"><h2>Weekly Practice Calendar</h2><div class="card"><div class="table-wrap"><table class="day-table"><thead><tr><th>Day</th><th>Team</th><th>Time</th><th>Shared-player note</th></tr></thead><tbody id="practiceRows"></tbody></table></div></div></section><section class="calendar-section"><h2>Games</h2><div id="games" class="card"></div></section><section class="calendar-section"><h2>Schedule Coverage</h2><div id="coverage" class="calendar-grid"></div></section></main><script type="module">import { requireVerifiedUser, logout } from './js/auth.js';import { TEAM_DATA } from './teams/shared/team-data.js';
-const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-const teams=Object.values(TEAM_DATA);const norm=s=>String(s||'').trim().toLowerCase();
-function rosterSet(team){return new Set((team.roster||[]).map(p=>norm(p.name)).filter(Boolean));}
-function sharedBetween(a,b){const bset=rosterSet(b);return (a.roster||[]).map(p=>p.name).filter(name=>bset.has(norm(name)));}
-function sharedMap(){const map=new Map();for(const team of teams){for(const p of team.roster||[]){const key=norm(p.name);if(!key)continue;if(!map.has(key))map.set(key,{name:p.name,teams:[]});map.get(key).teams.push(team);}}return [...map.values()].filter(x=>x.teams.length>1);}
-function mins(text){const m=String(text||'').trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/i);if(!m)return null;let h=+m[1],min=+(m[2]||0);const ap=m[3].toUpperCase();if(h===12)h=0;if(ap==='PM')h+=12;return h*60+min;}
-function range(text){if(!text||/^off$/i.test(text))return null;const parts=String(text).split(/[–-]/).map(s=>s.trim());if(parts.length<2)return null;const suffix=(parts[1].match(/(AM|PM)$/i)||[])[1];const a=/(AM|PM)$/i.test(parts[0])?parts[0]:`${parts[0]} ${suffix||''}`;const start=mins(a),end=mins(parts[1]);return start==null||end==null?null:{start,end};}
-function overlap(a,b){return a&&b&&a.start<b.end&&b.start<a.end;}
-function gameStart(game){return mins(game.time);}
-function gameRange(game){const s=gameStart(game);return s==null?null:{start:s,end:s+90};}
-function gameWeekday(game){const d=new Date(`${game.date}, 2026 ${game.time||'12:00 PM'}`);return Number.isNaN(d.getTime())?'':d.toLocaleDateString('en-US',{weekday:'long'});}
-const shared=sharedMap();const conflicts=[];
-for(let i=0;i<teams.length;i++){for(let j=i+1;j<teams.length;j++){const a=teams[i],b=teams[j],sharedPlayers=sharedBetween(a,b);for(const pa of a.practice||[]){const ra=range(pa.time);if(!ra)continue;for(const pb of b.practice||[]){const rb=range(pb.time);if(pa.day===pb.day&&overlap(ra,rb)){conflicts.push({kind:sharedPlayers.length?'Shared-athlete practice conflict':'Practice overlap',title:`${pa.day}: ${a.title} and ${b.title}`,detail:`${pa.time} / ${pb.time}`,players:sharedPlayers});}}}for(const ga of a.games||[]){for(const gb of b.games||[]){if(ga.date===gb.date&&overlap(gameRange(ga),gameRange(gb))){conflicts.push({kind:sharedPlayers.length?'Shared-athlete game conflict':'Game overlap',title:`${ga.date}: ${a.title} and ${b.title}`,detail:`${ga.time} / ${gb.time}`,players:sharedPlayers});}}}for(const ga of a.games||[]){const day=gameWeekday(ga),gr=gameRange(ga);for(const pb of b.practice||[]){if(day===pb.day&&overlap(gr,range(pb.time))){conflicts.push({kind:sharedPlayers.length?'Shared-athlete game/practice conflict':'Game/practice overlap',title:`${ga.date}: ${a.title} game overlaps ${b.title} practice`,detail:`${ga.time} / ${pb.time}`,players:sharedPlayers});}}}for(const gb of b.games||[]){const day=gameWeekday(gb),gr=gameRange(gb);for(const pa of a.practice||[]){if(day===pa.day&&overlap(gr,range(pa.time))){conflicts.push({kind:sharedPlayers.length?'Shared-athlete game/practice conflict':'Game/practice overlap',title:`${gb.date}: ${b.title} game overlaps ${a.title} practice`,detail:`${gb.time} / ${pa.time}`,players:sharedPlayers});}}}}}
-function render(){document.getElementById('teamMetric').textContent=teams.length;document.getElementById('gameMetric').textContent=teams.reduce((n,t)=>n+(t.games||[]).length,0);document.getElementById('sharedMetric').textContent=shared.length;document.getElementById('conflictMetric').textContent=conflicts.length;document.getElementById('conflicts').innerHTML=conflicts.length?conflicts.map(c=>`<div class="card conflict" style="margin-bottom:10px"><strong>${esc(c.kind)}</strong><div class="event-title">${esc(c.title)}</div><div class="event-meta">${esc(c.detail)}</div>${c.players.length?`<div class="shared-list">${c.players.map(p=>`<span class="shared-chip">${esc(p)}</span>`).join('')}</div>`:''}</div>`).join(''):'<div class="card"><div class="empty">No conflicts found in the schedule data currently entered.</div></div>';document.getElementById('sharedAthletes').innerHTML=shared.length?shared.map(x=>`<div class="card"><strong>${esc(x.name)}</strong><div class="shared-list">${x.teams.map(t=>`<span class="shared-chip">${esc(t.title)}</span>`).join('')}</div></div>`).join(''):'<div class="card empty">No athletes appear on more than one roster.</div>';const rows=[];for(const day of ['Monday','Tuesday','Wednesday','Thursday','Friday']){for(const team of teams){for(const p of team.practice||[]){if(p.day!==day||!p.time||/^off$/i.test(p.time))continue;const names=shared.filter(x=>x.teams.some(t=>t.id===team.id)).map(x=>x.name);rows.push(`<tr><td><strong>${day}</strong></td><td>${esc(team.title)}</td><td>${esc(p.time)}</td><td>${names.length?names.map(n=>`<span class="shared-chip">${esc(n)}</span>`).join(' '):'—'}</td></tr>`);}}}document.getElementById('practiceRows').innerHTML=rows.join('')||'<tr><td colspan="4">No practice schedules entered.</td></tr>';const allGames=[];for(const team of teams)for(const g of team.games||[])allGames.push({team,g});allGames.sort((a,b)=>new Date(`${a.g.date}, 2026 ${a.g.time}`)-new Date(`${b.g.date}, 2026 ${b.g.time}`));document.getElementById('games').innerHTML=allGames.length?allGames.map(({team,g})=>`<div class="event"><div class="event-time">${esc(g.date)}<br>${esc(g.time)}</div><div><div class="event-title">${esc(team.title)}${g.opponent?` vs. ${esc(g.opponent)}`:''}</div><div class="event-meta">${esc(g.location||'')}${g.address?` • ${esc(g.address)}`:''}</div></div><span class="team-pill">${esc(team.sport)}</span></div>`).join(''):'<div class="empty">No games entered yet.</div>';document.getElementById('coverage').innerHTML=teams.map(team=>{const missing=[];if(!(team.practice||[]).some(p=>p.time&&!/^off$/i.test(p.time)))missing.push('practice schedule');if(!(team.games||[]).length)missing.push('game schedule');return `<div class="card ${missing.length?'warning':''}"><strong>${esc(team.title)}</strong><div class="event-meta">${missing.length?`Missing: ${esc(missing.join(' and '))}`:'Practice and game data entered.'}</div></div>`;}).join('');}
-const user=await requireVerifiedUser({admin:true});document.getElementById('adminEmail').textContent=user.email||'';document.getElementById('logoutBtn').addEventListener('click',logout);render();</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Athletics Admin Calendar | Explore Academy</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .calendar-shell{max-width:1320px;margin:auto;padding:24px}
+    .calendar-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+    .calendar-head h1{margin:0;color:var(--navy);letter-spacing:-.04em}
+    .calendar-head p{margin:8px 0 0;color:var(--muted)}
+    .calendar-actions,.view-actions,.month-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .calendar-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 22px}
+    .calendar-section{margin-top:24px}
+    .calendar-section h2{margin:0;color:var(--navy)}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0 14px}
+    .view-btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 14px;font-weight:900;cursor:pointer}
+    .view-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .event{display:grid;grid-template-columns:135px minmax(0,1fr) auto;gap:16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+    .event:last-child{border-bottom:0}
+    .event-time{font-weight:950;color:var(--navy)}
+    .event-title{font-weight:900;color:var(--ink)}
+    .event-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+    .team-pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#40546d;font-size:11px;font-weight:850;white-space:nowrap}
+    .conflict{border-left:5px solid var(--danger);background:#fff7f7}
+    .conflict strong{color:var(--danger)}
+    .empty{color:var(--muted);padding:18px 0}
+    .hidden{display:none!important}
+    .month-title{font-size:20px;font-weight:950;color:var(--navy);min-width:180px;text-align:center}
+    .month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+    .dow{padding:10px;background:#f4f8fc;color:#53677f;text-transform:uppercase;letter-spacing:.06em;font-size:10px;font-weight:900;border-right:1px solid var(--line)}
+    .dow:nth-child(7){border-right:0}
+    .day{min-height:138px;padding:10px;border-top:1px solid var(--line);border-right:1px solid var(--line);background:#fff}
+    .day:nth-child(7n){border-right:0}
+    .day.outside{background:#f8fafc;color:#9aa6b6}
+    .day-number{font-size:12px;font-weight:950;color:var(--navy);margin-bottom:8px}
+    .day.outside .day-number{color:#aab4c0}
+    .month-event{display:block;margin:5px 0 0;padding:6px 7px;border-radius:8px;background:#edf5ff;color:#0b4d86;font-size:10px;font-weight:850;line-height:1.25}
+    .month-event.conflicted{background:#fff0f1;color:#a52b31;border-left:3px solid #d83b48}
+    .calendar-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+    .legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:#edf5ff;border:1px solid #bdd6ef}
+    .legend-dot.conflict-dot{background:#fff0f1;border-color:#e6a8ae}
+    @media(max-width:900px){.calendar-metrics{grid-template-columns:1fr 1fr}.event{grid-template-columns:115px 1fr}.month-grid{overflow-x:auto}.day,.dow{min-width:130px}}
+    @media(max-width:620px){.calendar-shell{padding:14px}.calendar-metrics{grid-template-columns:1fr}.event{grid-template-columns:1fr}.event .team-pill{justify-self:start}.month-grid{display:grid;grid-template-columns:repeat(7,130px);overflow:auto}}
+  </style>
+</head>
+<body>
+  <main class="calendar-shell">
+    <div class="calendar-head">
+      <div>
+        <div class="eyebrow">Admin only</div>
+        <h1>Athletics Master Calendar</h1>
+        <p>Games only. Practices and player conflicts are intentionally excluded.</p>
+        <small id="adminEmail"></small>
+      </div>
+      <div class="calendar-actions">
+        <a class="btn btn-secondary" href="admin.html">← Athletics Admin</a>
+        <button id="logoutBtn" class="btn btn-secondary">Sign Out</button>
+      </div>
+    </div>
+
+    <div class="calendar-metrics">
+      <div class="card"><span class="metric-label">Teams</span><div id="teamMetric" class="metric">0</div></div>
+      <div class="card"><span class="metric-label">Games Loaded</span><div id="gameMetric" class="metric">0</div></div>
+      <div class="card"><span class="metric-label">Game Conflicts</span><div id="conflictMetric" class="metric">0</div></div>
+    </div>
+
+    <section class="calendar-section">
+      <h2>Game Conflicts</h2>
+      <div id="conflicts" style="margin-top:12px"></div>
+    </section>
+
+    <div class="toolbar">
+      <div class="view-actions">
+        <button class="view-btn active" data-view="list" type="button">List</button>
+        <button class="view-btn" data-view="month" type="button">Monthly Calendar</button>
+      </div>
+      <div id="monthControls" class="month-actions hidden">
+        <button id="prevMonth" class="btn btn-secondary" type="button">←</button>
+        <div id="monthTitle" class="month-title"></div>
+        <button id="nextMonth" class="btn btn-secondary" type="button">→</button>
+      </div>
+    </div>
+
+    <section id="listView" class="calendar-section">
+      <h2>All Games</h2>
+      <div id="gameList" class="card" style="margin-top:12px"></div>
+    </section>
+
+    <section id="monthView" class="calendar-section hidden">
+      <div id="monthGrid" class="month-grid"></div>
+      <div class="calendar-legend"><span><span class="legend-dot"></span>Scheduled game</span><span><span class="legend-dot conflict-dot"></span>Game conflict</span></div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { requireVerifiedUser, logout } from './js/auth.js';
+    import { TEAM_DATA } from './teams/shared/team-data.js';
+
+    const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
+    const teams=Object.values(TEAM_DATA);
+    const YEAR=2026;
+
+    function parseTime(text){
+      const m=String(text||'').trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/i);
+      if(!m)return null;
+      let h=Number(m[1]); const min=Number(m[2]||0); const ap=m[3].toUpperCase();
+      if(h===12)h=0; if(ap==='PM')h+=12;
+      return h*60+min;
+    }
+
+    function parseDate(game){
+      const d=new Date(`${game.date}, ${YEAR} ${game.time||'12:00 PM'}`);
+      return Number.isNaN(d.getTime())?null:d;
+    }
+
+    function gameRange(game){
+      const start=parseTime(game.time);
+      return start==null?null:{start,end:start+90};
+    }
+
+    function rangesOverlap(a,b){return a&&b&&a.start<b.end&&b.start<a.end;}
+
+    const allGames=[];
+    for(const team of teams){
+      for(const game of team.games||[]){
+        const date=parseDate(game);
+        if(date)allGames.push({team,game,date});
+      }
+    }
+    allGames.sort((a,b)=>a.date-b.date);
+
+    const conflicts=[];
+    const conflictedGames=new Set();
+    for(let i=0;i<allGames.length;i++){
+      for(let j=i+1;j<allGames.length;j++){
+        const a=allGames[i],b=allGames[j];
+        if(a.team.id===b.team.id)continue;
+        const sameDay=a.date.getFullYear()===b.date.getFullYear()&&a.date.getMonth()===b.date.getMonth()&&a.date.getDate()===b.date.getDate();
+        if(!sameDay)continue;
+        if(rangesOverlap(gameRange(a.game),gameRange(b.game))){
+          conflicts.push({a,b});
+          conflictedGames.add(a);
+          conflictedGames.add(b);
+        }
+      }
+    }
+
+    function gameMeta(team,game){
+      return [game.location||'',game.address||''].filter(Boolean).join(' • ');
+    }
+
+    function renderConflicts(){
+      const host=document.getElementById('conflicts');
+      if(!conflicts.length){
+        host.innerHTML='<div class="card"><div class="empty">No overlapping games found.</div></div>';
+        return;
+      }
+      host.innerHTML=conflicts.map(({a,b})=>`<div class="card conflict" style="margin-bottom:10px"><strong>Game conflict • ${esc(a.game.date)}</strong><div class="event-title">${esc(a.team.title)} at ${esc(a.game.time)} and ${esc(b.team.title)} at ${esc(b.game.time)}</div><div class="event-meta">Both games overlap using a 90-minute game window.</div></div>`).join('');
+    }
+
+    function renderList(){
+      const host=document.getElementById('gameList');
+      host.innerHTML=allGames.length?allGames.map(item=>{
+        const {team,game}=item;
+        return `<div class="event ${conflictedGames.has(item)?'conflict':''}"><div class="event-time">${esc(game.date)}<br>${esc(game.time)}</div><div><div class="event-title">${esc(team.title)}${game.opponent?` vs. ${esc(game.opponent)}`:''}</div><div class="event-meta">${esc(gameMeta(team,game))}</div></div><span class="team-pill">${esc(team.sport)}</span></div>`;
+      }).join(''):'<div class="empty">No games entered yet.</div>';
+    }
+
+    let currentMonth=allGames.length?new Date(allGames[0].date.getFullYear(),allGames[0].date.getMonth(),1):new Date(YEAR,7,1);
+
+    function renderMonth(){
+      const y=currentMonth.getFullYear(),m=currentMonth.getMonth();
+      document.getElementById('monthTitle').textContent=currentMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+      const first=new Date(y,m,1); const start=new Date(y,m,1-first.getDay());
+      const cells=[];
+      for(let i=0;i<42;i++){
+        const d=new Date(start); d.setDate(start.getDate()+i);
+        const outside=d.getMonth()!==m;
+        const dayGames=allGames.filter(item=>item.date.getFullYear()===d.getFullYear()&&item.date.getMonth()===d.getMonth()&&item.date.getDate()===d.getDate());
+        cells.push(`<div class="day ${outside?'outside':''}"><div class="day-number">${d.getDate()}</div>${dayGames.map(item=>`<div class="month-event ${conflictedGames.has(item)?'conflicted':''}">${esc(item.game.time)} • ${esc(item.team.title)}${item.game.opponent?` vs. ${esc(item.game.opponent)}`:''}</div>`).join('')}</div>`);
+      }
+      document.getElementById('monthGrid').innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="dow">${d}</div>`).join('')+cells.join('');
+    }
+
+    function setView(view){
+      document.querySelectorAll('[data-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===view));
+      document.getElementById('listView').classList.toggle('hidden',view!=='list');
+      document.getElementById('monthView').classList.toggle('hidden',view!=='month');
+      document.getElementById('monthControls').classList.toggle('hidden',view!=='month');
+      if(view==='month')renderMonth();
+    }
+
+    document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>setView(btn.dataset.view)));
+    document.getElementById('prevMonth').addEventListener('click',()=>{currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()-1,1);renderMonth();});
+    document.getElementById('nextMonth').addEventListener('click',()=>{currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()+1,1);renderMonth();});
+
+    const user=await requireVerifiedUser({admin:true});
+    document.getElementById('adminEmail').textContent=user.email||'';
+    document.getElementById('logoutBtn').addEventListener('click',logout);
+    document.getElementById('teamMetric').textContent=teams.length;
+    document.getElementById('gameMetric').textContent=allGames.length;
+    document.getElementById('conflictMetric').textContent=conflicts.length;
+    renderConflicts();
+    renderList();
+  </script>
+</body>
+</html>
