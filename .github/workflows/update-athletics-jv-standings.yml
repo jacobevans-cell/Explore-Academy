@@ -1,0 +1,52 @@
+name: Update athletics JV standings
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-athletics-jv-standings
+  cancel-in-progress: false
+
+jobs:
+  update-standings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: athletics-portal
+    steps:
+      - name: Check out Explore Academy
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install athletics scraper
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Update JV standings
+        run: npm run update:jv-standings
+
+      - name: Commit changed standings
+        working-directory: .
+        shell: bash
+        run: |
+          if git diff --quiet -- athletics-portal/data/jv-standings.json; then
+            echo "No standings changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics-portal/data/jv-standings.json
+          git commit -m "Auto-update athletics JV standings"
+          git push
