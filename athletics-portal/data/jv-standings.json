@@ -1,0 +1,30 @@
+{
+  "source": "CAA / Bound",
+  "sourceUrl": "https://www.gobound.com/az/azcaa/gvbcaa/2026-27/standings?level=L7&idGroup=h20260520024408776628b2b39ee0644",
+  "updatedAt": "2026-09-04T16:23:00.963Z",
+  "standings": [
+    {"team":"EDUPRIZE Gilbert","wins":5,"losses":0,"rank":1,"pct":"1.000"},
+    {"team":"EDUPRIZE Queen Creek","wins":5,"losses":0,"rank":1,"pct":"1.000"},
+    {"team":"BASIS Mesa","wins":4,"losses":1,"rank":3,"pct":".800"},
+    {"team":"BASIS Goodyear","mascot":"Golden Eagles","wins":3,"losses":1,"rank":4,"pct":".750"},
+    {"team":"Sequoia Pathfinder Academy Verrado","mascot":"Jets","wins":3,"losses":3,"rank":4,"pct":".500"},
+    {"team":"Leading Edge Academy Gilbert JH","wins":2,"losses":1,"rank":6,"pct":".667"},
+    {"team":"Leading Edge Academy Maricopa","wins":2,"losses":1,"rank":6,"pct":".667"},
+    {"team":"Val Vista Academy","wins":2,"losses":4,"rank":6,"pct":".333"},
+    {"team":"Sequoia Pathfinder Academy Eastmark","wins":1,"losses":1,"rank":9,"pct":".500"},
+    {"team":"Explore Academy","mascot":"Eagles","wins":1,"losses":4,"ours":true,"rank":9,"pct":".200"},
+    {"team":"Big House Christian Academy","wins":0,"losses":5,"rank":11,"pct":".000"},
+    {"team":"Leading Edge Academy East Mesa","wins":0,"losses":4,"rank":11,"pct":".000"},
+    {"team":"Leading Edge Academy Mountain View","wins":0,"losses":1,"rank":11,"pct":".000"},
+    {"team":"San Tan Charter School","wins":0,"losses":1,"rank":11,"pct":".000"},
+    {"team":"South Valley Prep and Arts Academy","mascot":"Bengals","wins":0,"losses":3,"rank":11,"pct":".000"}
+  ],
+  "regionName": "Roadrunner Region",
+  "regionStandings": [
+    {"team":"BASIS Goodyear","mascot":"Golden Eagles","wins":3,"losses":1,"rank":4,"pct":".750"},
+    {"team":"Liberty Traditional School","mascot":"Eagles","wins":3,"losses":1,"pct":".750"},
+    {"team":"Sequoia Pathfinder Academy Verrado","mascot":"Jets","wins":3,"losses":3,"rank":4,"pct":".500"},
+    {"team":"Explore Academy","mascot":"Eagles","wins":1,"losses":4,"ours":true,"rank":9,"pct":".200"},
+    {"team":"South Valley Prep and Arts Academy","mascot":"Bengals","wins":0,"losses":3,"rank":11,"pct":".000"}
+  ]
+}
