@@ -1,0 +1,51 @@
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js';
+
+function esc(value=''){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
+function teamById(id){return Object.values(TEAM_DATA).find(team=>team.id===id);}
+
+function nav(team){
+  return `<nav class="team-nav"><div class="team-nav-inner"><a class="team-brand" href="../../athletics.html">Explore Academy Athletics</a><div class="team-links">${TEAM_PAGE_LINKS.map(([label,href])=>`<a href="${href}"${href.startsWith(team.id) ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('')}</div></div></nav>`;
+}
+
+function practice(team){
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  const byDay=new Map((team.practice||[]).map(item=>[item.day,item]));
+  return days.map(day=>{const item=byDay.get(day);return `<div class="card"><div class="card-title">${day}</div><div class="card-label">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class="card-value">${esc(item.time)}</div>${item.detail?`<div class="card-detail">${esc(item.detail)}</div>`:''}`:'<div class="pending">—</div>'}</div>`;}).join('');
+}
+
+function games(team){
+  if(!team.games?.length)return Array.from({length:3},()=>'<div class="card"><div class="card-title">Future game</div><div class="card-label">Schedule pending</div><div class="pending">—</div></div>').join('');
+  const real=team.games.map((game,index)=>`<div class="card"><div class="card-label">Game ${index+1}</div><div class="card-title">${esc(game.date)} • ${esc(game.time)}</div><div class="card-value">${game.location?`${esc(game.location)} vs. `:''}${esc(game.opponent)}</div>${game.address?`<div class="card-detail">${esc(game.address)}</div>`:''}</div>`);
+  while(real.length<3)real.push('<div class="card"><div class="card-title">Future game</div><div class="card-label">Schedule pending</div><div class="pending">—</div></div>');
+  return real.join('');
+}
+
+function roster(team){
+  return (team.roster||[]).map(player=>`<div class="card"><div class="number">${player.number?`#${esc(player.number)}`:''}</div><div class="card-title">${esc(player.name)}</div><div class="card-detail">${player.detail?esc(player.detail):'Player'}</div></div>`).join('');
+}
+
+async function standings(team){
+  const host=document.querySelector('[data-standings-host]');
+  if(!host)return;
+  if(!team.standingsPath){host.innerHTML='<div class="pending">Standings and record will appear here when confirmed.</div>';return;}
+  try{
+    const response=await fetch(team.standingsPath,{cache:'no-store'});
+    if(!response.ok)throw new Error('standings unavailable');
+    const data=await response.json();
+    const rows=data.region||data.standings||data.teams||[];
+    if(!Array.isArray(rows)||!rows.length)throw new Error('no standings rows');
+    host.innerHTML=`<div class="card-label">${esc(team.standingsSource||'Standings')}</div><table><thead><tr><th>Team</th><th>W</th><th>L</th></tr></thead><tbody>${rows.map(row=>`<tr><td>${esc(row.team||row.name||'')}</td><td>${esc(row.wins??row.w??'')}</td><td>${esc(row.losses??row.l??'')}</td></tr>`).join('')}</tbody></table>`;
+  }catch(_){host.innerHTML='<div class="pending">Standings are temporarily unavailable.</div>';}
+}
+
+function render(){
+  const teamId=document.body.dataset.teamId;
+  const team=teamById(teamId);
+  if(!team){document.body.innerHTML='<p>Team not found.</p>';return;}
+  document.title=`${team.title} | Explore Academy`;
+  document.body.innerHTML=`${nav(team)}<main class="page"><div class="wrap"><section class="hero"><div><div class="kicker">Explore Academy ${esc(team.sport)}</div><h1 class="title">${esc(team.title)}</h1><div class="subtitle">${esc(team.subtitle||'Explore Academy')}</div><div class="actions"><a href="#practice">Practice Times</a><a href="#schedule">Game Schedule</a><a href="#roster">Meet the Team</a></div></div><div class="photo">Team photo<br>coming soon</div></section><div class="stats"><div class="stat"><div class="stat-value">${team.games?.length||'—'}</div><div class="stat-label">Games</div></div><div class="stat"><div class="stat-value">—</div><div class="stat-label">Current Record</div></div><div class="stat"><div class="stat-value">—</div><div class="stat-label">Season Progress</div></div></div><section class="section" id="practice"><h2>Weekly Practice Schedule</h2><div class="banner">Team practice schedule</div><div class="grid practice-grid">${practice(team)}</div></section><section class="section" id="schedule"><h2>2026 Match Schedule</h2><div class="grid">${games(team)}</div></section><section class="section" id="roster"><h2>Meet the Team</h2><div class="grid">${roster(team)}</div></section><section class="section"><h2>${esc(team.title)} Standings</h2><div class="standings" data-standings-host></div></section><a class="back" href="../../athletics.html">← Back to Explore Academy Athletics</a></div></main>`;
+  standings(team);
+}
+
+render();
