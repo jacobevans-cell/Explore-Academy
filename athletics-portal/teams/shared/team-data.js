@@ -33,9 +33,9 @@ export const TEAM_DATA = {
       { date: 'Sep 1', time: '4:30 PM', opponent: 'Liberty Traditional' },
       { date: 'Sep 2', time: '4:00 PM', opponent: 'BASIS Goodyear' },
       { date: 'Sep 9', time: '4:30 PM', opponent: 'Sequoia Pathfinder Verrado' },
-      { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear' },
-      { date: 'Sep 15', time: '4:30 PM', opponent: 'South Valley Prep & Arts Academy' },
-      { date: 'Sep 21', time: '4:00 PM', opponent: 'Liberty Traditional School' }
+      { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear', location: 'Away', address: '15800 W Sherman St, Goodyear, AZ 85338', drive: '40–50 min', leave: '3:10 PM', arrival: '4:00 PM' },
+      { date: 'Sep 15', time: '4:30 PM', opponent: 'South Valley Prep & Arts Academy', location: 'Away', address: '7450 S 40th St, Phoenix, AZ 85042', drive: '55–70 min', leave: '2:50 PM', arrival: '4:00 PM' },
+      { date: 'Sep 21', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Away', address: '4027 N 45th Ave, Phoenix, AZ 85031', drive: '30–40 min', leave: '2:50 PM', arrival: '3:30 PM' }
     ],
     standingsSource: 'CAA / Bound',
     standingsPath: '../data/jv-standings.json'
