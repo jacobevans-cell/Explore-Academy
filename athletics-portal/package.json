@@ -1,0 +1,12 @@
+{
+  "name": "explore-academy-athletics",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Explore Academy athletics portal and team standings automation",
+  "scripts": {
+    "update:jv-standings": "node scripts/update-jv-standings.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}
