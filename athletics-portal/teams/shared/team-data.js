@@ -33,7 +33,9 @@ export const TEAM_DATA = {
       { date: 'Sep 1', time: '4:30 PM', opponent: 'Liberty Traditional' },
       { date: 'Sep 2', time: '4:00 PM', opponent: 'BASIS Goodyear' },
       { date: 'Sep 9', time: '4:30 PM', opponent: 'Sequoia Pathfinder Verrado' },
-      { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear' }
+      { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear' },
+      { date: 'Sep 15', time: '4:30 PM', opponent: 'South Valley Prep & Arts Academy' },
+      { date: 'Sep 21', time: '4:00 PM', opponent: 'Liberty Traditional School' }
     ],
     standingsSource: 'CAA / Bound',
     standingsPath: '../data/jv-standings.json'
