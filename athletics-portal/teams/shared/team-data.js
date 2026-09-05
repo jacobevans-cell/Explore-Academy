@@ -96,10 +96,9 @@ export const TEAM_DATA = {
     subtitle: 'Explore Academy',
     season: {
       label: 'Season 2',
-      start: '2026-10-14',
-      practiceStart: '2026-09-28',
+      start: '2026-09-28',
       end: '2026-12-04',
-      display: 'October 14 – December 4, 2026'
+      display: 'September 28 – December 4, 2026'
     },
     roster: [
       { name: 'Christian Smith', number: '' },
@@ -125,10 +124,9 @@ export const TEAM_DATA = {
     subtitle: 'Explore Academy',
     season: {
       label: 'Flag Football Season',
-      start: '2026-09-21',
-      practiceStart: '2026-09-14',
+      start: '2026-09-14',
       end: '2026-11-19',
-      display: 'September 21 – November 19, 2026'
+      display: 'September 14 – November 19, 2026'
     },
     roster: [
       { name: 'Lily Moore', number: '' },
