@@ -25,7 +25,7 @@ jobs:
           html = path.read_text(encoding='utf-8')
           original = html
 
-          # Keep the school identity, but don't let the logo escape to unfinished Home.
+          # Logo/brand stays inside Athletics rather than opening unfinished Home.
           html, brand_count = re.subn(
               r'(<a\s+class=["\']brand["\']\s+href=)["\']index\.html["\']',
               r'\1"athletics.html"',
@@ -34,43 +34,25 @@ jobs:
               flags=re.I,
           )
 
-          # Utility navigation: athletics only.
-          utility_patterns = [
-              r'<nav[^>]*aria-label=["\']Utility navigation["\'][^>]*>.*?</nav>',
-              r'<div[^>]*class=["\'][^"\']*topbar-links[^"\']*["\'][^>]*>.*?</div>',
-          ]
-          utility_replaced = 0
-          for pattern in utility_patterns:
-              html, n = re.subn(
-                  pattern,
-                  '<nav class="topbar-links" aria-label="Utility navigation"><a href="athletics.html" aria-current="page">Athletics Portal</a></nav>',
-                  html,
-                  count=1,
-                  flags=re.I | re.S,
-              )
-              if n:
-                  utility_replaced = 1
-                  break
+          # Top utility links become athletics-only.
+          html, utility_count = re.subn(
+              r'<div\s+class=["\']topbar-links["\']>.*?</div>',
+              '<div class="topbar-links"><a href="athletics.html" aria-current="page">Athletics Portal</a></div>',
+              html,
+              count=1,
+              flags=re.I | re.S,
+          )
 
-          # Main site navigation: Athletics only.
-          main_patterns = [
-              r'<nav[^>]*class=["\'][^"\']*(?:main-nav|nav)[^"\']*["\'][^>]*aria-label=["\']Main navigation["\'][^>]*>.*?</nav>',
-              r'<nav[^>]*aria-label=["\']Main navigation["\'][^>]*>.*?</nav>',
-          ]
-          main_replaced = 0
-          for pattern in main_patterns:
-              html, n = re.subn(
-                  pattern,
-                  '<nav class="nav" aria-label="Main navigation" id="mainNav"><a class="active" href="athletics.html" aria-current="page">Athletics</a></nav>',
-                  html,
-                  count=1,
-                  flags=re.I | re.S,
-              )
-              if n:
-                  main_replaced = 1
-                  break
+          # The actual page uses class="nav". Replace the whole bar with Athletics only.
+          html, main_count = re.subn(
+              r'<nav\s+class=["\']nav["\'][^>]*>.*?</nav>',
+              '<nav class="nav" id="mainNav" aria-label="Athletics navigation"><a class="active" href="athletics.html" aria-current="page">Athletics</a></nav>',
+              html,
+              count=1,
+              flags=re.I | re.S,
+          )
 
-          # Breadcrumb must not provide a route to unfinished Home.
+          # Remove Home from the athletics breadcrumb if present.
           html = re.sub(
               r'<div\s+class=["\']crumb["\']>\s*<a\s+href=["\']index\.html["\']>Home</a>\s*<span>\s*/\s*</span>\s*<span>Eagles Athletics</span>\s*</div>',
               '<div class="crumb"><span>Eagles Athletics</span></div>',
@@ -79,7 +61,7 @@ jobs:
               flags=re.I | re.S,
           )
 
-          # Strip unfinished-site links from footer and replace with athletics destinations.
+          # Footer: remove routes into unfinished school pages and keep athletics destinations.
           footer_start = html.lower().find('<footer')
           if footer_start != -1:
               footer = html[footer_start:]
@@ -105,15 +87,13 @@ jobs:
               )
               html = html[:footer_start] + footer
 
-          if not main_replaced:
-              raise SystemExit('Could not locate the main navigation; refusing to make a partial lock-down.')
-          if not utility_replaced:
-              raise SystemExit('Could not locate the utility navigation; refusing to make a partial lock-down.')
+          if utility_count != 1 or main_count != 1:
+              raise SystemExit(f'Expected one utility and one main nav; found utility={utility_count}, main={main_count}.')
           if html == original:
               raise SystemExit('No changes were made.')
 
           path.write_text(html, encoding='utf-8')
-          print(f'Updated athletics navigation. brand={brand_count}, utility={utility_replaced}, main={main_replaced}')
+          print(f'Updated athletics navigation. brand={brand_count}, utility={utility_count}, main={main_count}')
           PY
 
       - name: Commit athletics-only navigation
