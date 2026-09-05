@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { firebaseConfig, ADMIN_EMAIL } from "../js/firebase-config.js?v=3";
+import { firebaseConfig, ADMIN_EMAIL } from "../js/firebase-config.js?v=6";
 
 const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app),provider=new GoogleAuthProvider();
 const loginCard=document.getElementById("loginCard"),dashboard=document.getElementById("dashboard"),loginStatus=document.getElementById("loginStatus"),statusEl=document.getElementById("status"),refreshBtn=document.getElementById("refreshBtn"),exportBtn=document.getElementById("exportBtn"),signOutBtn=document.getElementById("signOutBtn"),rowsEl=document.getElementById("rows"),searchBox=document.getElementById("searchBox");
