@@ -53,11 +53,11 @@ export const TEAM_DATA = {
     subtitle: 'Explore Academy • Varsity',
     season: {
       label: 'Varsity Season',
-      start: '2026-09-21',
+      start: '2026-08-11',
       regularEnd: '2026-11-12',
       playoffsStart: '2026-11-16',
       end: '2026-11-19',
-      display: 'September 21 – November 19, 2026',
+      display: 'August 11 – November 19, 2026',
       regularDisplay: 'Regular Season: September 21 – November 12, 2026',
       playoffsDisplay: 'Playoffs: Week of November 16, 2026',
       championshipDisplay: 'Championship: Thursday, November 19, 2026',
