@@ -26,10 +26,10 @@ export const TEAM_DATA = {
       { name: 'Luxanna', number: '21', detail: 'Swing player' }
     ],
     practice: [
-      { day: 'Monday', time: '3:15–4:30 PM' },
-      { day: 'Tuesday', time: '3:15–4:30 PM' },
+      { day: 'Monday', time: '3:15–4:45 PM' },
+      { day: 'Tuesday', time: '3:15–4:45 PM' },
       { day: 'Wednesday', time: 'OFF' },
-      { day: 'Thursday', time: '3:15–4:30 PM' },
+      { day: 'Thursday', time: '3:15–4:45 PM' },
       { day: 'Friday', time: '' }
     ],
     games: [
@@ -75,10 +75,10 @@ export const TEAM_DATA = {
       { name: 'Celestina', number: '23', detail: 'Outside Hitter' }
     ],
     practice: [
-      { day: 'Monday', time: '4:30–6:00 PM' },
-      { day: 'Tuesday', time: '4:30–6:00 PM' },
-      { day: 'Wednesday', time: '3:15–4:30 PM' },
-      { day: 'Thursday', time: '4:30–6:00 PM' },
+      { day: 'Monday', time: '4:45–6:45 PM' },
+      { day: 'Tuesday', time: '4:45–6:45 PM' },
+      { day: 'Wednesday', time: '4:45–6:45 PM' },
+      { day: 'Thursday', time: '4:45–6:45 PM' },
       { day: 'Friday', time: '' }
     ],
     games: [
