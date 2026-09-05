@@ -1,0 +1,79 @@
+name: Add practice start dates once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-practice-start-dates-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-practice-starts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add practice start dates and practice-window logic
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          data_path = Path('athletics-portal/teams/shared/team-data.js')
+          data = data_path.read_text(encoding='utf-8')
+
+          boys_old = """      start: '2026-10-14',\n      end: '2026-12-04',"""
+          boys_new = """      start: '2026-10-14',\n      practiceStart: '2026-09-28',\n      end: '2026-12-04',"""
+          flag_old = """      start: '2026-09-21',\n      end: '2026-11-19',"""
+          flag_new = """      start: '2026-09-21',\n      practiceStart: '2026-09-14',\n      end: '2026-11-19',"""
+
+          if boys_old not in data:
+              raise SystemExit('Boys season block not found')
+          if flag_old not in data:
+              raise SystemExit('Flag season block not found')
+
+          data = data.replace(boys_old, boys_new, 1)
+          data = data.replace(flag_old, flag_new, 1)
+          data_path.write_text(data, encoding='utf-8')
+
+          page_path = Path('athletics-portal/teams/shared/team-page.js')
+          page = page_path.read_text(encoding='utf-8')
+
+          old_fn = "function teamIsInSeason(team,date){return seasonState(team,date).state==='active';}"
+          new_fn = """function teamIsInSeason(team,date){return seasonState(team,date).state==='active';}\nfunction teamIsInPracticeWindow(team,date){\n  if(!team.season)return true;\n  const check=new Date(date);check.setHours(12,0,0,0);\n  const start=parseSeasonDate(team.season.practiceStart||team.season.start);\n  const end=parseSeasonDate(team.season.end,true);\n  if(start&&check<start)return false;\n  if(end&&check>end)return false;\n  return true;\n}"""
+          if old_fn not in page:
+              raise SystemExit('teamIsInSeason function not found')
+          page = page.replace(old_fn, new_fn, 1)
+
+          old_conflict = "if(!date||!teamIsInSeason(team,date))continue;"
+          new_conflict = "if(!date||!teamIsInPracticeWindow(team,date))continue;"
+          if old_conflict not in page:
+              raise SystemExit('practice conflict season check not found')
+          page = page.replace(old_conflict, new_conflict, 1)
+
+          old_card = "if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);"
+          new_card = "if(!teamIsInPracticeWindow(team,date))return outOfSeasonCard(team,day,date);"
+          if old_card not in page:
+              raise SystemExit('practice card season check not found')
+          page = page.replace(old_card, new_card, 1)
+
+          old_message = "const message=before?`Season begins ${team.season?.display||team.season?.start||''}`:'Season has ended';"
+          new_message = "const message=before?`Practices begin ${team.season?.practiceStart||team.season?.start||''}`:'Season has ended';"
+          if old_message not in page:
+              raise SystemExit('out-of-season message not found')
+          page = page.replace(old_message, new_message, 1)
+
+          page_path.write_text(page, encoding='utf-8')
+          print('Practice start dates and practice-window logic updated.')
+          PY
+
+      - name: Commit practice start dates
+        shell: bash
+        run: |
+          rm -f .github/workflows/add-practice-start-dates-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics-portal/teams/shared/team-data.js athletics-portal/teams/shared/team-page.js .github/workflows/add-practice-start-dates-once.yml
+          git commit -m "Add preseason practice start dates"
+          git push
