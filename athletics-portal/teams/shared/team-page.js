@@ -30,6 +30,15 @@ function seasonState(team,date=new Date()){
   return {state:'active',start,end};
 }
 function teamIsInSeason(team,date){return seasonState(team,date).state==='active';}
+function teamIsInPracticeWindow(team,date){
+  if(!team.season)return true;
+  const check=new Date(date);check.setHours(12,0,0,0);
+  const start=parseSeasonDate(team.season.practiceStart||team.season.start);
+  const end=parseSeasonDate(team.season.end,true);
+  if(start&&check<start)return false;
+  if(end&&check>end)return false;
+  return true;
+}
 function seasonDetails(team){
   if(!team.season)return'';
   const details=[];
@@ -50,14 +59,14 @@ function weekDates(offset=0){
   for(let i=0;i<5;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}
   return dates;
 }
-function practiceGameConflicts(){const map=new Map();for(const team of Object.values(TEAM_DATA)){if(!VOLLEYBALL_TEAM_IDS.includes(team.id))continue;for(const game of team.games||[]){const date=gameDate(game);if(!date||!teamIsInSeason(team,date))continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,game});}}return map;}
+function practiceGameConflicts(){const map=new Map();for(const team of Object.values(TEAM_DATA)){if(!VOLLEYBALL_TEAM_IDS.includes(team.id))continue;for(const game of team.games||[]){const date=gameDate(game);if(!date||!teamIsInPracticeWindow(team,date))continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,game});}}return map;}
 function weekRangeLabel(dates){if(!dates.length)return'';const first=dates[0],last=dates[dates.length-1];const sameMonth=first.getMonth()===last.getMonth();return sameMonth?`${first.toLocaleDateString('en-US',{month:'short'})} ${first.getDate()}–${last.getDate()}`:`${first.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${last.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;}
 function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}
 function outOfSeasonCard(team,day,date){
   const state=seasonState(team,date);
   const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
   const before=state.state==='upcoming';
-  const message=before?`Season begins ${team.season?.display||team.season?.start||''}`:'Season has ended';
+  const message=before?`Practices begin ${team.season?.practiceStart||team.season?.start||''}`:'Season has ended';
   return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">OUT OF SEASON</span></div><div class="practice-rest">${esc(message)}</div></div>`;
 }
 function practice(team,weekOffset=0){
@@ -72,7 +81,7 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const item=byDay.get(day);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);
+    if(!teamIsInPracticeWindow(team,date))return outOfSeasonCard(team,day,date);
     const conflicts=conflictsByDate.get(dateKey(date))||[];
     if(conflicts.length){
       return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(conflictText(conflicts))}</div><div class="practice-note">All in-season volleyball practices canceled because the same coach covers JV Girls, Varsity Girls, and Boys.</div></div>`;
