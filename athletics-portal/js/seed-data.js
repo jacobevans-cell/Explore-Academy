@@ -22,9 +22,9 @@ export const programWindows = [
     audience: "Elementary",
     grades: "4–5",
     label: "Late Fall",
-    start: "2026-10-14",
+    start: "2026-09-28",
     end: "2026-12-04",
-    purpose: "Elementary boys volleyball and girls flag football"
+    purpose: "Elementary boys volleyball"
   },
   {
     id: "ms-winter",
@@ -140,33 +140,12 @@ export const teams = [
     leagueLabel:"CAA",
     status:"official",
     priority:"core",
-    competitionStart:"2026-10-14",
+    competitionStart:"2026-09-28",
     regularSeasonEnd:"2026-12-04",
     playoffStart:"",
     championshipDate:"",
     costEstimate:1000,
     athleteConflictGroup:"elem-boys"
-  },
-  {
-    id:"elem-girls-flag",
-    audience:"Elementary",
-    grades:"4–5",
-    bridgeEligible:"6",
-    gender:"Girls",
-    sport:"Flag Football",
-    name:"Girls Flag Football",
-    displayName:"Girls Flag Football",
-    windowId:"elem-late-fall",
-    league:"CAA",
-    leagueLabel:"CAA",
-    status:"interest",
-    priority:"maximize",
-    competitionStart:"2026-10-14",
-    regularSeasonEnd:"2026-12-04",
-    playoffStart:"",
-    championshipDate:"",
-    costEstimate:1000,
-    athleteConflictGroup:"elem-girls"
   },
   {
     id:"internal-esports",
