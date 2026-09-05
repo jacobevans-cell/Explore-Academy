@@ -84,9 +84,9 @@ export const TEAM_DATA = {
       { day: 'Friday', time: '' }
     ],
     games: [
-      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', arrival: '4:15 PM' },
-      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', arrival: '4:15 PM', detail: '🎀 Pink Out Game' },
-      { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', arrival: '4:00 PM' }
+      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM' },
+      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: '🎀 Pink Out Game' },
+      { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', drive: '30–45 min', leave: '3:15 PM', arrival: '4:00 PM' }
     ]
   },
   boysVolleyball: {
