@@ -1,0 +1,62 @@
+name: Add Labor Day practice closure once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-labor-day-practice-closure-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  add-labor-day-closure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add universal Labor Day no-practice override
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('athletics-portal/teams/shared/team-page.js')
+          text = path.read_text(encoding='utf-8')
+
+          old = "const VOLLEYBALL_FRIDAY_TIME = '1:15–3:45 PM';\nlet practiceWeekOffset = 0;"
+          new = "const VOLLEYBALL_FRIDAY_TIME = '1:15–3:45 PM';\nconst SCHOOL_CLOSED_DATES = new Map([\n  ['2026-09-07','Labor Day • No School']\n]);\nlet practiceWeekOffset = 0;"
+          if old not in text:
+              raise SystemExit('Could not find practice constants block')
+          text = text.replace(old, new, 1)
+
+          old = "function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}\nfunction outOfSeasonCard(team,day,date){"
+          new = "function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}\nfunction schoolClosureCard(day,date,reason){\n  const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});\n  return `<div class=\"card practice-card practice-off\"><div class=\"practice-day-row\"><div><div class=\"card-title\">${day}</div><div class=\"practice-date\">${esc(dateLabel)}</div></div><span class=\"practice-status off\">NO PRACTICE</span></div><div class=\"practice-cancel\">NO PRACTICE</div><div class=\"practice-reason\">🏫 ${esc(reason)}</div></div>`;\n}\nfunction outOfSeasonCard(team,day,date){"
+          if old not in text:
+              raise SystemExit('Could not find conflict/out-of-season block')
+          text = text.replace(old, new, 1)
+
+          old = "  if(!VOLLEYBALL_TEAM_IDS.includes(team.id)){\n    return {banner:'Team practice schedule',cards:days.map(day=>{const item=byDay.get(day);return `<div class=\"card\"><div class=\"card-title\">${day}</div><div class=\"card-label\">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class=\"card-value\">${esc(item.time)}</div>${item.detail?`<div class=\"card-detail\">${esc(item.detail)}</div>`:''}`:'<div class=\"pending\">—</div>'}</div>`;}).join('')};\n  }"
+          new = "  if(!VOLLEYBALL_TEAM_IDS.includes(team.id)){\n    const dates=weekDates(weekOffset);\n    return {banner:'Team practice schedule',cards:days.map((day,index)=>{const date=dates[index];const item=byDay.get(day);const closure=SCHOOL_CLOSED_DATES.get(dateKey(date));if(closure)return schoolClosureCard(day,date,closure);return `<div class=\"card\"><div class=\"card-title\">${day}</div><div class=\"card-label\">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class=\"card-value\">${esc(item.time)}</div>${item.detail?`<div class=\"card-detail\">${esc(item.detail)}</div>`:''}`:'<div class=\"pending\">—</div>'}</div>`;}).join('')};\n  }"
+          if old not in text:
+              raise SystemExit('Could not find non-volleyball practice block')
+          text = text.replace(old, new, 1)
+
+          old = "    const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});\n    if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);"
+          new = "    const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});\n    const schoolClosure=SCHOOL_CLOSED_DATES.get(dateKey(date));\n    if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);\n    if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);"
+          if old not in text:
+              raise SystemExit('Could not find volleyball practice date block')
+          text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          print('Added Sep 7 Labor Day no-practice override for all teams.')
+          PY
+
+      - name: Commit Labor Day closure
+        shell: bash
+        run: |
+          rm -f .github/workflows/add-labor-day-practice-closure-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics-portal/teams/shared/team-page.js .github/workflows/add-labor-day-practice-closure-once.yml
+          git commit -m "Add Labor Day no-practice override"
+          git push
