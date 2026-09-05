@@ -1,0 +1,127 @@
+name: Lock athletics navigation once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/lock-athletics-navigation-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  lock-athletics-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restrict public navigation to athletics
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('athletics.html')
+          html = path.read_text(encoding='utf-8')
+          original = html
+
+          # Keep the school identity, but don't let the logo escape to unfinished Home.
+          html, brand_count = re.subn(
+              r'(<a\s+class=["\']brand["\']\s+href=)["\']index\.html["\']',
+              r'\1"athletics.html"',
+              html,
+              count=1,
+              flags=re.I,
+          )
+
+          # Utility navigation: athletics only.
+          utility_patterns = [
+              r'<nav[^>]*aria-label=["\']Utility navigation["\'][^>]*>.*?</nav>',
+              r'<div[^>]*class=["\'][^"\']*topbar-links[^"\']*["\'][^>]*>.*?</div>',
+          ]
+          utility_replaced = 0
+          for pattern in utility_patterns:
+              html, n = re.subn(
+                  pattern,
+                  '<nav class="topbar-links" aria-label="Utility navigation"><a href="athletics.html" aria-current="page">Athletics Portal</a></nav>',
+                  html,
+                  count=1,
+                  flags=re.I | re.S,
+              )
+              if n:
+                  utility_replaced = 1
+                  break
+
+          # Main site navigation: Athletics only.
+          main_patterns = [
+              r'<nav[^>]*class=["\'][^"\']*(?:main-nav|nav)[^"\']*["\'][^>]*aria-label=["\']Main navigation["\'][^>]*>.*?</nav>',
+              r'<nav[^>]*aria-label=["\']Main navigation["\'][^>]*>.*?</nav>',
+          ]
+          main_replaced = 0
+          for pattern in main_patterns:
+              html, n = re.subn(
+                  pattern,
+                  '<nav class="nav" aria-label="Main navigation" id="mainNav"><a class="active" href="athletics.html" aria-current="page">Athletics</a></nav>',
+                  html,
+                  count=1,
+                  flags=re.I | re.S,
+              )
+              if n:
+                  main_replaced = 1
+                  break
+
+          # Breadcrumb must not provide a route to unfinished Home.
+          html = re.sub(
+              r'<div\s+class=["\']crumb["\']>\s*<a\s+href=["\']index\.html["\']>Home</a>\s*<span>\s*/\s*</span>\s*<span>Eagles Athletics</span>\s*</div>',
+              '<div class="crumb"><span>Eagles Athletics</span></div>',
+              html,
+              count=1,
+              flags=re.I | re.S,
+          )
+
+          # Strip unfinished-site links from footer and replace with athletics destinations.
+          footer_start = html.lower().find('<footer')
+          if footer_start != -1:
+              footer = html[footer_start:]
+              footer = re.sub(
+                  r'<div>\s*<h3>Explore</h3>\s*<div\s+class=["\']footer-links["\']>.*?</div>\s*</div>',
+                  '<div><h3>Athletics</h3><div class="footer-links">'
+                  '<a href="athletics.html">Eagles Athletics</a>'
+                  '<a href="athletics-portal/teams/jv-girls-volleyball.html">JV Girls Volleyball</a>'
+                  '<a href="athletics-portal/teams/varsity-girls-volleyball.html">Varsity Girls Volleyball</a>'
+                  '<a href="athletics-portal/teams/boys-volleyball.html">Boys Volleyball</a>'
+                  '<a href="athletics-portal/teams/co-ed-flag-football.html">Co-ed Flag Football</a>'
+                  '</div></div>',
+                  footer,
+                  count=1,
+                  flags=re.I | re.S,
+              )
+              footer = re.sub(
+                  r'<div>\s*<h3>Families</h3>\s*<div\s+class=["\']footer-links["\']>.*?</div>\s*</div>',
+                  '',
+                  footer,
+                  count=1,
+                  flags=re.I | re.S,
+              )
+              html = html[:footer_start] + footer
+
+          if not main_replaced:
+              raise SystemExit('Could not locate the main navigation; refusing to make a partial lock-down.')
+          if not utility_replaced:
+              raise SystemExit('Could not locate the utility navigation; refusing to make a partial lock-down.')
+          if html == original:
+              raise SystemExit('No changes were made.')
+
+          path.write_text(html, encoding='utf-8')
+          print(f'Updated athletics navigation. brand={brand_count}, utility={utility_replaced}, main={main_replaced}')
+          PY
+
+      - name: Commit athletics-only navigation
+        shell: bash
+        run: |
+          rm -f .github/workflows/lock-athletics-navigation-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics.html .github/workflows/lock-athletics-navigation-once.yml
+          git commit -m "Restrict public navigation to athletics"
+          git push
