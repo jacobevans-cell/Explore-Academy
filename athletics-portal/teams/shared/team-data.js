@@ -129,8 +129,7 @@ export const TEAM_DATA = {
       display: 'September 21 – November 19, 2026'
     },
     roster: [
-      { name: 'Jess Harambe', number: '' },
-      { name: 'Lili Moore', number: '' },
+      { name: 'Lily Moore', number: '' },
       { name: 'Larissa Almazo', number: '13' },
       { name: 'Whitney Wright', number: '45' },
       { name: 'Lilian Walbecq', number: '27' },
