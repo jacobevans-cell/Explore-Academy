@@ -5,6 +5,9 @@ const VOLLEYBALL_WORK_FRIDAYS = new Set([
   '2026-09-04','2026-09-18','2026-09-25','2026-10-02','2026-10-23','2026-11-06','2026-11-13'
 ]);
 const VOLLEYBALL_FRIDAY_TIME = '1:15–3:45 PM';
+const SCHOOL_CLOSED_DATES = new Map([
+  ['2026-09-07','Labor Day • No School']
+]);
 let practiceWeekOffset = 0;
 
 function esc(value=''){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
@@ -53,6 +56,10 @@ function weekDates(offset=0){
 function practiceGameConflicts(){const map=new Map();for(const team of Object.values(TEAM_DATA)){if(!VOLLEYBALL_TEAM_IDS.includes(team.id))continue;for(const game of team.games||[]){const date=gameDate(game);if(!date||!teamIsInSeason(team,date))continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,game});}}return map;}
 function weekRangeLabel(dates){if(!dates.length)return'';const first=dates[0],last=dates[dates.length-1];const sameMonth=first.getMonth()===last.getMonth();return sameMonth?`${first.toLocaleDateString('en-US',{month:'short'})} ${first.getDate()}–${last.getDate()}`:`${first.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${last.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;}
 function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}
+function schoolClosureCard(day,date,reason){
+  const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🏫 ${esc(reason)}</div></div>`;
+}
 function outOfSeasonCard(team,day,date){
   const state=seasonState(team,date);
   const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
@@ -64,7 +71,8 @@ function practice(team,weekOffset=0){
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
   const byDay=new Map((team.practice||[]).map(item=>[item.day,item]));
   if(!VOLLEYBALL_TEAM_IDS.includes(team.id)){
-    return {banner:'Team practice schedule',cards:days.map(day=>{const item=byDay.get(day);return `<div class="card"><div class="card-title">${day}</div><div class="card-label">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class="card-value">${esc(item.time)}</div>${item.detail?`<div class="card-detail">${esc(item.detail)}</div>`:''}`:'<div class="pending">—</div>'}</div>`;}).join('')};
+    const dates=weekDates(weekOffset);
+    return {banner:'Team practice schedule',cards:days.map((day,index)=>{const date=dates[index];const item=byDay.get(day);const closure=SCHOOL_CLOSED_DATES.get(dateKey(date));if(closure)return schoolClosureCard(day,date,closure);return `<div class="card"><div class="card-title">${day}</div><div class="card-label">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class="card-value">${esc(item.time)}</div>${item.detail?`<div class="card-detail">${esc(item.detail)}</div>`:''}`:'<div class="pending">—</div>'}</div>`;}).join('')};
   }
   const dates=weekDates(weekOffset);
   const conflictsByDate=practiceGameConflicts();
@@ -72,6 +80,8 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const item=byDay.get(day);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const schoolClosure=SCHOOL_CLOSED_DATES.get(dateKey(date));
+    if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
     if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);
     const conflicts=conflictsByDate.get(dateKey(date))||[];
     if(conflicts.length){
