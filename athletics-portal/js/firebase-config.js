@@ -11,8 +11,8 @@ export const firebaseConfig = {
   measurementId: "G-2HBGS7K1MC"
 };
 
-// SECURITY SETUP: replace this with the same admin email used in firestore.rules.
-export const ADMIN_EMAIL = "jacobicusjax@gmail.com";
+// Must match the administrator email authorized in firestore.rules.
+export const ADMIN_EMAIL = "jacobicus@gmail.com";
 export const SCHOOL_YEAR = "2026-27";
 
 // Optional Firebase App Check / reCAPTCHA Enterprise site key. Leave blank until configured in Firebase Console.
