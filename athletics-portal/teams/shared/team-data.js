@@ -33,12 +33,12 @@ export const TEAM_DATA = {
       { day: 'Friday', time: '' }
     ],
     games: [
-      { date: 'Aug 14', time: '3:30 PM', opponent: 'Sequoia Pathfinder Verrado' },
-      { date: 'Aug 25', time: '4:30 PM', opponent: 'South Valley Prep' },
-      { date: 'Aug 27', time: '5:15 PM', opponent: 'BASIS Goodyear' },
-      { date: 'Sep 1', time: '4:30 PM', opponent: 'Liberty Traditional' },
-      { date: 'Sep 2', time: '4:00 PM', opponent: 'BASIS Goodyear' },
-      { date: 'Sep 9', time: '4:30 PM', opponent: 'Sequoia Pathfinder Verrado' },
+      { date: 'Aug 14', time: '3:30 PM', opponent: 'Sequoia Pathfinder Verrado', arrival: '3:00 PM' },
+      { date: 'Aug 25', time: '4:30 PM', opponent: 'South Valley Prep', arrival: '4:00 PM' },
+      { date: 'Aug 27', time: '5:15 PM', opponent: 'BASIS Goodyear', arrival: '4:45 PM' },
+      { date: 'Sep 1', time: '4:30 PM', opponent: 'Liberty Traditional', arrival: '4:00 PM' },
+      { date: 'Sep 2', time: '4:00 PM', opponent: 'BASIS Goodyear', arrival: '3:30 PM' },
+      { date: 'Sep 9', time: '4:30 PM', opponent: 'Sequoia Pathfinder Verrado', arrival: '4:00 PM' },
       { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear', location: 'Away', address: '15800 W Sherman St, Goodyear, AZ 85338', drive: '40–50 min', leave: '3:10 PM', arrival: '4:00 PM' },
       { date: 'Sep 15', time: '4:30 PM', opponent: 'South Valley Prep & Arts Academy', location: 'Away', address: '7450 S 40th St, Phoenix, AZ 85042', drive: '55–70 min', leave: '2:50 PM', arrival: '4:00 PM' },
       { date: 'Sep 21', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Away', address: '4027 N 45th Ave, Phoenix, AZ 85031', drive: '30–40 min', leave: '2:50 PM', arrival: '3:30 PM' }
@@ -84,9 +84,9 @@ export const TEAM_DATA = {
       { day: 'Friday', time: '' }
     ],
     games: [
-      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032' },
-      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', detail: '🎀 Pink Out Game' },
-      { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017' }
+      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', arrival: '4:15 PM' },
+      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', arrival: '4:15 PM', detail: '🎀 Pink Out Game' },
+      { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', arrival: '4:00 PM' }
     ]
   },
   boysVolleyball: {
