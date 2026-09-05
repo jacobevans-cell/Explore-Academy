@@ -72,7 +72,9 @@ export const TEAM_DATA = {
       { name: 'Jeslynn', number: '13', detail: 'Setter' },
       { name: 'Luxanna', number: '21', detail: 'Outside Hitter' },
       { name: 'Gabrielle', number: '22', detail: 'Middle Blocker' },
-      { name: 'Celestina', number: '23', detail: 'Outside Hitter' }
+      { name: 'Celestina', number: '23', detail: 'Outside Hitter' },
+      { name: 'Adalia Joseph', number: '' },
+      { name: 'Molly Smithson', number: '' }
     ],
     practice: [
       { day: 'Monday', time: '4:45–6:45 PM' },
@@ -109,7 +111,8 @@ export const TEAM_DATA = {
       { name: 'Wyatt Crawford', number: '' },
       { name: 'Kade Stula', number: '' },
       { name: 'Alejandro Brito', number: '' },
-      { name: 'Tristan Ruth', number: '' }
+      { name: 'Tristan Ruth', number: '' },
+      { name: 'Jeshua Morris', number: '' }
     ],
     practice: [],
     games: []
