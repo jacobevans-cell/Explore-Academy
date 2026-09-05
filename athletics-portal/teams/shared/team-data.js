@@ -18,12 +18,12 @@ export const TEAM_DATA = {
       { name: 'Niyane Parker', number: '' },
       { name: 'Aliya Montchery', number: '15' },
       { name: 'Krystal Thompson', number: '12' },
-      { name: 'Andi', number: '' },
+      { name: 'Andi Woods', number: '' },
       { name: 'Alaina Wilson', number: '28' },
       { name: 'Kataleya Eichberger', number: '67' },
       { name: 'Abigail Conner', number: '99' },
-      { name: 'Ainslee', number: '5', detail: 'Swing player' },
-      { name: 'Luxanna', number: '21', detail: 'Swing player' }
+      { name: 'Ainslee Reneau', number: '5', detail: 'Swing player' },
+      { name: 'Luxanna Rose', number: '21', detail: 'Swing player' }
     ],
     practice: [
       { day: 'Monday', time: '3:15–4:45 PM' },
@@ -66,7 +66,7 @@ export const TEAM_DATA = {
     roster: [
       { name: 'Avery Woods', number: '1', detail: 'Libero' },
       { name: 'Chelsea Crick', number: '3', detail: 'All-Around' },
-      { name: 'Ainslee', number: '5', detail: 'Right Side' },
+      { name: 'Ainslee Reneau', number: '5', detail: 'Right Side' },
       { name: 'Rebelle Sheldone', number: '7', detail: 'Middle Blocker' },
       { name: 'Sadie Tharp', number: '12', detail: 'Middle Blocker' },
       { name: 'Jeslynn Guerrero', number: '13', detail: 'Setter' },
