@@ -19,48 +19,35 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path('athletics.html')
           html = path.read_text(encoding='utf-8')
 
-          old = '''<style id="athletics-visual-nav-lock-v2">
-/* Public launch lock: only Athletics stays visible in the school header. */
-.header .nav a,
-.header nav a { display:none !important; }
-.header .nav a[href="athletics.html"],
-.header .nav a.active,
-.header nav a[href="athletics.html"],
-.header nav a.active { display:inline-flex !important; }
-.crumb a { display:none !important; }
-</style>'''
+          html, count = re.subn(
+              r'<style id="athletics-visual-nav-lock-v2">.*?</style>',
+              '<style id="athletics-visual-nav-lock-v3">\n'
+              '.header .nav a, .header nav a { display:none !important; }\n'
+              '.header .nav a.active, .header nav a.active { display:inline-flex !important; }\n'
+              '.crumb a { display:none !important; }\n'
+              '</style>\n'
+              '<script id="athletics-nav-prune-v3">\n'
+              "document.addEventListener('DOMContentLoaded', function () {\n"
+              "document.querySelectorAll('.header nav a, .header .nav a').forEach(function (link) {\n"
+              "if ((link.textContent || '').trim().toLowerCase() !== 'athletics') link.remove();\n"
+              "else { link.classList.add('active'); link.setAttribute('href','athletics.html'); link.setAttribute('aria-current','page'); }\n"
+              "});\n"
+              "var crumb = document.querySelector('.crumb'); if (crumb) crumb.innerHTML = '<span>Eagles Athletics</span>';\n"
+              "});\n"
+              '</script>',
+              html,
+              count=1,
+              flags=re.S,
+          )
 
-          new = '''<style id="athletics-visual-nav-lock-v3">
-/* Public launch lock: only the actual active Athletics tab is visible. */
-.header .nav a,
-.header nav a { display:none !important; }
-.header .nav a.active,
-.header nav a.active { display:inline-flex !important; }
-.crumb a { display:none !important; }
-</style>
-<script id="athletics-nav-prune-v3">
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.header nav a, .header .nav a').forEach(function (link) {
-    if ((link.textContent || '').trim().toLowerCase() !== 'athletics') link.remove();
-    else {
-      link.classList.add('active');
-      link.setAttribute('href', 'athletics.html');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-  var crumb = document.querySelector('.crumb');
-  if (crumb) crumb.innerHTML = '<span>Eagles Athletics</span>';
-});
-</script>'''
+          if count != 1:
+              raise SystemExit(f'Expected one v2 nav lock block; found {count}.')
 
-          if old not in html:
-              raise SystemExit('Expected v2 athletics nav lock block not found; refusing blind edit.')
-
-          html = html.replace(old, new, 1)
           path.write_text(html, encoding='utf-8')
           print('Installed athletics nav visibility v3.')
           PY
