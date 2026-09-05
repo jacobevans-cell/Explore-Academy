@@ -3,61 +3,52 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function verified() { return signedIn() && request.auth.token.email_verified == true; }
-    function isAdmin() { return verified() && request.auth.token.email == "jacobicusjax@gmail.com"; }
+    function isAdmin() { return verified() && request.auth.token.email == "jacobicus@gmail.com"; }
     function athleteOwned(athleteId) { return verified() && get(/databases/$(database)/documents/athletes/$(athleteId)).data.familyUid == request.auth.uid; }
 
     match /seasons/{id} { allow read: if true; allow write: if isAdmin(); }
-
     match /teams/{teamId} {
       allow read: if true; allow write: if isAdmin();
       match /roster/{athleteId} { allow read, write: if isAdmin(); }
       match /events/{eventId} { allow read: if true; allow write: if isAdmin(); }
       match /announcements/{announcementId} { allow read: if verified(); allow write: if isAdmin(); }
     }
-
     match /users/{uid} {
       allow read: if verified() && (request.auth.uid == uid || isAdmin());
       allow create: if verified() && request.auth.uid == uid;
       allow update: if isAdmin() || (verified() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','lastLoginAt']));
       allow delete: if isAdmin();
     }
-
     match /athletes/{athleteId} {
       allow read: if isAdmin() || (verified() && resource.data.familyUid == request.auth.uid);
       allow create: if isAdmin() || (verified() && request.resource.data.familyUid == request.auth.uid && request.resource.data.email == request.auth.token.email);
       allow update: if isAdmin() || (verified() && resource.data.familyUid == request.auth.uid && request.resource.data.familyUid == resource.data.familyUid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['firstName','lastName','dob','grade','gender','phone','guardianName','guardianEmail','guardianPhone','emergencyName','emergencyPhone','shirtSize','medicalNotes','email','updatedAt']));
       allow delete: if isAdmin();
-
       match /registrations/{registrationId} {
         allow read: if isAdmin() || athleteOwned(athleteId);
         allow create: if isAdmin() || (athleteOwned(athleteId) && request.resource.data.athleteId == athleteId && request.resource.data.familyUid == request.auth.uid && request.resource.data.status == 'submitted');
         allow update, delete: if isAdmin();
       }
-
       match /documents/{documentId} {
         allow read: if isAdmin() || athleteOwned(athleteId);
         allow create: if isAdmin() || (athleteOwned(athleteId) && request.resource.data.reviewStatus == 'pending' && request.resource.data.storagePath.matches('athlete-documents/' + athleteId + '/.*'));
         allow update, delete: if isAdmin();
       }
-
-      match /payments/{paymentId} {
-        allow read: if isAdmin() || athleteOwned(athleteId);
-        allow create, update, delete: if isAdmin();
-      }
+      match /payments/{paymentId} { allow read: if isAdmin() || athleteOwned(athleteId); allow create, update, delete: if isAdmin(); }
     }
-
     match /athleticsSettings/{id} { allow read: if verified(); allow write: if isAdmin(); }
     match /season2SportsInterest/{id} { allow read, write: if isAdmin(); }
     match /sportsRoster/{id} { allow read, write: if isAdmin(); }
 
-    // GCU Youth Team Day public reservations.
-    // Families may submit a reservation without signing in, but cannot read,
-    // edit, or delete anyone's reservation. Only the admin can manage records.
     match /youthDaySignups/{id} {
       allow create: if
         request.resource.data.keys().hasOnly([
-          'playerName','team','guardianName','email','phone','guestNames',
-          'notes','games','status','createdAt'
+          'playerName','team','guardianName','guardianEmail','guardianPhone',
+          'guestNames','notes','games','totalTickets','status','submittedAt'
+        ]) &&
+        request.resource.data.keys().hasAll([
+          'playerName','team','guardianName','guardianEmail',
+          'games','totalTickets','status','submittedAt'
         ]) &&
         request.resource.data.playerName is string &&
         request.resource.data.playerName.size() >= 2 &&
@@ -66,25 +57,30 @@ service cloud.firestore {
         request.resource.data.guardianName is string &&
         request.resource.data.guardianName.size() >= 2 &&
         request.resource.data.guardianName.size() <= 100 &&
-        request.resource.data.email is string &&
-        request.resource.data.email.size() <= 200 &&
-        request.resource.data.phone is string &&
-        request.resource.data.phone.size() <= 40 &&
-        request.resource.data.guestNames is string &&
-        request.resource.data.guestNames.size() <= 1000 &&
-        request.resource.data.notes is string &&
-        request.resource.data.notes.size() <= 1000 &&
+        request.resource.data.guardianEmail is string &&
+        request.resource.data.guardianEmail.size() >= 5 &&
+        request.resource.data.guardianEmail.size() <= 200 &&
+        (!request.resource.data.keys().hasAny(['guardianPhone']) ||
+          (request.resource.data.guardianPhone is string && request.resource.data.guardianPhone.size() <= 40)) &&
+        (!request.resource.data.keys().hasAny(['guestNames']) ||
+          (request.resource.data.guestNames is string && request.resource.data.guestNames.size() <= 1000)) &&
+        (!request.resource.data.keys().hasAny(['notes']) ||
+          (request.resource.data.notes is string && request.resource.data.notes.size() <= 1000)) &&
         request.resource.data.games is map &&
         request.resource.data.games.keys().hasOnly(['temple','hawaii','sjsu']) &&
-        request.resource.data.games.temple is int &&
-        request.resource.data.games.hawaii is int &&
-        request.resource.data.games.sjsu is int &&
-        request.resource.data.games.temple >= 0 && request.resource.data.games.temple <= 20 &&
-        request.resource.data.games.hawaii >= 0 && request.resource.data.games.hawaii <= 20 &&
-        request.resource.data.games.sjsu >= 0 && request.resource.data.games.sjsu <= 20 &&
-        (request.resource.data.games.temple + request.resource.data.games.hawaii + request.resource.data.games.sjsu) > 0 &&
-        request.resource.data.status == 'reserved' &&
-        request.resource.data.createdAt == request.time;
+        request.resource.data.games.size() >= 1 &&
+        request.resource.data.games.size() <= 3 &&
+        (!request.resource.data.games.keys().hasAny(['temple']) ||
+          (request.resource.data.games.temple is int && request.resource.data.games.temple >= 1 && request.resource.data.games.temple <= 20)) &&
+        (!request.resource.data.games.keys().hasAny(['hawaii']) ||
+          (request.resource.data.games.hawaii is int && request.resource.data.games.hawaii >= 1 && request.resource.data.games.hawaii <= 20)) &&
+        (!request.resource.data.games.keys().hasAny(['sjsu']) ||
+          (request.resource.data.games.sjsu is int && request.resource.data.games.sjsu >= 1 && request.resource.data.games.sjsu <= 20)) &&
+        request.resource.data.totalTickets is int &&
+        request.resource.data.totalTickets >= 1 &&
+        request.resource.data.totalTickets <= 60 &&
+        request.resource.data.status == 'requested' &&
+        request.resource.data.submittedAt == request.time;
 
       allow read, update, delete: if isAdmin();
     }
