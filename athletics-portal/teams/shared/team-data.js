@@ -119,6 +119,12 @@ export const TEAM_DATA = {
     sport: 'Flag Football',
     title: 'Co-ed Flag Football',
     subtitle: 'Explore Academy',
+    season: {
+      label: 'Flag Football Season',
+      start: '2026-09-21',
+      end: '2026-11-19',
+      display: 'September 21 – November 19, 2026'
+    },
     roster: [
       { name: 'Jess Harambe', number: '' },
       { name: 'Lili Moore', number: '' },
