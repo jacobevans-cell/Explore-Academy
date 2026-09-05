@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Explore Volleyball | Youth Team Day Admin</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="admin-shell">
+  <header class="admin-top">
+    <div><h1>GCU Youth Team Day Admin</h1><div style="color:#dce9f5">Explore Academy Volleyball • 2026–27</div></div>
+    <div class="actions"><a class="btn secondary" href="index.html">Public Signup</a><button id="refreshBtn" class="btn secondary hidden">Refresh</button><button id="exportBtn" class="btn secondary hidden">Export CSV</button><button id="signOutBtn" class="btn secondary hidden">Sign Out</button></div>
+  </header>
+
+  <section id="loginCard" class="card admin-login">
+    <h2>Administrator Sign In</h2>
+    <p>Sign in with the authorized Explore Athletics Google account to view reservations.</p>
+    <button id="googleSignIn" class="btn primary">Sign in with Google</button>
+    <div id="loginStatus" class="status"></div>
+  </section>
+
+  <main id="dashboard" class="hidden">
+    <div class="stats">
+      <div class="stat"><span>Reservations</span><strong id="reservationCount">0</strong></div>
+      <div class="stat"><span>Temple 9/6</span><strong id="templeCount">0</strong><small>/ 45</small></div>
+      <div class="stat"><span>Hawai‘i 10/3</span><strong id="hawaiiCount">0</strong><small>/ 45</small></div>
+      <div class="stat"><span>San José State 11/7</span><strong id="sjsuCount">0</strong><small>/ 50</small></div>
+    </div>
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><h2 style="margin-bottom:2px">Reservations</h2><p id="lastUpdated">Loading…</p></div><div class="field" style="margin:0;min-width:260px"><input id="searchBox" type="search" placeholder="Search player, team, contact…"></div></div>
+      <div id="status" class="status"></div>
+      <div class="table-wrap"><table><thead><tr><th>Player</th><th>Team</th><th>Contact</th><th>Temple</th><th>Hawai‘i</th><th>SJSU</th><th>Guests / Notes</th><th>Submitted</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+  </main>
+</div>
+<script type="module" src="admin.js"></script>
+</body>
+</html>
