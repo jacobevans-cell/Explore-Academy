@@ -1,0 +1,111 @@
+name: Add Phoenix practice week rollover once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-phoenix-week-rollover-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  add-rollover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Roll practice view after Friday 6:45 PM Phoenix time
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('athletics-portal/teams/shared/team-page.js')
+          text = path.read_text(encoding='utf-8')
+
+          old_week = '''function weekDates(offset=0){
+            const today=new Date();today.setHours(12,0,0,0);
+            const day=today.getDay();
+            const monday=new Date(today);
+            monday.setDate(today.getDate()+(day===0?-6:1-day)+(offset*7));
+            const dates=[];
+            for(let i=0;i<5;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}
+            return dates;
+          }'''
+          new_week = '''function phoenixCalendarNow(){
+            const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Phoenix',year:'numeric',month:'numeric',day:'numeric',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).reduce((out,part)=>{if(part.type!=='literal')out[part.type]=part.value;return out;},{});
+            const today=new Date(Number(parts.year),Number(parts.month)-1,Number(parts.day),12,0,0,0);
+            const day=({Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6})[parts.weekday]??today.getDay();
+            const minutes=(Number(parts.hour)||0)*60+(Number(parts.minute)||0);
+            return {today,day,minutes};
+          }
+          function defaultPracticeWeekOffset(){
+            const {day,minutes}=phoenixCalendarNow();
+            return ((day===5&&minutes>=18*60+45)||day===6||day===0)?1:0;
+          }
+          function practiceHeadingLabel(offset=practiceWeekOffset){
+            const defaultOffset=defaultPracticeWeekOffset();
+            if(offset===defaultOffset)return defaultOffset===1?"Next Week's Practice Schedule":"This Week's Practice Schedule";
+            return 'Practice Schedule';
+          }
+          function weekDates(offset=0){
+            const {today,day}=phoenixCalendarNow();
+            const monday=new Date(today);
+            monday.setDate(today.getDate()+(day===0?-6:1-day)+(offset*7));
+            const dates=[];
+            for(let i=0;i<5;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}
+            return dates;
+          }'''
+          if old_week not in text:
+              raise SystemExit('weekDates block not found')
+          text = text.replace(old_week, new_week, 1)
+
+          old_label = "  const label=weekOffset===0?'CURRENT WEEK':'WEEK OF';"
+          new_label = "  const defaultOffset=defaultPracticeWeekOffset();\n  const label=weekOffset===defaultOffset?(defaultOffset===1?'UPCOMING WEEK':'CURRENT WEEK'):'WEEK OF';"
+          if old_label not in text:
+              raise SystemExit('week label line not found')
+          text = text.replace(old_label, new_label, 1)
+
+          old_controls = "  return `<div class=\"practice-week-controls\" aria-label=\"Practice week navigation\"><button type=\"button\" class=\"practice-week-btn\" data-practice-prev aria-label=\"Previous week\">← <span>Previous Week</span></button><button type=\"button\" class=\"practice-week-btn practice-week-today\" data-practice-today>THIS WEEK</button><button type=\"button\" class=\"practice-week-btn\" data-practice-next aria-label=\"Next week\"><span>Next Week</span> →</button></div>`;"
+          new_controls = "  const resetLabel=defaultPracticeWeekOffset()===1?'NEXT WEEK':'THIS WEEK';\n  return `<div class=\"practice-week-controls\" aria-label=\"Practice week navigation\"><button type=\"button\" class=\"practice-week-btn\" data-practice-prev aria-label=\"Previous week\">← <span>Previous Week</span></button><button type=\"button\" class=\"practice-week-btn practice-week-today\" data-practice-today>${resetLabel}</button><button type=\"button\" class=\"practice-week-btn\" data-practice-next aria-label=\"Next week\"><span>Next Week</span> →</button></div>`;"
+          if old_controls not in text:
+              raise SystemExit('practiceControls return not found')
+          text = text.replace(old_controls, new_controls, 1)
+
+          old_update = "  const todayBtn=document.querySelector('[data-practice-today]');\n  if(todayBtn){todayBtn.disabled=practiceWeekOffset===0;todayBtn.setAttribute('aria-current',practiceWeekOffset===0?'true':'false');}"
+          new_update = "  const heading=document.querySelector('[data-practice-heading]');\n  if(heading)heading.textContent=practiceHeadingLabel(practiceWeekOffset);\n  const todayBtn=document.querySelector('[data-practice-today]');\n  const defaultOffset=defaultPracticeWeekOffset();\n  if(todayBtn){todayBtn.textContent=defaultOffset===1?'NEXT WEEK':'THIS WEEK';todayBtn.disabled=practiceWeekOffset===defaultOffset;todayBtn.setAttribute('aria-current',practiceWeekOffset===defaultOffset?'true':'false');}"
+          if old_update not in text:
+              raise SystemExit('updatePracticeWeek reset block not found')
+          text = text.replace(old_update, new_update, 1)
+
+          old_reset = "  document.querySelector('[data-practice-today]')?.addEventListener('click',()=>{practiceWeekOffset=0;updatePracticeWeek(team);});"
+          new_reset = "  document.querySelector('[data-practice-today]')?.addEventListener('click',()=>{practiceWeekOffset=defaultPracticeWeekOffset();updatePracticeWeek(team);});"
+          if old_reset not in text:
+              raise SystemExit('practice reset listener not found')
+          text = text.replace(old_reset, new_reset, 1)
+
+          old_render = "  practiceWeekOffset=0;\n  const practiceView=practice(team,0);"
+          new_render = "  practiceWeekOffset=defaultPracticeWeekOffset();\n  const practiceView=practice(team,practiceWeekOffset);"
+          if old_render not in text:
+              raise SystemExit('render practice initialization not found')
+          text = text.replace(old_render, new_render, 1)
+
+          old_heading = '<section class="section" id="practice"><div class="practice-section-head"><h2>This Week\'s Practice Schedule</h2>${practiceControls(team)}</div>'
+          new_heading = '<section class="section" id="practice"><div class="practice-section-head"><h2 data-practice-heading>${practiceHeadingLabel(practiceWeekOffset)}</h2>${practiceControls(team)}</div>'
+          if old_heading not in text:
+              raise SystemExit('practice heading markup not found')
+          text = text.replace(old_heading, new_heading, 1)
+
+          path.write_text(text, encoding='utf-8')
+          print('Installed Phoenix Friday 6:45 PM practice-week rollover.')
+          PY
+
+      - name: Commit rollover
+        shell: bash
+        run: |
+          rm -f .github/workflows/add-phoenix-week-rollover-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics-portal/teams/shared/team-page.js .github/workflows/add-phoenix-week-rollover-once.yml
+          git commit -m "Roll practice schedule to next week after Friday 6:45 PM Phoenix time"
+          git push
