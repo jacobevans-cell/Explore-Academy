@@ -65,7 +65,7 @@ export const TEAM_DATA = {
     },
     roster: [
       { name: 'Avery Woods', number: '1', detail: 'Libero' },
-      { name: 'Chelsea', number: '3', detail: 'All-Around' },
+      { name: 'Chelsea Crick', number: '3', detail: 'All-Around' },
       { name: 'Ainslee', number: '5', detail: 'Right Side' },
       { name: 'Rebelle Sheldone', number: '7', detail: 'Middle Blocker' },
       { name: 'Sadie Tharp', number: '12', detail: 'Middle Blocker' },
