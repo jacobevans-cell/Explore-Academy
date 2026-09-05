@@ -28,7 +28,7 @@ function renderEvents(){
       </div>
       <div class="ticket-box">
         <label for="tickets-${e.id}">Tickets needed</label>
-        <input id="tickets-${e.id}" class="ticket-count" data-event="${e.id}" type="number" min="1" max="20" value="1" disabled inputmode="numeric">
+        <input id="tickets-${e.id}" class="ticket-count" data-event="${e.id}" type="number" min="0" max="20" value="0" disabled inputmode="numeric">
       </div>
     </label>`).join("");
 
@@ -39,6 +39,7 @@ function renderEvents(){
     count.disabled=!chk.checked;
     card.classList.toggle("selected",chk.checked);
     if(chk.checked) count.focus();
+    else count.value=0;
   }));
 }
 
@@ -92,7 +93,7 @@ form.addEventListener("submit",async ev=>{
     });
     form.reset();
     document.querySelectorAll(".event").forEach(x=>x.classList.remove("selected"));
-    document.querySelectorAll(".ticket-count").forEach(x=>{x.disabled=true;x.value=1;});
+    document.querySelectorAll(".ticket-count").forEach(x=>{x.disabled=true;x.value=0;});
     show("You’re on the list! Your reservation request was recorded. Coach Evans will share final ticket and arrival details before the match.","ok");
   }catch(err){
     console.error(err);
