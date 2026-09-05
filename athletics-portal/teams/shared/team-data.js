@@ -64,15 +64,15 @@ export const TEAM_DATA = {
       championshipLocation: 'ADP'
     },
     roster: [
-      { name: 'Avery', number: '1', detail: 'Libero' },
+      { name: 'Avery Woods', number: '1', detail: 'Libero' },
       { name: 'Chelsea', number: '3', detail: 'All-Around' },
       { name: 'Ainslee', number: '5', detail: 'Right Side' },
-      { name: 'Rebelle', number: '7', detail: 'Middle Blocker' },
-      { name: 'Sadie', number: '12', detail: 'Middle Blocker' },
-      { name: 'Jeslynn', number: '13', detail: 'Setter' },
-      { name: 'Luxanna', number: '21', detail: 'Outside Hitter' },
-      { name: 'Gabrielle', number: '22', detail: 'Middle Blocker' },
-      { name: 'Celestina', number: '23', detail: 'Outside Hitter' },
+      { name: 'Rebelle Sheldone', number: '7', detail: 'Middle Blocker' },
+      { name: 'Sadie Tharp', number: '12', detail: 'Middle Blocker' },
+      { name: 'Jeslynn Guerrero', number: '13', detail: 'Setter' },
+      { name: 'Luxanna Rose', number: '21', detail: 'Outside Hitter' },
+      { name: 'Gabrielle Pelkey', number: '22', detail: 'Middle Blocker' },
+      { name: 'Celestina Perez', number: '23', detail: 'Outside Hitter' },
       { name: 'Adalia Joseph', number: '' },
       { name: 'Molly Smithson', number: '' }
     ],
