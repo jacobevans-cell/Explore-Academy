@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Explore Volleyball | GCU Youth Team Days</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Explore Academy Volleyball • Geared for Volleyball</div>
+    <h1><span class="free">FREE</span> GCU Volleyball Youth Team Days</h1>
+    <p>Explore JV, Varsity, and Boys Volleyball players can reserve complimentary tickets for select GCU Women’s Volleyball matches and bring family, friends, siblings, grandparents, or anyone they would like to enjoy the match with.</p>
+    <div class="hero-grid">
+      <div class="hero-card"><strong>Bring your people.</strong><br>These tickets are not limited to players or immediate family. Reserve the number your group needs while our allotment lasts.</div>
+      <div class="hero-card"><strong>Why go?</strong><br>Watching high-level volleyball helps players see the speed, communication, movement, systems, and decision-making we work toward in practice.</div>
+    </div>
+  </div>
+</header>
+<main class="main wrap">
+  <section class="card">
+    <h2>A partnership worth using</h2>
+    <p>Through Coach Evans’ volleyball company, <strong>Geared for Volleyball</strong>, we regularly partner with <strong>Grand Canyon University and Arizona State University Volleyball</strong>. Those relationships can include complimentary match tickets and, at times, special experiences such as private trainings, team events, and lock-ins. Each year, Coach Evans shares those opportunities with Explore Academy athletes whenever possible.</p>
+  </section>
+
+  <section class="card">
+    <h2>Why these matches matter</h2>
+    <div class="why">
+      <div class="mini"><b>See the next level</b>College volleyball makes court movement, serving pressure, defensive systems, transitions, and communication much easier to understand.</div>
+      <div class="mini"><b>Learn by watching</b>Players begin noticing where athletes move before the ball arrives, how they communicate, and how quickly they reset between plays.</div>
+      <div class="mini"><b>Grow the game</b>The more quality volleyball our athletes watch, the more volleyball IQ they bring back to our gym.</div>
+    </div>
+  </section>
+
+  <form id="signupForm" class="card">
+    <h2>Reserve your free tickets</h2>
+    <p>Select one or more matches. Enter the total number of tickets your group needs for each selected match, including the player.</p>
+
+    <div class="events" id="events"></div>
+
+    <div style="height:18px"></div>
+    <div class="grid2">
+      <div class="field"><label for="playerName">Explore player name *</label><input id="playerName" name="playerName" required autocomplete="name"></div>
+      <div class="field"><label for="team">Team *</label><select id="team" name="team" required><option value="">Choose team</option><option>JV Volleyball</option><option>Varsity Volleyball</option><option>Boys Volleyball</option></select></div>
+      <div class="field"><label for="contactName">Parent/guardian or contact name *</label><input id="contactName" name="contactName" required autocomplete="name"></div>
+      <div class="field"><label for="contactEmail">Contact email *</label><input id="contactEmail" name="contactEmail" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="contactPhone">Contact phone</label><input id="contactPhone" name="contactPhone" type="tel" autocomplete="tel"></div>
+      <div class="field"><label for="guestNames">Guest names (optional)</label><input id="guestNames" name="guestNames" placeholder="Example: Mom, Dad, Ava, Grandpa"></div>
+    </div>
+    <div class="field"><label for="notes">Notes</label><textarea id="notes" name="notes" placeholder="Anything Coach Evans should know about your reservation"></textarea></div>
+    <label style="display:flex;gap:9px;align-items:flex-start;margin:8px 0 16px;font-size:13px"><input id="confirm" type="checkbox" required style="margin-top:3px"> <span>I understand this is a ticket reservation request for the selected GCU Youth Team Day match(es), and final arrival/ticket instructions will be shared before the event.</span></label>
+    <div class="submit-row">
+      <button id="submitBtn" class="btn primary" type="submit">Reserve My Tickets</button>
+      <span class="hint">No payment is required.</span>
+    </div>
+    <div id="status" class="status"></div>
+    <div class="fine">Tickets are complimentary general-admission Youth Team Day tickets provided through the GCU youth team program. Availability is limited to Explore’s allotment for each match.</div>
+  </form>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
