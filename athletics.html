@@ -354,16 +354,20 @@ input,textarea,select{width:100%;padding:12px;border:1px solid #ccd4dd;border-ra
 .crumb a[href="index.html"]{display:none!important}
 </style>
 
-<style id="athletics-visual-nav-lock-v2">
-/* Public launch lock: only Athletics stays visible in the school header. */
-.header .nav a,
-.header nav a { display:none !important; }
-.header .nav a[href="athletics.html"],
-.header .nav a.active,
-.header nav a[href="athletics.html"],
-.header nav a.active { display:inline-flex !important; }
+<style id="athletics-visual-nav-lock-v3">
+.header .nav a, .header nav a { display:none !important; }
+.header .nav a.active, .header nav a.active { display:inline-flex !important; }
 .crumb a { display:none !important; }
 </style>
+<script id="athletics-nav-prune-v3">
+document.addEventListener('DOMContentLoaded', function () {
+document.querySelectorAll('.header nav a, .header .nav a').forEach(function (link) {
+if ((link.textContent || '').trim().toLowerCase() !== 'athletics') link.remove();
+else { link.classList.add('active'); link.setAttribute('href','athletics.html'); link.setAttribute('aria-current','page'); }
+});
+var crumb = document.querySelector('.crumb'); if (crumb) crumb.innerHTML = '<span>Eagles Athletics</span>';
+});
+</script>
 </head><body>
 <a class="skip" href="#main">Skip to main content</a>
 <div class="topbar"><div class="inner">
