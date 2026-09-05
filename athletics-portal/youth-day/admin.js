@@ -1,8 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { firebaseConfig, ADMIN_EMAIL } from "../js/firebase-config.js?v=6";
+import { firebaseConfig } from "../js/firebase-config.js?v=7";
 
+const ADMIN_EMAIL = "jacobicusjax@gmail.com";
 const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app),provider=new GoogleAuthProvider();
 const loginCard=document.getElementById("loginCard"),dashboard=document.getElementById("dashboard"),loginStatus=document.getElementById("loginStatus"),statusEl=document.getElementById("status"),refreshBtn=document.getElementById("refreshBtn"),exportBtn=document.getElementById("exportBtn"),signOutBtn=document.getElementById("signOutBtn"),rowsEl=document.getElementById("rows"),searchBox=document.getElementById("searchBox");
 let signups=[];
@@ -20,7 +21,7 @@ async function load(){
     statusEl.className="status";
     document.getElementById("lastUpdated").textContent=`Updated ${new Date().toLocaleString()}`;
     render();
-  }catch(err){console.error(err);show(statusEl,"Could not read Youth Team Day reservations. Confirm this Google account has administrator access in Firestore.","error");}
+  }catch(err){console.error(err);show(statusEl,"Signed in correctly, but Firestore denied access to reservations. The Firebase admin email in the published rules must be jacobicusjax@gmail.com.","error");}
 }
 
 function render(){
@@ -62,8 +63,13 @@ document.getElementById("googleSignIn").addEventListener("click",async()=>{login
 refreshBtn.addEventListener("click",load);exportBtn.addEventListener("click",exportCSV);signOutBtn.addEventListener("click",()=>signOut(auth));searchBox.addEventListener("input",render);
 
 onAuthStateChanged(auth,async user=>{
-  const allowed=user&&String(user.email||"").toLowerCase()===String(ADMIN_EMAIL||"").toLowerCase();
-  if(allowed){loginCard.classList.add("hidden");dashboard.classList.remove("hidden");refreshBtn.classList.remove("hidden");exportBtn.classList.remove("hidden");signOutBtn.classList.remove("hidden");await load();return;}
+  const email=String(user?.email||"").trim().toLowerCase();
+  const allowed=Boolean(user)&&email===ADMIN_EMAIL;
+  if(allowed){
+    loginStatus.className="status";
+    loginCard.classList.add("hidden");dashboard.classList.remove("hidden");refreshBtn.classList.remove("hidden");exportBtn.classList.remove("hidden");signOutBtn.classList.remove("hidden");
+    await load();return;
+  }
   dashboard.classList.add("hidden");refreshBtn.classList.add("hidden");exportBtn.classList.add("hidden");signOutBtn.classList.add("hidden");loginCard.classList.remove("hidden");
-  if(user&&!allowed){show(loginStatus,`Signed in as ${user.email}, but this account is not the configured Athletics administrator.`,"error");}
+  if(user&&!allowed){show(loginStatus,`Signed in as ${user.email}. This page only accepts ${ADMIN_EMAIL}.`,"error");}
 });
