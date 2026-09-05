@@ -4,6 +4,12 @@ export const TEAM_DATA = {
     sport: 'Volleyball',
     title: 'JV Girls Volleyball',
     subtitle: 'Explore Academy • CAA Elementary',
+    season: {
+      label: 'Season 1',
+      start: '2026-08-11',
+      end: '2026-09-25',
+      display: 'August 11 – September 25, 2026'
+    },
     roster: [
       { name: 'Nala Parker', number: '' },
       { name: 'Whitney Wright', number: '45' },
@@ -24,7 +30,7 @@ export const TEAM_DATA = {
       { day: 'Tuesday', time: '3:15–4:30 PM' },
       { day: 'Wednesday', time: 'OFF' },
       { day: 'Thursday', time: '3:15–4:30 PM' },
-      { day: 'Friday', time: '1:15–2:45 PM', detail: 'Optional combined practice' }
+      { day: 'Friday', time: '' }
     ],
     games: [
       { date: 'Aug 14', time: '3:30 PM', opponent: 'Sequoia Pathfinder Verrado' },
@@ -45,6 +51,18 @@ export const TEAM_DATA = {
     sport: 'Volleyball',
     title: 'Varsity Girls Volleyball',
     subtitle: 'Explore Academy • Varsity',
+    season: {
+      label: 'Varsity Season',
+      start: '2026-09-21',
+      regularEnd: '2026-11-12',
+      playoffsStart: '2026-11-16',
+      end: '2026-11-19',
+      display: 'September 21 – November 19, 2026',
+      regularDisplay: 'Regular Season: September 21 – November 12, 2026',
+      playoffsDisplay: 'Playoffs: Week of November 16, 2026',
+      championshipDisplay: 'Championship: Thursday, November 19, 2026',
+      championshipLocation: 'ADP'
+    },
     roster: [
       { name: 'Avery', number: '1', detail: 'Libero' },
       { name: 'Chelsea', number: '3', detail: 'All-Around' },
@@ -74,6 +92,12 @@ export const TEAM_DATA = {
     sport: 'Volleyball',
     title: 'Boys Volleyball',
     subtitle: 'Explore Academy',
+    season: {
+      label: 'Season 2',
+      start: '2026-10-14',
+      end: '2026-12-04',
+      display: 'October 14 – December 4, 2026'
+    },
     roster: [
       { name: 'Christian Smith', number: '' },
       { name: 'Zander Carmack', number: '' },
