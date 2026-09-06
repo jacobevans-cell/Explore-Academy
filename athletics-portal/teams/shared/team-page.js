@@ -44,9 +44,24 @@ function seasonDetails(team){
   if(team.season.championshipLocation)details.push(`<span>Championship Location: ${esc(team.season.championshipLocation)}</span>`);
   return details.join('');
 }
+function phoenixCalendarNow(){
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Phoenix',year:'numeric',month:'numeric',day:'numeric',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).reduce((out,part)=>{if(part.type!=='literal')out[part.type]=part.value;return out;},{});
+  const today=new Date(Number(parts.year),Number(parts.month)-1,Number(parts.day),12,0,0,0);
+  const day=({Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6})[parts.weekday]??today.getDay();
+  const minutes=(Number(parts.hour)||0)*60+(Number(parts.minute)||0);
+  return {today,day,minutes};
+}
+function defaultPracticeWeekOffset(){
+  const {day,minutes}=phoenixCalendarNow();
+  return ((day===5&&minutes>=18*60+45)||day===6||day===0)?1:0;
+}
+function practiceHeadingLabel(offset=practiceWeekOffset){
+  const defaultOffset=defaultPracticeWeekOffset();
+  if(offset===defaultOffset)return defaultOffset===1?"Next Week's Practice Schedule":"This Week's Practice Schedule";
+  return 'Practice Schedule';
+}
 function weekDates(offset=0){
-  const today=new Date();today.setHours(12,0,0,0);
-  const day=today.getDay();
+  const {today,day}=phoenixCalendarNow();
   const monday=new Date(today);
   monday.setDate(today.getDate()+(day===0?-6:1-day)+(offset*7));
   const dates=[];
@@ -102,12 +117,14 @@ function practice(team,weekOffset=0){
     }
     return `<div class="card practice-card practice-pending"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status pending-status">PENDING</span></div><div class="pending">Schedule pending</div></div>`;
   }).join('');
-  const label=weekOffset===0?'CURRENT WEEK':'WEEK OF';
+  const defaultOffset=defaultPracticeWeekOffset();
+  const label=weekOffset===defaultOffset?(defaultOffset===1?'UPCOMING WEEK':'CURRENT WEEK'):'WEEK OF';
   return {banner:`<strong>📅 ${label} • ${esc(weekRangeLabel(dates))}</strong><span>Only teams currently in season practice. Game days cancel all in-season volleyball practices. Friday practice occurs only on designated coach work Fridays.</span>`,cards};
 }
 function practiceControls(team){
   if(!VOLLEYBALL_TEAM_IDS.includes(team.id))return'';
-  return `<div class="practice-week-controls" aria-label="Practice week navigation"><button type="button" class="practice-week-btn" data-practice-prev aria-label="Previous week">← <span>Previous Week</span></button><button type="button" class="practice-week-btn practice-week-today" data-practice-today>THIS WEEK</button><button type="button" class="practice-week-btn" data-practice-next aria-label="Next week"><span>Next Week</span> →</button></div>`;
+  const resetLabel=defaultPracticeWeekOffset()===1?'NEXT WEEK':'THIS WEEK';
+  return `<div class="practice-week-controls" aria-label="Practice week navigation"><button type="button" class="practice-week-btn" data-practice-prev aria-label="Previous week">← <span>Previous Week</span></button><button type="button" class="practice-week-btn practice-week-today" data-practice-today>${resetLabel}</button><button type="button" class="practice-week-btn" data-practice-next aria-label="Next week"><span>Next Week</span> →</button></div>`;
 }
 function updatePracticeWeek(team){
   const view=practice(team,practiceWeekOffset);
@@ -115,14 +132,17 @@ function updatePracticeWeek(team){
   const grid=document.querySelector('[data-practice-grid]');
   if(banner)banner.innerHTML=view.banner;
   if(grid)grid.innerHTML=view.cards;
+  const heading=document.querySelector('[data-practice-heading]');
+  if(heading)heading.textContent=practiceHeadingLabel(practiceWeekOffset);
   const todayBtn=document.querySelector('[data-practice-today]');
-  if(todayBtn){todayBtn.disabled=practiceWeekOffset===0;todayBtn.setAttribute('aria-current',practiceWeekOffset===0?'true':'false');}
+  const defaultOffset=defaultPracticeWeekOffset();
+  if(todayBtn){todayBtn.textContent=defaultOffset===1?'NEXT WEEK':'THIS WEEK';todayBtn.disabled=practiceWeekOffset===defaultOffset;todayBtn.setAttribute('aria-current',practiceWeekOffset===defaultOffset?'true':'false');}
 }
 function bindPracticeWeekControls(team){
   if(!VOLLEYBALL_TEAM_IDS.includes(team.id))return;
   document.querySelector('[data-practice-prev]')?.addEventListener('click',()=>{practiceWeekOffset-=1;updatePracticeWeek(team);});
   document.querySelector('[data-practice-next]')?.addEventListener('click',()=>{practiceWeekOffset+=1;updatePracticeWeek(team);});
-  document.querySelector('[data-practice-today]')?.addEventListener('click',()=>{practiceWeekOffset=0;updatePracticeWeek(team);});
+  document.querySelector('[data-practice-today]')?.addEventListener('click',()=>{practiceWeekOffset=defaultPracticeWeekOffset();updatePracticeWeek(team);});
   updatePracticeWeek(team);
 }
 
@@ -136,12 +156,12 @@ function render(){
   const teamId=document.body.dataset.teamId;const team=teamById(teamId);if(!team){document.body.innerHTML='<p>Team not found.</p>';return;}
   const status=seasonState(team);
   if(status.state==='closed'){renderClosed(team);return;}
-  practiceWeekOffset=0;
-  const practiceView=practice(team,0);
+  practiceWeekOffset=defaultPracticeWeekOffset();
+  const practiceView=practice(team,practiceWeekOffset);
   const preSeason=status.state==='upcoming'&&team.season;
   const seasonBanner=team.season?`<div class="season-strip ${preSeason?'upcoming':'active'}"><div><strong>${preSeason?'⏳ SEASON OPENS SOON':'🏐 SEASON ACTIVE'}</strong><span>${esc(team.season.display||'')}</span></div>${preSeason?`<span class="season-strip-status">Starts ${esc(team.season.start)}</span>`:''}</div>`:'';
   document.title=`${team.title} | Explore Academy`;
-  document.body.innerHTML=`${nav(team)}<main class="page"><div class="wrap">${seasonBanner}<section class="hero"><div><div class="kicker">Explore Academy ${esc(team.sport)}</div><h1 class="title">${esc(team.title)}</h1><div class="subtitle">${esc(team.subtitle||'Explore Academy')}</div><div class="actions"><a href="#practice">Practice Times</a><a href="#schedule">Game Schedule</a><a href="#roster">Meet the Team</a></div></div><div class="photo">Team photo<br>coming soon</div></section><div class="stats"><div class="stat"><div class="stat-value">${team.games?.length||'—'}</div><div class="stat-label">Games</div></div><div class="stat"><div class="stat-value" data-current-record>—</div><div class="stat-label">Current Record</div></div><div class="stat"><div class="stat-value">${preSeason?'UPCOMING':'ACTIVE'}</div><div class="stat-label">Season Status</div></div></div><section class="section" id="practice"><div class="practice-section-head"><h2>This Week's Practice Schedule</h2>${practiceControls(team)}</div><div class="banner practice-banner" data-practice-banner>${practiceView.banner}</div><div class="grid practice-grid" data-practice-grid>${practiceView.cards}</div></section><section class="section" id="schedule"><h2>2026 Match Schedule</h2>${games(team)}</section><section class="section" id="roster"><h2>Meet the Team</h2><div class="grid">${roster(team)}</div></section><section class="section"><h2>${esc(team.title)} Standings</h2><div class="standings" data-standings-host></div></section><a class="back" href="../../athletics.html">← Back to Explore Academy Athletics</a></div></main>`;
+  document.body.innerHTML=`${nav(team)}<main class="page"><div class="wrap">${seasonBanner}<section class="hero"><div><div class="kicker">Explore Academy ${esc(team.sport)}</div><h1 class="title">${esc(team.title)}</h1><div class="subtitle">${esc(team.subtitle||'Explore Academy')}</div><div class="actions"><a href="#practice">Practice Times</a><a href="#schedule">Game Schedule</a><a href="#roster">Meet the Team</a></div></div><div class="photo">Team photo<br>coming soon</div></section><div class="stats"><div class="stat"><div class="stat-value">${team.games?.length||'—'}</div><div class="stat-label">Games</div></div><div class="stat"><div class="stat-value" data-current-record>—</div><div class="stat-label">Current Record</div></div><div class="stat"><div class="stat-value">${preSeason?'UPCOMING':'ACTIVE'}</div><div class="stat-label">Season Status</div></div></div><section class="section" id="practice"><div class="practice-section-head"><h2 data-practice-heading>${practiceHeadingLabel(practiceWeekOffset)}</h2>${practiceControls(team)}</div><div class="banner practice-banner" data-practice-banner>${practiceView.banner}</div><div class="grid practice-grid" data-practice-grid>${practiceView.cards}</div></section><section class="section" id="schedule"><h2>2026 Match Schedule</h2>${games(team)}</section><section class="section" id="roster"><h2>Meet the Team</h2><div class="grid">${roster(team)}</div></section><section class="section"><h2>${esc(team.title)} Standings</h2><div class="standings" data-standings-host></div></section><a class="back" href="../../athletics.html">← Back to Explore Academy Athletics</a></div></main>`;
   standings(team);
   bindPracticeWeekControls(team);
 }
