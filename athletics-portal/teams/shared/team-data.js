@@ -56,8 +56,8 @@ export const TEAM_DATA = {
       start: '2026-08-11',
       regularEnd: '2026-11-12',
       playoffsStart: '2026-11-16',
-      end: '2026-11-19',
-      display: 'August 11 – November 19, 2026',
+      end: '2026-11-21',
+      display: 'August 11 – November 21, 2026',
       regularDisplay: 'Regular Season: September 21 – November 12, 2026',
       playoffsDisplay: 'Playoffs: Week of November 16, 2026',
       championshipDisplay: 'Championship: Thursday, November 19, 2026',
@@ -90,7 +90,8 @@ export const TEAM_DATA = {
       { date: 'Oct 15', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM' },
       { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: '🎀 Pink Out Game' },
       { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', drive: '30–45 min', leave: '3:15 PM', arrival: '4:00 PM' },
-      { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM' }
+      { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM' },
+      { date: 'Nov 9', time: '4:30 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM' }
     ]
   },
   boysVolleyball: {
