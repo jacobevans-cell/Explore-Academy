@@ -84,13 +84,13 @@ export const TEAM_DATA = {
       { day: 'Friday', time: '' }
     ],
     games: [
-      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM' },
+      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: 'SCRIMMAGE • Does Not Count Toward Record' },
       { date: 'Sep 30', time: '4:30 PM', opponent: 'Edison School of Innovation', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM' },
       { date: 'Oct 7', time: '4:45 PM', opponent: 'Brighton Charter School', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:15 PM' },
-      { date: 'Oct 15', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM' },
-      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: '🎀 Pink Out Game' },
+      { date: 'Oct 15', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: 'SCRIMMAGE • Does Not Count Toward Record' },
+      { date: 'Oct 21', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: '🎀 Pink Out Game • OFFICIAL • Counts Toward Record' },
       { date: 'Oct 29', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', drive: '30–45 min', leave: '3:15 PM', arrival: '4:00 PM' },
-      { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM' },
+      { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM', detail: 'OFFICIAL • Counts Toward Record' },
       { date: 'Nov 9', time: '4:45 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⚠️ OUTDOOR • CONCRETE COURT' }
     ]
   },
