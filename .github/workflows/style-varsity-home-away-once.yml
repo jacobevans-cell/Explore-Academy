@@ -1,0 +1,43 @@
+name: Style Varsity home-away once
+on:
+  push:
+    paths:
+      - '.github/workflows/style-varsity-home-away-once.yml'
+permissions:
+  contents: write
+jobs:
+  style-varsity-home-away:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add strong Varsity home and away treatment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('athletics-portal/teams/shared/team-page.js')
+          s = p.read_text()
+          old = "function gameCard(game,index,total){const weekday=weekdayForGame(game);return `<div class=\"card game-card${game.detail?.toLowerCase().includes('pink out')?' pink-out':''}\"><div class=\"game-top\"><div><div class=\"card-label\">Game ${index+1} of ${total}</div><div class=\"card-title\">${weekday?`${esc(weekday)} • `:''}${esc(game.date)} • ${esc(game.time)}</div></div>${game.detail?`<div class=\"event-badge\">${esc(game.detail)}</div>`:''}</div><div class=\"card-value game-opponent\">${game.location?`${esc(game.location)} vs. `:''}${esc(game.opponent)}</div>${travelPlan(game)}</div>`;}"
+          new = "function gameCard(game,index,total,team){const weekday=weekdayForGame(game);const isVarsity=team?.id==='varsity-girls-volleyball';const location=String(game.location||'').toLowerCase();const varsityClass=isVarsity&&location==='home'?' varsity-home':isVarsity&&location==='away'?' varsity-away':'';const locationBadge=isVarsity&&location==='home'?'<div class=\"location-badge home\">🏠 HOME</div>':isVarsity&&location==='away'?'<div class=\"location-badge away\">🚌 AWAY</div>':'';return `<div class=\"card game-card${varsityClass}${game.detail?.toLowerCase().includes('pink out')?' pink-out':''}\">${locationBadge}<div class=\"game-top\"><div><div class=\"card-label\">Game ${index+1} of ${total}</div><div class=\"card-title\">${weekday?`${esc(weekday)} • `:''}${esc(game.date)} • ${esc(game.time)}</div></div>${game.detail?`<div class=\"event-badge\">${esc(game.detail)}</div>`:''}</div><div class=\"card-value game-opponent\">${esc(game.opponent)}</div>${travelPlan(game)}</div>`;}"
+          if old not in s:
+              raise SystemExit('gameCard pattern not found')
+          s = s.replace(old, new)
+          s = s.replace("upcoming.map(item=>gameCard(item.game,item.index,team.games.length))", "upcoming.map(item=>gameCard(item.game,item.index,team.games.length,team))")
+          s = s.replace("past.map(item=>gameCard(item.game,item.index,team.games.length))", "past.map(item=>gameCard(item.game,item.index,team.games.length,team))")
+          p.write_text(s)
+
+          p = Path('athletics-portal/teams/shared/team-pages.css')
+          s = p.read_text()
+          marker = ".event-badge{background:#ffe1eb;color:#a50d49;border:1px solid #ffb4cf;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:950;white-space:nowrap}"
+          insert = marker + ".location-badge{display:flex;align-items:center;justify-content:center;border-radius:14px;padding:11px 14px;font-size:14px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.location-badge.home{background:linear-gradient(90deg,#0f7d52,#25aa75);color:#fff;box-shadow:0 8px 18px rgba(15,125,82,.22)}.location-badge.away{background:linear-gradient(90deg,#c85a16,#ef8b2c);color:#fff;box-shadow:0 8px 18px rgba(200,90,22,.22)}.game-card.varsity-home{border:3px solid #35a879;background:linear-gradient(145deg,#f1fff8,#fff 58%);box-shadow:0 14px 30px rgba(18,126,84,.13)}.game-card.varsity-away{border:3px solid #eb8b3b;background:linear-gradient(145deg,#fff7ed,#fff 58%);box-shadow:0 14px 30px rgba(207,101,25,.13)}.game-card.varsity-home .game-opponent{color:#0e714b}.game-card.varsity-away .game-opponent{color:#a94b11}.game-card.varsity-home .travel-plan{border-color:#45b985}.game-card.varsity-away .travel-plan{border-color:#f0a25d}"
+          if marker not in s:
+              raise SystemExit('CSS marker not found')
+          s = s.replace(marker, insert, 1)
+          p.write_text(s)
+          PY
+      - name: Commit Varsity home-away styling
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add athletics-portal/teams/shared/team-page.js athletics-portal/teams/shared/team-pages.css
+          git commit -m "Make Varsity home and away games visually distinct" || exit 0
+          git push
