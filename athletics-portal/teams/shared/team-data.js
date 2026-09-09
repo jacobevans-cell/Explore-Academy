@@ -38,6 +38,7 @@ export const TEAM_DATA = {
       { date: 'Aug 27', time: '5:15 PM', opponent: 'BASIS Goodyear', arrival: '4:45 PM' },
       { date: 'Sep 1', time: '4:30 PM', opponent: 'Liberty Traditional', arrival: '4:00 PM' },
       { date: 'Sep 2', time: '4:00 PM', opponent: 'BASIS Goodyear', arrival: '3:30 PM' },
+      { date: 'Sep 9', time: 'During School', opponent: 'Explore Academy Staff', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'During School', detail: '🏫 STAFF VS STUDENTS • Exhibition Game' },
       { date: 'Sep 9', time: '4:30 PM', opponent: 'Sequoia Pathfinder Verrado', arrival: '4:00 PM' },
       { date: 'Sep 11', time: '4:30 PM', opponent: 'BASIS Goodyear', location: 'Away', address: '15800 W Sherman St, Goodyear, AZ 85338', drive: '40–50 min', leave: '3:10 PM', arrival: '4:00 PM' },
       { date: 'Sep 15', time: '4:30 PM', opponent: 'South Valley Prep & Arts Academy', location: 'Away', address: '7450 S 40th St, Phoenix, AZ 85042', drive: '55–70 min', leave: '2:50 PM', arrival: '4:00 PM' },
