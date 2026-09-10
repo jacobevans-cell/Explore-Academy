@@ -44,6 +44,21 @@ export const TEAM_DATA = {
       { date: 'Sep 16', time: 'During School', opponent: 'Explore Academy Staff', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'During School', detail: '🏫 STAFF VS STUDENTS • Exhibition Game' },
       { date: 'Sep 24', time: '5:45 PM', opponent: 'Sequoia Pathfinder Verrado', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '5:15 PM', detail: '✨ GLOW IN THE DARK GAME • Fun Game • Ends 7:45 PM • At Sequoia Pathfinder' }
     ],
+    events: [
+      {
+        type: 'banquet',
+        date: 'Nov 20',
+        time: '5:00–7:30 PM',
+        title: 'End-of-Season Volleyball Banquet',
+        subtitle: 'JV + Varsity Girls Volleyball • Season Celebration',
+        location: 'TBA',
+        items: [
+          { icon: '👗', title: 'Fancy Dress', detail: 'Dress up for the celebration' },
+          { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
+          { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
+        ]
+      }
+    ],
     standingsSource: 'CAA / Bound',
     standingsPath: '../data/jv-standings.json'
   },
@@ -96,6 +111,21 @@ export const TEAM_DATA = {
       { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM', detail: 'OFFICIAL • Counts Toward Record' },
       { date: 'Nov 9', time: '4:45 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⚠️ OUTDOOR • CONCRETE COURT' }
     ]
+    events: [
+      {
+        type: 'banquet',
+        date: 'Nov 20',
+        time: '5:00–7:30 PM',
+        title: 'End-of-Season Volleyball Banquet',
+        subtitle: 'JV + Varsity Girls Volleyball • Season Celebration',
+        location: 'TBA',
+        items: [
+          { icon: '👗', title: 'Fancy Dress', detail: 'Dress up for the celebration' },
+          { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
+          { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
+        ]
+      }
+    ],
   },
   boysVolleyball: {
     id: 'boys-volleyball',
