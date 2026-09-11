@@ -1,0 +1,33 @@
+name: Fix JV end date to Sep 24 once
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-jv-end-24-once.yml'
+permissions:
+  contents: write
+jobs:
+  fix-jv-end:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Change JV season end to Sep 24
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('athletics-portal/teams/shared/team-data.js')
+          s=p.read_text()
+          old="end: '2026-09-25',\n      display: 'August 11 – September 25, 2026'"
+          new="end: '2026-09-24',\n      display: 'August 11 – September 24, 2026'"
+          if old not in s:
+              raise SystemExit('JV season marker not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Commit change and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-jv-end-24-once.yml
+          git add athletics-portal/teams/shared/team-data.js
+          git commit -m "Set JV season end to September 24" || exit 0
+          git push
