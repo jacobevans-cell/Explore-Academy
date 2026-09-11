@@ -50,10 +50,10 @@ export const TEAM_DATA = {
         date: 'Nov 20',
         time: '5:00–7:30 PM',
         title: 'End-of-Season Volleyball Banquet',
-        subtitle: 'JV + Varsity Girls Volleyball • Season Celebration',
+        subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
         items: [
-          { icon: '👗', title: 'Fancy Dress', detail: 'Dress up for the celebration' },
+          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players dress up for the celebration' },
           { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
           { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
         ]
@@ -117,10 +117,10 @@ export const TEAM_DATA = {
         date: 'Nov 20',
         time: '5:00–7:30 PM',
         title: 'End-of-Season Volleyball Banquet',
-        subtitle: 'JV + Varsity Girls Volleyball • Season Celebration',
+        subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
         items: [
-          { icon: '👗', title: 'Fancy Dress', detail: 'Dress up for the celebration' },
+          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players dress up for the celebration' },
           { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
           { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
         ]
@@ -164,6 +164,21 @@ export const TEAM_DATA = {
       { date: 'Nov 11', time: '', opponent: 'ALA West Foothills Team 2', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
       { date: 'Nov 18', time: '', opponent: 'Liberty Traditional School', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
       { date: 'Dec 1', time: '', opponent: 'Stepping Stones Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' }
+    ],
+    events: [
+      {
+        type: 'banquet',
+        date: 'Nov 20',
+        time: '5:00–7:30 PM',
+        title: 'End-of-Season Volleyball Banquet',
+        subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
+        location: 'TBA',
+        items: [
+          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players, including Boys Volleyball, dress up for the celebration' },
+          { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
+          { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
+        ]
+      }
     ]
   },
   coedFlagFootball: {

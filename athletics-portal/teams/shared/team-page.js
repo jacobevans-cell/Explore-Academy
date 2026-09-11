@@ -25,11 +25,11 @@ function eventCard(event){
   const weekday=weekdayForGame(event);
   const features=(event.items||[]).map((item,index)=>`<div class="banquet-feature banquet-feature-${index+1}"><span class="banquet-feature-icon">${esc(item.icon||'✦')}</span><div><strong>${esc(item.title||'')}</strong>${item.detail?`<small>${esc(item.detail)}</small>`:''}</div></div>`).join('');
   const location=event.location&&String(event.location).toUpperCase()!=='TBA'?`<div class="banquet-location"><span>📍</span><div><small>LOCATION</small><strong>${esc(event.location)}</strong></div></div>`:`<div class="banquet-location banquet-location-tba"><span>📍</span><div><small>LOCATION</small><strong>Location TBA</strong><em>Venue will be announced</em></div></div>`;
-  return `<article class="team-event-card banquet-card"><div class="banquet-kicker">✨ FORMAL SEASON CELEBRATION ✨</div><div class="banquet-title">🏆 END-OF-SEASON BANQUET</div><div class="banquet-subtitle">${esc(event.subtitle||'JV + Varsity Girls Volleyball')}</div><div class="banquet-date-row"><div class="banquet-date"><small>DATE</small><strong>${weekday?`${esc(weekday)}, `:''}${esc(event.date)}</strong></div><div class="banquet-time"><small>TIME</small><strong>${esc(event.time)}</strong></div></div><div class="banquet-features">${features}</div>${location}<div class="banquet-footer">❤️ Celebrate the season • 📸 Capture the memories • 🏐 One volleyball family</div></article>`;
+  return `<article class="team-event-card banquet-card"><div class="banquet-kicker">✨ FORMAL SEASON CELEBRATION ✨</div><div class="banquet-title">🏆 END-OF-SEASON BANQUET</div><div class="banquet-subtitle">${esc(event.subtitle||'JV Girls + Varsity Girls + Boys Volleyball')}</div><div class="banquet-date-row"><div class="banquet-date"><small>DATE</small><strong>${weekday?`${esc(weekday)}, `:''}${esc(event.date)}</strong></div><div class="banquet-time"><small>TIME</small><strong>${esc(event.time)}</strong></div></div><div class="banquet-features">${features}</div>${location}<div class="banquet-footer">❤️ Celebrate the season • 📸 Capture the memories • 🏐 One volleyball family</div></article>`;
 }
 function teamEvents(team){
   if(!team.events?.length)return'';
-  return `<section class="section team-events" id="events"><div class="team-events-head"><div><div class="kicker">Special Team Event</div><h2>Season Celebration</h2></div><span class="team-events-badge">JV + VARS</span></div>${team.events.map(eventCard).join('')}</section>`;
+  return `<section class="section team-events" id="events"><div class="team-events-head"><div><div class="kicker">Special Team Event</div><h2>Season Celebration</h2></div><span class="team-events-badge">JV + VARS + BOYS</span></div>${team.events.map(eventCard).join('')}</section>`;
 }
 
 
