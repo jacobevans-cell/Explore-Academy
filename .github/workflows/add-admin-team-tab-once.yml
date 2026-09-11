@@ -1,0 +1,43 @@
+name: Add admin team tab once
+on:
+  push:
+    paths:
+      - '.github/workflows/add-admin-team-tab-once.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Admin tab to team navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('athletics-portal/teams/shared/team-page.js')
+          s=p.read_text()
+          old="function nav(team){return `<nav class=\"team-nav\"><div class=\"team-nav-inner\"><a class=\"team-brand\" href=\"../../athletics.html\">Explore Academy Athletics</a><div class=\"team-links\">${TEAM_PAGE_LINKS.map(([label,href])=>`<a href=\"${href}\"${href.startsWith(team.id)?' aria-current=\"page\"':''}>${esc(label)}</a>`).join('')}</div></div></nav>`;}"
+          new="function nav(team){return `<nav class=\"team-nav\"><div class=\"team-nav-inner\"><a class=\"team-brand\" href=\"../../athletics.html\">Explore Academy Athletics</a><div class=\"team-links\">${TEAM_PAGE_LINKS.map(([label,href])=>`<a href=\"${href}\"${href.startsWith(team.id)?' aria-current=\"page\"':''}>${esc(label)}</a>`).join('')}<a href=\"../admin-calendar.html\">Admin</a></div></div></nav>`;}"
+          if old not in s:
+              raise SystemExit('nav function exact match not found')
+          p.write_text(s.replace(old,new,1))
+          for fp in [
+              'athletics-portal/teams/jv-girls-volleyball.html',
+              'athletics-portal/teams/varsity-girls-volleyball.html',
+              'athletics-portal/teams/boys-volleyball.html',
+              'athletics-portal/teams/co-ed-flag-football.html']:
+              q=Path(fp)
+              t=q.read_text()
+              t=t.replace('shared/team-page.js?v=20260910-banquet3','shared/team-page.js?v=20260911-admin-tab')
+              t=t.replace('shared/team-page.js?v=20260910-banquet1','shared/team-page.js?v=20260911-admin-tab')
+              t=t.replace('shared/team-page.js?v=20260910','shared/team-page.js?v=20260911-admin-tab')
+              q.write_text(t)
+          PY
+      - name: Remove one-time workflow and commit
+        run: |
+          rm .github/workflows/add-admin-team-tab-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add athletics-portal/teams/shared/team-page.js athletics-portal/teams/*.html .github/workflows/add-admin-team-tab-once.yml
+          git commit -m 'Add Admin tab to team navigation'
+          git push
