@@ -53,7 +53,7 @@ export const TEAM_DATA = {
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
         items: [
-          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players dress up for the celebration' },
+          { icon: '✨', title: 'Formal Attire', detail: 'All volleyball players dress up for the celebration' },
           { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
           { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
         ]
@@ -120,7 +120,7 @@ export const TEAM_DATA = {
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
         items: [
-          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players dress up for the celebration' },
+          { icon: '✨', title: 'Formal Attire', detail: 'All volleyball players dress up for the celebration' },
           { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
           { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
         ]
@@ -174,7 +174,7 @@ export const TEAM_DATA = {
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
         items: [
-          { icon: '👗', title: 'Fancy Dress', detail: 'All volleyball players, including Boys Volleyball, dress up for the celebration' },
+          { icon: '✨', title: 'Formal Attire', detail: 'All volleyball players dress up for the celebration' },
           { icon: '🍽️', title: 'Potluck Food', detail: 'Families bring food to share' },
           { icon: '📸', title: 'Media Day Pictures', detail: 'Player and team photos' }
         ]
