@@ -80,6 +80,9 @@ function weekDates(offset=0){
   for(let i=0;i<5;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}
   return dates;
 }
+function teamEventsByDate(){const map=new Map();for(const team of Object.values(TEAM_DATA)){for(const event of team.events||[]){const date=gameDate(event);if(!date)continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,event});}}return map;}
+function weeklyEventText(items){return items.map(({event})=>`${event.title||'Team Event'}${event.time?` • ${event.time}`:''}${event.location?` • ${event.location}`:''}`).join(' • ');}
+function scheduledPracticeTime(team,date,day){const key=dateKey(date);if(team.id==='varsity-girls-volleyball'){if(key>='2026-09-28'&&key<='2026-10-04')return '3:15–5:15 PM';if(key>='2026-10-05'&&key<='2026-11-19'){if(day==='Monday'||day==='Wednesday')return '3:15–5:15 PM';if(day==='Tuesday'||day==='Thursday')return '4:45–6:30 PM';}}if(team.id==='boys-volleyball'){if(key>='2026-10-05'&&key<='2026-11-19'&&(day==='Tuesday'||day==='Thursday'))return '3:15–4:45 PM';if(key>='2026-11-20'&&day!=='Friday')return '3:15–4:30 PM';}const item=(team.practice||[]).find(x=>x.day===day);return item?.time||'';}
 function practiceGameConflicts(){const map=new Map();for(const team of Object.values(TEAM_DATA)){if(!VOLLEYBALL_TEAM_IDS.includes(team.id))continue;for(const game of team.games||[]){const date=gameDate(game);if(!date||!teamIsInSeason(team,date))continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,game});}}return map;}
 function weekRangeLabel(dates){if(!dates.length)return'';const first=dates[0],last=dates[dates.length-1];const sameMonth=first.getMonth()===last.getMonth();return sameMonth?`${first.toLocaleDateString('en-US',{month:'short'})} ${first.getDate()}–${last.getDate()}`:`${first.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${last.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;}
 function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}
@@ -96,42 +99,35 @@ function outOfSeasonCard(team,day,date){
 }
 function practice(team,weekOffset=0){
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
-  const byDay=new Map((team.practice||[]).map(item=>[item.day,item]));
-  if(!VOLLEYBALL_TEAM_IDS.includes(team.id)){
-    const dates=weekDates(weekOffset);
-    return {banner:'Team practice schedule',cards:days.map((day,index)=>{const date=dates[index];const item=byDay.get(day);const closure=SCHOOL_CLOSED_DATES.get(dateKey(date));if(closure)return schoolClosureCard(day,date,closure);return `<div class="card"><div class="card-title">${day}</div><div class="card-label">${item?.time?'Practice':'Schedule pending'}</div>${item?.time?`<div class="card-value">${esc(item.time)}</div>${item.detail?`<div class="card-detail">${esc(item.detail)}</div>`:''}`:'<div class="pending">—</div>'}</div>`;}).join('')};
-  }
   const dates=weekDates(weekOffset);
   const conflictsByDate=practiceGameConflicts();
+  const eventsByDate=teamEventsByDate();
   const cards=days.map((day,index)=>{
     const date=dates[index];
-    const item=byDay.get(day);
+    const key=dateKey(date);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    const schoolClosure=SCHOOL_CLOSED_DATES.get(dateKey(date));
+    const schoolClosure=SCHOOL_CLOSED_DATES.get(key);
     if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
-    if(!teamIsInSeason(team,date))return outOfSeasonCard(team,day,date);
-    const conflicts=conflictsByDate.get(dateKey(date))||[];
-    if(conflicts.length){
-      return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(conflictText(conflicts))}</div><div class="practice-note">All in-season volleyball practices canceled because the same coach covers JV Girls, Varsity Girls, and Boys.</div></div>`;
-    }
+    const dayEvents=(eventsByDate.get(key)||[]).filter(x=>x.team.id===team.id);
+    const eventNote=dayEvents.length?`<div class="practice-week-event">📅 ${esc(weeklyEventText(dayEvents))}</div>`:'';
+    if(!teamIsInSeason(team,date)&&!dayEvents.length)return outOfSeasonCard(team,day,date);
+    const conflicts=conflictsByDate.get(key)||[];
+    if(conflicts.length)return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(conflictText(conflicts))}</div>${eventNote}<div class="practice-note">Volleyball practice is canceled on game days because the same coach covers the volleyball teams.</div></div>`;
     if(day==='Friday'){
-      const workFriday=VOLLEYBALL_WORK_FRIDAYS.has(dateKey(date));
-      if(workFriday){
-        return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${VOLLEYBALL_FRIDAY_TIME}</div><div class="card-detail">Friday workday practice • all in-season volleyball teams</div></div>`;
-      }
-      return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-rest">Coach not working this Friday</div></div>`;
+      const workFriday=VOLLEYBALL_WORK_FRIDAYS.has(key);
+      if(!workFriday)return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-rest">Coach not working this Friday</div>${eventNote}</div>`;
+      const mixed=key>='2026-10-05'&&teamIsInSeason(teamById('varsity-girls-volleyball'),date)&&teamIsInSeason(teamById('boys-volleyball'),date);
+      const fridayTime=key>='2026-11-20'&&team.id==='boys-volleyball'?'3:15–4:30 PM':VOLLEYBALL_FRIDAY_TIME;
+      return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${esc(fridayTime)}</div><div class="practice-note">${mixed?'🏐 Mixed Varsity Girls + Boys practice':'🏐 Volleyball practice'}</div>${eventNote}</div>`;
     }
-    if(item?.time && String(item.time).toUpperCase()!=='OFF'){
-      return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${esc(item.time)}</div>${item.detail?`<div class="card-detail">${esc(item.detail)}</div>`:''}</div>`;
-    }
-    if(item?.time && String(item.time).toUpperCase()==='OFF'){
-      return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">OFF</span></div><div class="practice-rest">No scheduled practice</div></div>`;
-    }
-    return `<div class="card practice-card practice-pending"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status pending-status">PENDING</span></div><div class="pending">Schedule pending</div></div>`;
+    if(!teamIsInSeason(team,date))return dayEvents.length?`<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">EVENT</span></div>${eventNote}</div>`:outOfSeasonCard(team,day,date);
+    const time=scheduledPracticeTime(team,date,day);
+    if(!time)return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-rest">Scheduled off day</div>${eventNote}</div>`;
+    return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${esc(time)}</div>${eventNote}</div>`;
   }).join('');
   const defaultOffset=defaultPracticeWeekOffset();
   const label=weekOffset===defaultOffset?(defaultOffset===1?'UPCOMING WEEK':'CURRENT WEEK'):'WEEK OF';
-  return {banner:`<strong>📅 ${label} • ${esc(weekRangeLabel(dates))}</strong><span>Only teams currently in season practice. Game days cancel all in-season volleyball practices. Friday practice occurs only on designated coach work Fridays.</span>`,cards};
+  return {banner:`<strong>📅 ${label} • ${esc(weekRangeLabel(dates))}</strong><span>Practice, games, and team events are shown together. Game days cancel volleyball practice. Friday practice occurs only on designated coach work Fridays.</span>`,cards};
 }
 function practiceControls(team){
   if(!VOLLEYBALL_TEAM_IDS.includes(team.id))return'';
