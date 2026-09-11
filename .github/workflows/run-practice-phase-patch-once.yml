@@ -1,0 +1,22 @@
+name: Run practice phase patch once
+on:
+  push:
+    paths:
+      - '.github/workflows/run-practice-phase-patch-once.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/update_practice_phases.py
+      - name: Commit and clean up
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/run-practice-phase-patch-once.yml scripts/update_practice_phases.py
+          git add athletics-portal/teams/shared/team-page.js athletics-portal/teams/shared/practice-week.css
+          git commit -m "Add phased volleyball practices and weekly events"
+          git push
