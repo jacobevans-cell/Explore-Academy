@@ -20,3 +20,4 @@ jobs:
           git add athletics-portal/teams/shared/team-page.js athletics-portal/teams/shared/practice-week.css
           git commit -m "Add phased volleyball practices and weekly events"
           git push
+# retry-2
