@@ -13,3 +13,17 @@
 .banquet-location{margin-top:14px;display:flex;align-items:center;gap:12px;border-radius:18px;padding:14px 16px;background:linear-gradient(180deg,#0d5da8,#06366c);border:2px solid #fff;color:#fff;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 8px 18px rgba(7,42,82,.2)}.banquet-location>span{font-size:25px}.banquet-location small{display:block;font-size:9px;font-weight:950;letter-spacing:.12em;opacity:.82}.banquet-location strong{display:block;font-size:16px;font-weight:1000}.banquet-location em{display:block;font-size:11px;font-style:normal;margin-top:2px;opacity:.85}.banquet-location-tba{background:linear-gradient(180deg,#164f89,#082f5c)}
 .banquet-footer{margin-top:14px;padding:11px 14px;border-radius:14px;text-align:center;background:linear-gradient(180deg,#fff 0,#e5ebf1 48%,#fff 54%,#c7d0da 100%);border:2px solid #d71936;color:#0a2b54;font-size:11px;font-weight:950;letter-spacing:.035em;box-shadow:inset 0 1px 0 #fff}.season-closed-back{display:inline-block;margin-top:26px}
 @media(max-width:700px){.team-events-head{align-items:flex-start}.banquet-card{padding:14px;border-radius:22px}.banquet-date-row,.banquet-features{grid-template-columns:1fr}.banquet-feature{min-height:0}.banquet-title{padding:14px 10px}.banquet-subtitle{font-size:12px}}
+/* COED BANQUET REBALANCE */
+.team-event-card.banquet-card{background:linear-gradient(135deg,#082b5b 0%,#0f4d8f 22%,#f3f6f9 22%,#ffffff 66%,#132f52 66%,#071d39 100%)!important;border:4px solid #0b4ea2!important;box-shadow:0 20px 46px rgba(7,29,57,.22)!important;color:#0a2b54!important}
+.banquet-kicker{color:#0a2b54!important;letter-spacing:.14em!important}
+.banquet-title{background:linear-gradient(180deg,#0d376c 0%,#0a2b54 48%,#061a35 52%,#0d376c 100%)!important;color:#fff!important;border-color:#d7e0e8!important;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 9px 20px rgba(7,29,57,.24)!important;text-shadow:0 2px 1px rgba(0,0,0,.25)!important}
+.banquet-subtitle{color:#0a2b54!important;font-weight:950!important}
+.banquet-date,.banquet-time{background:linear-gradient(180deg,#fff 0%,#edf2f7 48%,#dce5ed 100%)!important;border-color:#9fb3c6!important;color:#0a2b54!important}
+.banquet-feature{background:#fff!important;border:2px solid #a9b9c8!important;color:#0a2b54!important;box-shadow:0 8px 16px rgba(7,29,57,.08)!important}
+.banquet-feature-1{background:linear-gradient(135deg,#0a2b54,#154f88)!important;color:#fff!important;border-color:#7e9ab4!important}
+.banquet-feature-2{background:linear-gradient(135deg,#eef3f7,#fff)!important}
+.banquet-feature-3{background:linear-gradient(135deg,#163d66,#0c2a49)!important;color:#fff!important;border-color:#8aa3ba!important}
+.banquet-feature-icon{filter:none!important}
+.banquet-location{background:linear-gradient(90deg,#0a2b54,#123f70)!important;color:#fff!important;border-color:#95aabd!important}
+.banquet-footer{background:linear-gradient(90deg,#eef3f7,#fff,#eef3f7)!important;color:#0a2b54!important;border-color:#8fa7bc!important}
+.team-events-badge{background:linear-gradient(180deg,#f9fbfd,#cfd9e2)!important;color:#0a2b54!important;border:2px solid #8299ad!important;box-shadow:0 4px 10px rgba(7,29,57,.14)!important}
