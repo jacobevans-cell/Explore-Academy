@@ -1,0 +1,72 @@
+name: Fix admin special games once
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-admin-special-games-once.yml'
+permissions:
+  contents: write
+jobs:
+  fix-admin-special-games:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix Campus Clash and Glow Game in admin calendar
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('athletics-portal/admin-calendar.html')
+          s = p.read_text()
+
+          old = "function isPink(g){return /pink out/i.test(String(g.detail||''))}"
+          new = "function isPink(g){return /pink out/i.test(String(g.detail||''))}function isGlow(g){return /glow in the dark/i.test(String(g.detail||''))}function isCampus(g){return /staff vs students/i.test(String(g.detail||''))}function specialClass(g){return isPink(g)?'pink-out':isGlow(g)?'glow-game':isCampus(g)?'campus-clash':''}function specialIcon(g,t){return isPink(g)?'🎀':isGlow(g)?'✨':isCampus(g)?'🏫':sportIcon(t)}function specialBanner(g){return isPink(g)?'<div class=\"pink-ribbon\">PINK OUT GAME</div>':isGlow(g)?'<div class=\"special-ribbon glow-ribbon\">✨ GLOW IN THE DARK GAME</div>':isCampus(g)?'<div class=\"special-ribbon campus-ribbon\">🏫 CAMPUS CLASH • STAFF VS STUDENTS</div>':''}"
+          if old not in s:
+              raise SystemExit('special helper marker not found')
+          s = s.replace(old, new, 1)
+
+          old = "function parseDate(g){const d=new Date(`${g.date}, ${YEAR} ${g.time||'12:00 PM'}`);return Number.isNaN(d.getTime())?null:d}"
+          new = "function parseDate(g){let d=new Date(`${g.date}, ${YEAR} ${g.time||'12:00 PM'}`);if(Number.isNaN(d.getTime()))d=new Date(`${g.date}, ${YEAR} 12:00 PM`);return Number.isNaN(d.getTime())?null:d}"
+          if old not in s:
+              raise SystemExit('parseDate marker not found')
+          s = s.replace(old, new, 1)
+
+          card_pattern = re.compile(r"function renderCard\(item\)\{.*?\}\nfunction renderGroups", re.S)
+          card_new = '''function renderCard(item){const{team,game,date}=item,cls=teamClass(team),special=specialClass(game),weekday=date.toLocaleDateString('en-US',{weekday:'short'});return`<div class="game-card ${cls} ${special} ${conflictedGames.has(item)?'conflict':''}"><div class="date-block"><div class="weekday">${esc(weekday)}</div><div class="month">${date.toLocaleDateString('en-US',{month:'short'})}</div><div class="day">${date.getDate()}</div><div class="time">${esc(game.time)}</div></div><div class="sport-icon">${specialIcon(game,team)}</div><div><div class="identity-row"><span class="sport-badge">${esc(sportLabel(team))}</span><span class="team-badge">${esc(teamLabel(team))}</span></div><div class="game-mainline"><span class="game-team">${esc(team.title)}</span><span class="game-opponent">vs. ${esc(game.opponent||'Opponent pending')}</span></div>${gameMeta(game)?`<div class="game-meta">📍 ${esc(gameMeta(game))}</div>`:''}${game.detail?`<div class="game-detail">${esc(game.detail)}</div>`:''}</div>${specialBanner(game)}</div>`}
+function renderGroups'''
+          s2, n = card_pattern.subn(card_new, s, count=1)
+          if n != 1:
+              raise SystemExit(f'renderCard replacement count {n}')
+          s = s2
+
+          month_pattern = re.compile(r"function renderMonth\(\)\{.*?\}\nfunction setView", re.S)
+          month_new = '''function renderMonth(){const y=currentMonth.getFullYear(),m=currentMonth.getMonth();document.getElementById('monthTitle').textContent=currentMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),cells=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const outside=d.getMonth()!==m,gs=allGames.filter(x=>x.date.getFullYear()===d.getFullYear()&&x.date.getMonth()===d.getMonth()&&x.date.getDate()===d.getDate());cells.push(`<div class="day ${outside?'outside':''}"><div class="day-number">${d.getDate()}</div>${gs.map(x=>{const special=specialClass(x.game);return`<div class="month-event ${teamClass(x.team)} ${special} ${conflictedGames.has(x)?'conflicted':''}"><div class="mini-head">${specialIcon(x.game,x.team)} ${esc(teamShort(x.team))}</div>${esc(x.game.time)}<br>vs. ${esc(x.game.opponent||'TBD')}${isPink(x.game)?'<span class="pink-mini">PINK OUT GAME</span>':isGlow(x.game)?'<span class="glow-mini">GLOW GAME</span>':isCampus(x.game)?'<span class="campus-mini">CAMPUS CLASH</span>':''}</div>`}).join('')}</div>`)}document.getElementById('monthGrid').innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div class="dow">${x}</div>`).join('')+cells.join('')}
+function setView'''
+          s2, n = month_pattern.subn(month_new, s, count=1)
+          if n != 1:
+              raise SystemExit(f'renderMonth replacement count {n}')
+          s = s2
+
+          css_marker = ".date-block{"
+          css_insert = ".game-card.glow-game{--team:#36d7ff;background:linear-gradient(100deg,#080b22 0,#15114a 42%,#071d38 100%);border:2px solid #43e8ff;border-left:8px solid #b834ff;box-shadow:0 10px 28px rgba(86,42,255,.28)}.game-card.glow-game .date-block{background:#17124f;color:#78f4ff}.game-card.glow-game .sport-icon{background:#20165d;border-color:#57efff;color:#fff}.game-card.glow-game .game-team,.game-card.glow-game .game-opponent,.game-card.glow-game .game-meta,.game-card.glow-game .game-detail{color:#fff}.game-card.glow-game .sport-badge{background:#142f4c;color:#8ff7ff}.game-card.glow-game .team-badge{background:#7d2cff;color:#fff;border-color:#d85cff}.game-card.campus-clash{--team:#c69219;background:linear-gradient(100deg,#fff8dd,#fff 48%,#edf4fb);border:2px solid #d8a928;border-left:8px solid #0a315f;box-shadow:0 10px 24px rgba(10,49,95,.13)}.game-card.campus-clash .date-block{background:#0a315f;color:#ffd966}.game-card.campus-clash .sport-icon{background:#fff0b2;border-color:#d8a928}.game-card.campus-clash .team-badge{background:#0a315f;color:#fff;border-color:#0a315f}.game-detail{font-size:10px;font-weight:900;letter-spacing:.02em;margin-top:5px;color:#65758b}.special-ribbon{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:10px 14px;font-size:12px;font-weight:950;letter-spacing:.04em;white-space:nowrap}.glow-ribbon{background:linear-gradient(90deg,#762cff,#13d9ff);color:#fff;border:2px solid #8ff6ff;box-shadow:0 0 16px rgba(68,227,255,.35)}.campus-ribbon{background:linear-gradient(90deg,#0a315f,#153f70);color:#ffd966;border:2px solid #d8a928}.month-event.glow-game{--team:#5be8ff;background:linear-gradient(135deg,#16114b,#071e39);color:#fff;border:2px solid #56ecff;border-left:7px solid #ad3cff}.month-event.campus-clash{--team:#c69219;background:linear-gradient(135deg,#fff4bd,#fff);color:#0a315f;border:2px solid #d8a928;border-left:7px solid #0a315f}.glow-mini,.campus-mini{display:block;margin-top:4px;font-size:9px;font-weight:950}.glow-mini{color:#8ff7ff}.campus-mini{color:#8c6500}.legend-swatch.glow{background:#6d35ff}.legend-swatch.campus{background:#d8a928}\n"
+          if css_marker not in s:
+              raise SystemExit('CSS marker not found')
+          s = s.replace(css_marker, css_insert + css_marker, 1)
+
+          legend_old = '<span class="legend-chip"><span class="legend-swatch pink"></span>🎀 Pink Out</span>'
+          legend_new = legend_old + '<span class="legend-chip"><span class="legend-swatch glow"></span>✨ Glow Game</span><span class="legend-chip"><span class="legend-swatch campus"></span>🏫 Campus Clash</span>'
+          if legend_old not in s:
+              raise SystemExit('legend marker not found')
+          s = s.replace(legend_old, legend_new, 1)
+
+          s = s.replace("team-data.js?v=20260904-6", "team-data.js?v=20260911-specials1")
+          p.write_text(s)
+          PY
+      - name: Commit fix and remove one-time workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-admin-special-games-once.yml
+          git add athletics-portal/admin-calendar.html
+          git commit -m "Show Campus Clash and Glow Game in admin calendar"
+          git push
