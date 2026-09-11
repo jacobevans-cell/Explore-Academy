@@ -11,7 +11,7 @@ if 'function teamEventsByDate()' not in s:
         raise SystemExit('practice conflict marker not found')
     s = s.replace(marker, insert, 1)
 
-pat = re.compile(r"function practice\(team,weekOffset=0\)\{.*?\n\}\nfunction renderPractice", re.S)
+pat = re.compile(r"function practice\(team,weekOffset=0\)\{.*?\n\}\nfunction practiceControls", re.S)
 new = """function practice(team,weekOffset=0){
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
   const dates=weekDates(weekOffset);
@@ -40,9 +40,11 @@ new = """function practice(team,weekOffset=0){
     if(!time)return `<div class=\"card practice-card practice-off\"><div class=\"practice-day-row\"><div><div class=\"card-title\">${day}</div><div class=\"practice-date\">${esc(dateLabel)}</div></div><span class=\"practice-status off\">NO PRACTICE</span></div><div class=\"practice-rest\">Scheduled off day</div>${eventNote}</div>`;
     return `<div class=\"card practice-card practice-active\"><div class=\"practice-day-row\"><div><div class=\"card-title\">${day}</div><div class=\"practice-date\">${esc(dateLabel)}</div></div><span class=\"practice-status active\">PRACTICE</span></div><div class=\"card-value practice-time\">${esc(time)}</div>${eventNote}</div>`;
   }).join('');
-  return {banner:'Practice, games & team events',cards};
+  const defaultOffset=defaultPracticeWeekOffset();
+  const label=weekOffset===defaultOffset?(defaultOffset===1?'UPCOMING WEEK':'CURRENT WEEK'):'WEEK OF';
+  return {banner:`<strong>📅 ${label} • ${esc(weekRangeLabel(dates))}</strong><span>Practice, games, and team events are shown together. Game days cancel volleyball practice. Friday practice occurs only on designated coach work Fridays.</span>`,cards};
 }
-function renderPractice"""
+function practiceControls"""
 s2,n = pat.subn(new,s,count=1)
 if n != 1:
     raise SystemExit(f'practice replacement count {n}')
