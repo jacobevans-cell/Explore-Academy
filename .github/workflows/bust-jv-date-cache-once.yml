@@ -1,0 +1,37 @@
+name: Bust JV date cache once
+on:
+  push:
+    paths:
+      - '.github/workflows/bust-jv-date-cache-once.yml'
+permissions:
+  contents: write
+jobs:
+  bust-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh JV season data cache keys
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('athletics-portal/teams/shared/team-page.js')
+          s=p.read_text()
+          import re
+          s,n=re.subn(r"team-data\.js\?v=[^'\"]+", "team-data.js?v=20260911-jvend24", s, count=1)
+          if n!=1: raise SystemExit('team-data import not found')
+          p.write_text(s)
+
+          p=Path('athletics-portal/teams/jv-girls-volleyball.html')
+          s=p.read_text()
+          s,n=re.subn(r"shared/team-page\.js\?v=[^'\"]+", "shared/team-page.js?v=20260911-jvend24", s, count=1)
+          if n!=1: raise SystemExit('JV team-page script not found')
+          p.write_text(s)
+          PY
+      - name: Commit and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/bust-jv-date-cache-once.yml
+          git add athletics-portal/teams/shared/team-page.js athletics-portal/teams/jv-girls-volleyball.html
+          git commit -m "Refresh JV season end date on live site"
+          git push
