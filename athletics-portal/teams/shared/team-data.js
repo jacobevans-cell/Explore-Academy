@@ -100,7 +100,7 @@ export const TEAM_DATA = {
       { day: 'Friday', time: '' }
     ],
     games: [
-      { date: 'Sep 23', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: 'SCRIMMAGE • Does Not Count Toward Record' },
+      { date: 'Sep 28', time: '4:45 PM', opponent: 'Milestones Charter School', location: 'Away', address: '4707 E Desert Cactus St, Phoenix, AZ 85032', drive: '40–55 min', leave: '3:20 PM', arrival: '4:15 PM', detail: 'SCRIMMAGE • Does Not Count Toward Record' },
       { date: 'Sep 30', time: '4:30 PM', opponent: 'Edison School of Innovation', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM' },
       { date: 'Oct 7', time: '4:45 PM', opponent: 'Brighton Charter School', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:15 PM' },
       { date: 'Oct 13', time: '4:30 PM', opponent: 'Painted Rock Academy', location: 'Neutral Site', address: '1520 Rose Garden Ln, Phoenix, AZ', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '📍 Played at Valley Academy' },
