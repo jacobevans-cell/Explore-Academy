@@ -153,7 +153,18 @@ export const TEAM_DATA = {
       { name: 'Jeshua Morris', number: '' }
     ],
     practice: [],
-    games: []
+    games: [
+      { date: 'Oct 19', time: '', opponent: 'Empower College Prep', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
+      { date: 'Oct 21', time: '', opponent: 'Adams Traditional Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
+      { date: 'Oct 26', time: '', opponent: 'Academy of Math and Science Flower', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
+      { date: 'Oct 28', time: '', opponent: 'Imagine at Cortez Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
+      { date: 'Nov 2', time: '', opponent: 'Pensar Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
+      { date: 'Nov 4', time: '', opponent: 'Freedom Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
+      { date: 'Nov 9', time: '', opponent: 'Hearn Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
+      { date: 'Nov 11', time: '', opponent: 'ALA West Foothills Team 2', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
+      { date: 'Nov 18', time: '', opponent: 'Liberty Traditional School', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
+      { date: 'Dec 1', time: '', opponent: 'Stepping Stones Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' }
+    ]
   },
   coedFlagFootball: {
     id: 'co-ed-flag-football',
