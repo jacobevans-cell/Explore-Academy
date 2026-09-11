@@ -7,8 +7,8 @@ export const TEAM_DATA = {
     season: {
       label: 'Season 1',
       start: '2026-08-11',
-      end: '2026-09-25',
-      display: 'August 11 – September 25, 2026'
+      end: '2026-09-24',
+      display: 'August 11 – September 24, 2026'
     },
     roster: [
       { name: 'Nala Parker', number: '' },
