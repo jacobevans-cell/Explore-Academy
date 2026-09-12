@@ -1,0 +1,48 @@
+name: Add Marley support event once
+on:
+  push:
+    paths:
+      - '.github/workflows/add-marley-support-once.yml'
+permissions:
+  contents: write
+jobs:
+  add-event:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Sep 17 support event to JV and Varsity weekly views
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('athletics-portal/teams/shared/team-data.js')
+          s=p.read_text()
+          event="""      {\n        type: 'support',\n        weeklyOnly: true,\n        date: 'Sep 17',\n        time: '4:30 PM',\n        title: 'Support Marley Yee',\n        subtitle: 'Cheer on our G4 teammate',\n        location: 'LTS West',\n        address: '17300 W Cactus Rd, Surprise, AZ'\n      },\n"""
+          # Insert once into JV events before banquet
+          jv_marker="""    events: [\n      {\n        type: 'banquet',"""
+          if jv_marker not in s:
+              raise SystemExit('JV events marker not found')
+          s=s.replace(jv_marker,"    events: [\n"+event+"      {\n        type: 'banquet',",1)
+          # Insert once into Varsity events, using next remaining banquet marker
+          if jv_marker not in s:
+              raise SystemExit('Varsity events marker not found')
+          s=s.replace(jv_marker,"    events: [\n"+event+"      {\n        type: 'banquet',",1)
+          p.write_text(s)
+
+          p=Path('athletics-portal/teams/shared/team-page.js')
+          s=p.read_text()
+          old="if(!team.events?.length)return'';\n  return `<section class=\"section team-events\" id=\"events\"><div class=\"team-events-head\"><div><div class=\"kicker\">Special Team Event</div><h2>Season Celebration</h2></div><span class=\"team-events-badge\">JV + VARS + BOYS</span></div>${team.events.map(eventCard).join('')}</section>`;"
+          new="const displayEvents=(team.events||[]).filter(event=>!event.weeklyOnly);\n  if(!displayEvents.length)return'';\n  return `<section class=\"section team-events\" id=\"events\"><div class=\"team-events-head\"><div><div class=\"kicker\">Special Team Event</div><h2>Season Celebration</h2></div><span class=\"team-events-badge\">JV + VARS + BOYS</span></div>${displayEvents.map(eventCard).join('')}</section>`;"
+          if old not in s:
+              raise SystemExit('teamEvents block not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Commit and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/add-marley-support-once.yml
+          git add athletics-portal/teams/shared/team-data.js athletics-portal/teams/shared/team-page.js
+          git commit -m "Add Marley Yee support event to volleyball weekly view"
+          git push
