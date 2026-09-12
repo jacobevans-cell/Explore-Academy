@@ -46,6 +46,16 @@ export const TEAM_DATA = {
     ],
     events: [
       {
+        type: 'support',
+        weeklyOnly: true,
+        date: 'Sep 17',
+        time: '4:30 PM',
+        title: 'Support Marley Yee',
+        subtitle: 'Cheer on our G4 teammate',
+        location: 'LTS West',
+        address: '17300 W Cactus Rd, Surprise, AZ'
+      },
+      {
         type: 'banquet',
         date: 'Nov 20',
         time: '5:00–7:30 PM',
@@ -112,6 +122,16 @@ export const TEAM_DATA = {
       { date: 'Nov 9', time: '4:45 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⚠️ OUTDOOR • CONCRETE COURT' }
     ],
     events: [
+      {
+        type: 'support',
+        weeklyOnly: true,
+        date: 'Sep 17',
+        time: '4:30 PM',
+        title: 'Support Marley Yee',
+        subtitle: 'Cheer on our G4 teammate',
+        location: 'LTS West',
+        address: '17300 W Cactus Rd, Surprise, AZ'
+      },
       {
         type: 'banquet',
         date: 'Nov 20',
