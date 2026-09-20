@@ -8,6 +8,7 @@ export const TEAM_DATA = {
       label: 'Season 1',
       start: '2026-08-11',
       end: '2026-09-24',
+      practiceEnd: '2026-09-18',
       display: 'August 11 – September 24, 2026'
     },
     roster: [
