@@ -1,0 +1,26 @@
+// Insert these matches before the final catch-all deny in the EXISTING Firestore rules.
+// Replace the administrator email with the correct verified Firebase Auth admin email.
+match /conferenceAvailability/{event}/slots/{slot} {
+  allow read: if event == 'evans-2026-10-02';
+  allow create: if event == 'evans-2026-10-02' &&
+    slot.matches('(0[0-9]|1[0-9]|2[0-4])') &&
+    request.resource.data.keys().hasAll(['reserved','createdAt']) &&
+    request.resource.data.keys().hasOnly(['reserved','createdAt']) &&
+    request.resource.data.reserved == true &&
+    request.resource.data.createdAt == request.time &&
+    getAfter(/databases/$(database)/documents/conferenceBookings/$(event)/slots/$(slot)).data.createdAt == request.time;
+  allow update, delete: if request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'jacobicusjax@gmail.com';
+}
+match /conferenceBookings/{event}/slots/{slot} {
+  allow read, update, delete: if request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'jacobicusjax@gmail.com';
+  allow create: if event == 'evans-2026-10-02' &&
+    slot.matches('(0[0-9]|1[0-9]|2[0-4])') &&
+    request.resource.data.keys().hasAll(['studentName','guardianName','email','phone','createdAt']) &&
+    request.resource.data.keys().hasOnly(['studentName','guardianName','email','phone','createdAt']) &&
+    request.resource.data.studentName is string && request.resource.data.studentName.size() >= 2 && request.resource.data.studentName.size() <= 100 &&
+    request.resource.data.guardianName is string && request.resource.data.guardianName.size() >= 2 && request.resource.data.guardianName.size() <= 100 &&
+    request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 200 &&
+    request.resource.data.phone is string && request.resource.data.phone.size() <= 40 &&
+    request.resource.data.createdAt == request.time &&
+    getAfter(/databases/$(database)/documents/conferenceAvailability/$(event)/slots/$(slot)).data.reserved == true;
+}
