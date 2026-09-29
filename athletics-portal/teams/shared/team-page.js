@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20260929-boys-cleanup2';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20260929-adams-confirmed2';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
