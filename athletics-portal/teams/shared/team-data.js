@@ -175,7 +175,7 @@ export const TEAM_DATA = {
     ],
     practice: [],
     games: [
-      { date: 'Oct 20', time: '4:45 PM', opponent: 'Adams Traditional Academy', location: 'Away', address: 'Adams Traditional Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED • Junior High Level 5' },
+      { date: 'Oct 20', time: '4:45 PM', opponent: 'Adams Traditional Academy', location: 'Away', address: 'Adams Traditional Academy JH Gym', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED • Junior High Boys Volleyball • AT ADAMS' },
       { date: 'Oct 28', time: '4:00 PM', opponent: 'Empower College Prep', location: 'Away', address: 'Empower College Prep Gym', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED' },
       { date: 'Nov 2', time: '4:45 PM', opponent: 'Pensar Academy', location: 'Away', address: 'Pensar Academy Main Gym', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' },
       { date: 'Nov 6', time: '4:30 PM', opponent: 'Freedom Academy', location: 'Away', address: 'Paradise Valley Community Center', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
