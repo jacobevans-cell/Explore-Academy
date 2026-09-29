@@ -184,12 +184,9 @@ export const TEAM_DATA = {
       { date: 'Dec 1', time: '4:45 PM', opponent: 'Stepping Stones Academy', location: 'Home', address: 'Stepping Stones Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' }
     ],
     pendingGames: [
-      { date: 'Oct 19', time: 'TBA', opponent: 'Empower College Prep', location: 'Away' },
 
 
-      { date: 'Oct 28', time: 'TBA', opponent: 'Imagine at Cortez Park', location: 'Home' },
 
-      { date: 'Nov 4', time: 'TBA', opponent: 'Freedom Academy', location: 'Away' },
 
       { date: 'Nov 11', time: 'TBA', opponent: 'ALA West Foothills Team 2', location: 'Home', detail: 'Week 4 • Required Non-Region • Does Not Count Toward Regional Standings' },
       { date: 'Nov 18', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home', detail: 'Week 5' }
