@@ -28,7 +28,7 @@ const FIXED_PRACTICE_SCHEDULE = {
     ['2026-11-03','3:15–4:45 PM'],
     ['2026-11-05','3:15–4:45 PM'],
     ['2026-11-12','3:15–4:45 PM'],
-    ['2026-11-13','3:15–4:45 PM']
+    ['2026-11-13','1:15–3:45 PM']
   ]),
   'varsity-girls-volleyball': new Map([
     ['2026-10-05','3:15–5:15 PM'],
@@ -36,11 +36,11 @@ const FIXED_PRACTICE_SCHEDULE = {
     ['2026-10-12','4:15–6:15 PM'],
     ['2026-10-14','4:15–6:15 PM'],
     ['2026-10-21','4:15–6:15 PM'],
-    ['2026-10-22','3:15–5:15 PM'],
+    ['2026-10-23','1:15–3:45 PM'],
     ['2026-11-03','4:15–6:15 PM'],
     ['2026-11-05','4:15–6:15 PM'],
     ['2026-11-12','4:15–6:15 PM'],
-    ['2026-11-13','4:15–6:15 PM']
+    ['2026-11-13','1:15–3:45 PM']
   ])
 };
 let practiceWeekOffset = 0;
@@ -158,7 +158,7 @@ function practice(team,weekOffset=0){
     if(day==='Friday'){
       if(fixedPracticeWindow(key)&&FIXED_PRACTICE_SCHEDULE[team.id]){
         if(!time)return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-rest">Scheduled off day</div>${eventNote}</div>`;
-        return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${esc(time)}</div><div class="practice-note">🏐 Team practice</div>${eventNote}</div>`;
+        return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">${esc(time)}</div><div class="practice-note">🏐 Shared Varsity Girls + Boys practice</div>${eventNote}</div>`;
       }
       const workFriday=VOLLEYBALL_WORK_FRIDAYS.has(key);
       if(!workFriday)return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">Friday</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-rest">Coach not working this Friday</div>${eventNote}</div>`;
