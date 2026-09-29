@@ -185,7 +185,7 @@ export const TEAM_DATA = {
     pendingGames: [
       { date: 'Oct 19', time: 'TBA', opponent: 'Empower College Prep', location: 'Away' },
       { date: 'Oct 21', time: 'TBA', opponent: 'Adams Traditional Academy', location: 'Home' },
-      { date: 'Oct 26', time: 'TBA', opponent: 'Academy of Math and Science Flower', location: 'Away' },
+
       { date: 'Oct 28', time: 'TBA', opponent: 'Imagine at Cortez Park', location: 'Home' },
 
       { date: 'Nov 4', time: 'TBA', opponent: 'Freedom Academy', location: 'Away' },
