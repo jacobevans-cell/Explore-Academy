@@ -175,16 +175,22 @@ export const TEAM_DATA = {
     ],
     practice: [],
     games: [
-      { date: 'Oct 19', time: '', opponent: 'Empower College Prep', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
-      { date: 'Oct 21', time: '', opponent: 'Adams Traditional Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
-      { date: 'Oct 26', time: '', opponent: 'Academy of Math and Science Flower', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
-      { date: 'Oct 28', time: '', opponent: 'Imagine at Cortez Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
-      { date: 'Nov 2', time: '', opponent: 'Pensar Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
-      { date: 'Nov 4', time: '', opponent: 'Freedom Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
-      { date: 'Nov 9', time: '', opponent: 'Hearn Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: 'TBA' },
-      { date: 'Nov 11', time: '', opponent: 'ALA West Foothills Team 2', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
-      { date: 'Nov 18', time: '', opponent: 'Liberty Traditional School', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' },
-      { date: 'Dec 1', time: '', opponent: 'Stepping Stones Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: 'TBA' }
+      { date: 'Oct 28', time: '4:00 PM', opponent: 'Empower College Prep', location: 'Away', address: 'Empower College Prep Gym', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED' },
+      { date: 'Nov 6', time: '4:30 PM', opponent: 'Freedom Academy', location: 'Away', address: 'Paradise Valley Community Center', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
+      { date: 'Nov 10', time: '4:30 PM', opponent: 'Academy of Math and Science Flower', location: 'Away', address: 'Academy of Math and Science Glendale Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED • Glendale hosting due to lack of facility' },
+      { date: 'Nov 24', time: '4:30 PM', opponent: 'Hearn Academy', location: 'Away', address: 'Hearn Academy Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
+      { date: 'Dec 1', time: '4:45 PM', opponent: 'Stepping Stones Academy', location: 'Home', address: 'Stepping Stones Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' }
+    ],
+    pendingGames: [
+      { date: 'Oct 19', time: 'TBA', opponent: 'Empower College Prep', location: 'Away' },
+      { date: 'Oct 21', time: 'TBA', opponent: 'Adams Traditional Academy', location: 'Home' },
+      { date: 'Oct 26', time: 'TBA', opponent: 'Academy of Math and Science Flower', location: 'Away' },
+      { date: 'Oct 28', time: 'TBA', opponent: 'Imagine at Cortez Park', location: 'Home' },
+      { date: 'Nov 2', time: 'TBA', opponent: 'Pensar Academy', location: 'Away' },
+      { date: 'Nov 4', time: 'TBA', opponent: 'Freedom Academy', location: 'Away' },
+      { date: 'Nov 9', time: 'TBA', opponent: 'Hearn Academy', location: 'Away' },
+      { date: 'Nov 11', time: 'TBA', opponent: 'ALA West Foothills Team 2', location: 'Home', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
+      { date: 'Nov 18', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home' }
     ],
     events: [
       {
