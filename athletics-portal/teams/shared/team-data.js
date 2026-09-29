@@ -191,8 +191,8 @@ export const TEAM_DATA = {
 
       { date: 'Nov 4', time: 'TBA', opponent: 'Freedom Academy', location: 'Away' },
 
-      { date: 'Nov 11', time: 'TBA', opponent: 'ALA West Foothills Team 2', location: 'Home', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
-      { date: 'Nov 18', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home' }
+      { date: 'Nov 11', time: 'TBA', opponent: 'ALA West Foothills Team 2', location: 'Home', detail: 'Week 4 • Required Non-Region • Does Not Count Toward Regional Standings' },
+      { date: 'Nov 18', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home', detail: 'Week 5' }
     ],
     events: [
       {
