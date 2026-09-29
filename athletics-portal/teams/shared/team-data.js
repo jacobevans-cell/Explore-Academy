@@ -176,6 +176,7 @@ export const TEAM_DATA = {
     practice: [],
     games: [
       { date: 'Oct 28', time: '4:00 PM', opponent: 'Empower College Prep', location: 'Away', address: 'Empower College Prep Gym', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED' },
+      { date: 'Nov 2', time: '4:45 PM', opponent: 'Pensar Academy', location: 'Away', address: 'Pensar Academy Main Gym', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' },
       { date: 'Nov 6', time: '4:30 PM', opponent: 'Freedom Academy', location: 'Away', address: 'Paradise Valley Community Center', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
       { date: 'Nov 10', time: '4:30 PM', opponent: 'Academy of Math and Science Flower', location: 'Away', address: 'Academy of Math and Science Glendale Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED • Glendale hosting due to lack of facility' },
       { date: 'Nov 24', time: '4:30 PM', opponent: 'Hearn Academy', location: 'Away', address: 'Hearn Academy Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
@@ -186,7 +187,7 @@ export const TEAM_DATA = {
       { date: 'Oct 21', time: 'TBA', opponent: 'Adams Traditional Academy', location: 'Home' },
       { date: 'Oct 26', time: 'TBA', opponent: 'Academy of Math and Science Flower', location: 'Away' },
       { date: 'Oct 28', time: 'TBA', opponent: 'Imagine at Cortez Park', location: 'Home' },
-      { date: 'Nov 2', time: 'TBA', opponent: 'Pensar Academy', location: 'Away' },
+
       { date: 'Nov 4', time: 'TBA', opponent: 'Freedom Academy', location: 'Away' },
       { date: 'Nov 9', time: 'TBA', opponent: 'Hearn Academy', location: 'Away' },
       { date: 'Nov 11', time: 'TBA', opponent: 'ALA West Foothills Team 2', location: 'Home', detail: 'Required Non-Region • Does Not Count Toward Regional Standings' },
