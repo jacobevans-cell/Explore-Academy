@@ -8,6 +8,10 @@ const VOLLEYBALL_FRIDAY_TIME = '1:15–3:45 PM';
 const SCHOOL_CLOSED_DATES = new Map([
   ['2026-09-07','Labor Day • No School']
 ]);
+const COACH_UNAVAILABLE_DATES = new Map([
+  ['2026-10-05','Coach at Great Wolf Lodge'],
+  ['2026-10-06','Coach at Great Wolf Lodge']
+]);
 
 // Locked practice plan for weeks where the game calendar leaves a clear,
 // conflict-free answer. The two still-ambiguous weeks (Oct 26–30 and
@@ -19,8 +23,6 @@ const FIXED_PRACTICE_WINDOWS = [
 ];
 const FIXED_PRACTICE_SCHEDULE = {
   'boys-volleyball': new Map([
-    ['2026-10-06','3:15–4:45 PM'],
-    ['2026-10-08','3:15–4:45 PM'],
     ['2026-10-12','3:15–4:45 PM'],
     ['2026-10-14','3:15–4:45 PM'],
     ['2026-10-21','3:15–4:45 PM'],
@@ -31,7 +33,7 @@ const FIXED_PRACTICE_SCHEDULE = {
     ['2026-11-13','1:15–3:45 PM']
   ]),
   'varsity-girls-volleyball': new Map([
-    ['2026-10-05','3:15–5:15 PM'],
+    ['2026-10-07','1:00–4:45 PM'],
     ['2026-10-08','4:15–6:15 PM'],
     ['2026-10-12','4:15–6:15 PM'],
     ['2026-10-14','4:15–6:15 PM'],
@@ -148,6 +150,8 @@ function practice(team,weekOffset=0){
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     const schoolClosure=SCHOOL_CLOSED_DATES.get(key);
     if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
+    const coachUnavailable=COACH_UNAVAILABLE_DATES.get(key);
+    if(coachUnavailable)return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(coachUnavailable)}</div></div>`;
     const dayEvents=(eventsByDate.get(key)||[]).filter(x=>x.team.id===team.id);
     const isMarleySupport=dayEvents.some(({event})=>/support marley yee/i.test(String(event.title||'')));const eventNote=dayEvents.length?`<div class="practice-week-event${isMarleySupport?' marley-support-event':''}">${isMarleySupport?'📣 💙':'📅'} ${esc(weeklyEventText(dayEvents))}${isMarleySupport?'<div class="marley-support-tag">G4 TEAMMATE SUPPORT NIGHT</div><div class="marley-support-message">🏐 Show up. Cheer loud. Support Marley.</div>':''}</div>`:'';
     if(isMarleySupport)return `<div class="card practice-card marley-support-only"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status marley">TEAM SUPPORT</span></div>${eventNote}</div>`;
