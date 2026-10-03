@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { firebaseConfig } from "../js/firebase-config.js?v=7";
 
@@ -10,7 +10,23 @@ let signups=[];
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function show(el,msg,type="info"){el.textContent=msg;el.className=`status ${type}`;}
-function activeRows(){return signups.filter(r=>r.status!=="cancelled");}
+function activeRows(){
+  const seen=new Set();
+  return signups.filter(r=>r.status!=="cancelled").map(r=>{
+    const identity=String(r.guardianEmail||r.guardianPhone||r.playerName).trim().toLowerCase();
+    const games={};
+    for(const key of ["temple","hawaii","sjsu"]){
+      if(!Object.prototype.hasOwnProperty.call(r.games||{},key)) continue;
+      const token=identity+":"+key;
+      if(!seen.has(token)){games[key]=r.games[key];seen.add(token);}
+    }
+    return {...r,games};
+  }).filter(r=>Object.keys(r.games).length);
+}
+function ticketEditor(r,key){
+  if(!Object.prototype.hasOwnProperty.call(r.games,key)) return "—";
+  return `<input aria-label="${esc(r.playerName)} ${key} tickets" type="number" min="0" max="50" value="${Number(r.games[key])||0}" data-id="${esc(r.id)}" data-game="${key}" style="width:65px;padding:7px"><button class="btn secondary" data-save="${esc(r.id)}" data-key="${key}" style="padding:7px">Save</button>`;
+}
 function countFor(key){return activeRows().reduce((n,r)=>n+Number(r.games?.[key]||0),0);}
 
 async function load(){
@@ -30,16 +46,16 @@ function render(){
   document.getElementById("hawaiiCount").textContent=countFor("hawaii");
   document.getElementById("sjsuCount").textContent=countFor("sjsu");
   const q=searchBox.value.trim().toLowerCase();
-  const filtered=signups.filter(r=>!q||[r.playerName,r.team,r.guardianName,r.guardianEmail,r.guardianPhone,r.guestNames,r.notes].join(" ").toLowerCase().includes(q));
+  const filtered=activeRows().filter(r=>!q||[r.playerName,r.team,r.guardianName,r.guardianEmail,r.guardianPhone,r.guestNames,r.notes].join(" ").toLowerCase().includes(q));
   rowsEl.innerHTML=filtered.length?filtered.map(r=>{
     const submitted=r.submittedAt?.toDate?r.submittedAt.toDate().toLocaleString():"Pending timestamp";
     return `<tr>
       <td><strong>${esc(r.playerName)}</strong></td>
       <td><span class="tag">${esc(r.team)}</span></td>
       <td><strong>${esc(r.guardianName)}</strong><br>${esc(r.guardianEmail)}${r.guardianPhone?`<br>${esc(r.guardianPhone)}`:""}</td>
-      <td>${r.games?.temple?`<strong>${r.games.temple}</strong> tickets`:"—"}</td>
-      <td>${r.games?.hawaii?`<strong>${r.games.hawaii}</strong> tickets`:"—"}</td>
-      <td>${r.games?.sjsu?`<strong>${r.games.sjsu}</strong> tickets`:"—"}</td>
+      <td>${ticketEditor(r,"temple")}</td>
+      <td>${ticketEditor(r,"hawaii")}</td>
+      <td>${ticketEditor(r,"sjsu")}</td>
       <td>${r.guestNames?`Guests: ${esc(r.guestNames)}<br>`:""}${r.notes?`Notes: ${esc(r.notes)}`:""}</td>
       <td>${esc(submitted)}</td>
       <td>${r.status==="cancelled"?'<span class="tag" style="background:#fff0f0;color:#8d3535">Cancelled</span>':'<span class="tag">Requested</span>'}</td>
@@ -47,11 +63,25 @@ function render(){
   }).join(""):'<tr><td colspan="9" style="text-align:center;padding:28px;color:#66778a">No reservations match this search.</td></tr>';
 }
 
+rowsEl.addEventListener("click",async ev=>{
+  const button=ev.target.closest("button[data-save]");if(!button)return;
+  const id=button.dataset.save,key=button.dataset.key;
+  const input=[...rowsEl.querySelectorAll("input[data-id]")].find(el=>el.dataset.id===id&&el.dataset.game===key);
+  const count=Number(input.value);
+  if(!Number.isInteger(count)||count<0||count>50){show(statusEl,"Enter a whole number from 0 to 50.","error");return;}
+  button.disabled=true;
+  try{
+    const original=signups.find(r=>r.id===id),games={...original.games,[key]:count};
+    await updateDoc(doc(db,"youthDaySignups",id),{games,totalTickets:Object.values(games).reduce((a,b)=>a+Number(b||0),0)});
+    await load();show(statusEl,"Ticket count saved.","ok");
+  }catch(err){console.error(err);button.disabled=false;show(statusEl,"Could not save ticket count: "+err.message,"error");}
+});
+
 function csvCell(v){const s=String(v??"").replace(/"/g,'""');return `"${s}"`;}
 function exportCSV(){
   const header=["Player","Team","Contact Name","Contact Email","Contact Phone","Temple Tickets","Hawaii Tickets","San Jose State Tickets","Guest Names","Notes","Status","Submitted"];
   const lines=[header.map(csvCell).join(",")];
-  for(const r of signups){
+  for(const r of activeRows()){
     const submitted=r.submittedAt?.toDate?r.submittedAt.toDate().toISOString():"";
     lines.push([r.playerName,r.team,r.guardianName,r.guardianEmail,r.guardianPhone,r.games?.temple||0,r.games?.hawaii||0,r.games?.sjsu||0,r.guestNames,r.notes,r.status||"requested",submitted].map(csvCell).join(","));
   }
