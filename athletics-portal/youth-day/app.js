@@ -3,8 +3,6 @@ import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.g
 import { firebaseConfig } from "../js/firebase-config.js";
 
 const EVENTS = [
-  { id:"2026-09-06-temple", key:"temple", opponent:"Temple", date:"Sunday, September 6, 2026", time:"2:00 PM", venue:"Global Credit Union Arena", capacity:45 },
-  { id:"2026-10-03-hawaii", key:"hawaii", opponent:"Hawai‘i", date:"Saturday, October 3, 2026", time:"6:00 PM", venue:"Global Credit Union Arena", capacity:45 },
   { id:"2026-11-07-sjsu", key:"sjsu", opponent:"San José State", date:"Saturday, November 7, 2026", time:"11:30 AM", venue:"Global Credit Union Arena", capacity:50 }
 ];
 
