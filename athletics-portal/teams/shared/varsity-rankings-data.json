@@ -1,0 +1,42 @@
+{
+  "asOf": "October 16, 2026",
+  "source": "IYAC standings message reported by Coach Evans",
+  "overall": { "wins": 5, "losses": 0, "playedWins": 4, "playedLosses": 0, "setsWon": 8, "setsLost": 0, "pointsFor": 200, "pointsAgainst": 125 },
+  "north": [
+    { "rank": 1, "team": "Explore Academy", "wins": 2, "losses": 0, "id": "explore" },
+    { "rank": 2, "team": "Milestones Charter", "wins": 2, "losses": 1 },
+    { "rank": 3, "team": "Scholars Academy", "wins": 1, "losses": 0 },
+    { "rank": 4, "team": "Synergy", "wins": 1, "losses": 0 },
+    { "rank": 5, "team": "CASA Academy", "wins": 1, "losses": 2 },
+    { "rank": 6, "team": "Painted Rock Academy", "wins": 0, "losses": 1 }
+  ],
+  "southwest": [
+    { "rank": 1, "team": "Academia del Pueblo", "wins": 2, "losses": 0 },
+    { "rank": 2, "team": "VCP–Sueño Park", "wins": 1, "losses": 0 },
+    { "rank": 3, "team": "Brighton Charter", "wins": 1, "losses": 1 },
+    { "rank": 4, "team": "Riverbend Prep", "wins": 0, "losses": 3 },
+    { "rank": 5, "team": "Edison School of Innovation", "wins": 0, "losses": 3 }
+  ],
+  "forecasts": [
+    { "label": "Make playoffs", "range": "99%+", "detail": "Strongly favored; not mathematically clinched" },
+    { "label": "Win North", "range": "80–88%", "detail": "Division title forecast" },
+    { "label": "Reach final", "range": "65–73%", "detail": "Combined six-team playoff" },
+    { "label": "Win championship", "range": "48–57%", "detail": "Current contender, not a guarantee" },
+    { "label": "Undefeated overall", "range": "45–55%", "detail": "Includes the Sueño rematch" }
+  ],
+  "forecastNote": "Coach's working estimates from the season handoff, not a calibrated statistical model. They are dated and do not automatically change with pathway selections.",
+  "remainingNorth": [
+    { "date": "Oct 19", "opponent": "Milestones Charter", "location": "Away" },
+    { "date": "Oct 27", "opponent": "Scholars Academy", "location": "Home" },
+    { "date": "Oct 29", "opponent": "Synergy", "location": "Away" },
+    { "date": "Nov 9", "opponent": "CASA Academy", "location": "Away" }
+  ],
+  "crossover": { "date": "Nov 4", "opponent": "VCP–Sueño Park", "location": "Home" },
+  "notes": [
+    "Top three from each division reach one combined six-team playoff.",
+    "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
+    "Explore's 5–0 overall record includes Brighton's forfeit and the Sueño crossover win; the posted North record is 2–0.",
+    "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation."
+  ]
+}
+
