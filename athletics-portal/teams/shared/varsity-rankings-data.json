@@ -1,42 +1,216 @@
 {
   "asOf": "October 16, 2026",
   "source": "IYAC standings message reported by Coach Evans",
-  "overall": { "wins": 5, "losses": 0, "playedWins": 4, "playedLosses": 0, "setsWon": 8, "setsLost": 0, "pointsFor": 200, "pointsAgainst": 125 },
+  "overall": {
+    "wins": 5,
+    "losses": 0,
+    "playedWins": 4,
+    "playedLosses": 0,
+    "setsWon": 8,
+    "setsLost": 0,
+    "pointsFor": 200,
+    "pointsAgainst": 125
+  },
   "north": [
-    { "rank": 1, "team": "Explore Academy", "wins": 2, "losses": 0, "id": "explore" },
-    { "rank": 2, "team": "Milestones Charter", "wins": 2, "losses": 1 },
-    { "rank": 3, "team": "Scholars Academy", "wins": 1, "losses": 0 },
-    { "rank": 4, "team": "Synergy", "wins": 1, "losses": 0 },
-    { "rank": 5, "team": "CASA Academy", "wins": 1, "losses": 2 },
-    { "rank": 6, "team": "Painted Rock Academy", "wins": 0, "losses": 1 }
+    {
+      "rank": 1,
+      "team": "Explore Academy",
+      "wins": 2,
+      "losses": 0,
+      "id": "explore"
+    },
+    {
+      "rank": 2,
+      "team": "Milestones Charter",
+      "wins": 2,
+      "losses": 1
+    },
+    {
+      "rank": 3,
+      "team": "Scholars Academy",
+      "wins": 1,
+      "losses": 0
+    },
+    {
+      "rank": 4,
+      "team": "Synergy",
+      "wins": 1,
+      "losses": 0
+    },
+    {
+      "rank": 5,
+      "team": "CASA Academy",
+      "wins": 1,
+      "losses": 2
+    },
+    {
+      "rank": 6,
+      "team": "Painted Rock Academy",
+      "wins": 0,
+      "losses": 1
+    }
   ],
   "southwest": [
-    { "rank": 1, "team": "Academia del Pueblo", "wins": 2, "losses": 0 },
-    { "rank": 2, "team": "VCP–Sueño Park", "wins": 1, "losses": 0 },
-    { "rank": 3, "team": "Brighton Charter", "wins": 1, "losses": 1 },
-    { "rank": 4, "team": "Riverbend Prep", "wins": 0, "losses": 3 },
-    { "rank": 5, "team": "Edison School of Innovation", "wins": 0, "losses": 3 }
+    {
+      "rank": 1,
+      "team": "Academia del Pueblo",
+      "wins": 2,
+      "losses": 0
+    },
+    {
+      "rank": 2,
+      "team": "VCP–Sueño Park",
+      "wins": 1,
+      "losses": 0
+    },
+    {
+      "rank": 3,
+      "team": "Brighton Charter",
+      "wins": 1,
+      "losses": 1
+    },
+    {
+      "rank": 4,
+      "team": "Riverbend Prep",
+      "wins": 0,
+      "losses": 3
+    },
+    {
+      "rank": 5,
+      "team": "Edison School of Innovation",
+      "wins": 0,
+      "losses": 3
+    }
   ],
   "forecasts": [
-    { "label": "Make playoffs", "range": "99%+", "detail": "Strongly favored; not mathematically clinched" },
-    { "label": "Win North", "range": "80–88%", "detail": "Division title forecast" },
-    { "label": "Reach final", "range": "65–73%", "detail": "Combined six-team playoff" },
-    { "label": "Win championship", "range": "48–57%", "detail": "Current contender, not a guarantee" },
-    { "label": "Undefeated overall", "range": "45–55%", "detail": "Includes the Sueño rematch" }
+    {
+      "label": "Make playoffs",
+      "range": "99%+",
+      "detail": "Strongly favored; not mathematically clinched"
+    },
+    {
+      "label": "Win North",
+      "range": "80–88%",
+      "detail": "Division title forecast"
+    },
+    {
+      "label": "Reach final",
+      "range": "65–73%",
+      "detail": "Combined six-team playoff"
+    },
+    {
+      "label": "Win championship",
+      "range": "48–57%",
+      "detail": "Current contender, not a guarantee"
+    },
+    {
+      "label": "Undefeated overall",
+      "range": "45–55%",
+      "detail": "Includes the Sueño rematch"
+    }
   ],
   "forecastNote": "Coach's working estimates from the season handoff, not a calibrated statistical model. They are dated and do not automatically change with pathway selections.",
   "remainingNorth": [
-    { "date": "Oct 19", "opponent": "Milestones Charter", "location": "Away" },
-    { "date": "Oct 27", "opponent": "Scholars Academy", "location": "Home" },
-    { "date": "Oct 29", "opponent": "Synergy", "location": "Away" },
-    { "date": "Nov 9", "opponent": "CASA Academy", "location": "Away" }
+    {
+      "date": "Oct 19",
+      "opponent": "Milestones Charter",
+      "location": "Away"
+    },
+    {
+      "date": "Oct 27",
+      "opponent": "Scholars Academy",
+      "location": "Home"
+    },
+    {
+      "date": "Oct 29",
+      "opponent": "Synergy",
+      "location": "Away"
+    },
+    {
+      "date": "Nov 9",
+      "opponent": "CASA Academy",
+      "location": "Away"
+    }
   ],
-  "crossover": { "date": "Nov 4", "opponent": "VCP–Sueño Park", "location": "Home" },
+  "crossover": {
+    "date": "Nov 4",
+    "opponent": "VCP–Sueño Park",
+    "location": "Home"
+  },
   "notes": [
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
     "Explore's 5–0 overall record includes Brighton's forfeit and the Sueño crossover win; the posted North record is 2–0.",
     "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation."
+  ],
+  "powerRankingNote": "Provisional analyst power ranking across all 11 teams, based on available results and prior-season context. The league has published division standings, not an official combined ranking. Spots 2–8 are especially uncertain because teams have played different opponents and few matches.",
+  "powerRankings": [
+    {
+      "rank": 1,
+      "team": "Explore Academy",
+      "division": "North",
+      "id": "explore",
+      "reason": "5–0 overall; swept Painted Rock and Sueño"
+    },
+    {
+      "rank": 2,
+      "team": "VCP–Sueño Park",
+      "division": "Southwest",
+      "reason": "Beat Brighton; two close sets against Explore"
+    },
+    {
+      "rank": 3,
+      "team": "Academia del Pueblo",
+      "division": "Southwest",
+      "reason": "2–0 in Southwest; still untested against Explore"
+    },
+    {
+      "rank": 4,
+      "team": "Painted Rock Academy",
+      "division": "North",
+      "reason": "Defending champion; swept by Explore"
+    },
+    {
+      "rank": 5,
+      "team": "Brighton Charter",
+      "division": "Southwest",
+      "reason": "Beat Synergy; lost to Sueño; forfeited to Explore"
+    },
+    {
+      "rank": 6,
+      "team": "Milestones Charter",
+      "division": "North",
+      "reason": "Posted 2–1 North; lost first Explore meeting"
+    },
+    {
+      "rank": 7,
+      "team": "Scholars Academy",
+      "division": "North",
+      "reason": "1–0 North; limited current results"
+    },
+    {
+      "rank": 8,
+      "team": "Synergy",
+      "division": "North",
+      "reason": "1–0 North; reported loss to Brighton"
+    },
+    {
+      "rank": 9,
+      "team": "CASA Academy",
+      "division": "North",
+      "reason": "1–2 North; beat Riverbend in crossover"
+    },
+    {
+      "rank": 10,
+      "team": "Edison School of Innovation",
+      "division": "Southwest",
+      "reason": "0–3 Southwest; reported crossover win over Milestones"
+    },
+    {
+      "rank": 11,
+      "team": "Riverbend Prep",
+      "division": "Southwest",
+      "reason": "0–3 Southwest; lost to CASA in crossover"
+    }
   ]
 }
-
