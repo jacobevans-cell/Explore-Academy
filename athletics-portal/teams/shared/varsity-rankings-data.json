@@ -143,120 +143,6 @@
     "Explore's 5–0 overall record includes Brighton's forfeit and the Sueño crossover win; the posted North record is 2–0.",
     "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation."
   ],
-  "powerRankingNote": "Best-known overall records combine the posted division standings with six reported crossover results: Explore over Edison, Brighton (forfeit), and Sueño; Brighton over Synergy; CASA over Riverbend; Edison over Milestones. These are reconstructed totals, not a league-issued overall table. Other unreported crossover games could change them. The 5–0 Explore record matches the coach's overall ledger.",
-  "powerRankings": [
-    {
-      "rank": 1,
-      "team": "Explore Academy",
-      "division": "North",
-      "id": "explore",
-      "reason": "5–0 overall; swept Painted Rock and Sueño",
-      "knownOverall": {
-        "wins": 5,
-        "losses": 0
-      }
-    },
-    {
-      "rank": 2,
-      "team": "VCP–Sueño Park",
-      "division": "Southwest",
-      "reason": "Beat Brighton; two close sets against Explore",
-      "knownOverall": {
-        "wins": 1,
-        "losses": 1
-      }
-    },
-    {
-      "rank": 3,
-      "team": "Academia del Pueblo",
-      "division": "Southwest",
-      "reason": "2–0 in Southwest; still untested against Explore",
-      "knownOverall": {
-        "wins": 2,
-        "losses": 0
-      }
-    },
-    {
-      "rank": 4,
-      "team": "Painted Rock Academy",
-      "division": "North",
-      "reason": "Defending champion; swept by Explore",
-      "knownOverall": {
-        "wins": 0,
-        "losses": 1
-      }
-    },
-    {
-      "rank": 5,
-      "team": "Brighton Charter",
-      "division": "Southwest",
-      "reason": "Beat Synergy; lost to Sueño; forfeited to Explore",
-      "knownOverall": {
-        "wins": 2,
-        "losses": 2
-      }
-    },
-    {
-      "rank": 6,
-      "team": "Milestones Charter",
-      "division": "North",
-      "reason": "Posted 2–1 North; lost first Explore meeting",
-      "knownOverall": {
-        "wins": 2,
-        "losses": 2
-      }
-    },
-    {
-      "rank": 7,
-      "team": "Scholars Academy",
-      "division": "North",
-      "reason": "1–0 North; limited current results",
-      "knownOverall": {
-        "wins": 1,
-        "losses": 0
-      }
-    },
-    {
-      "rank": 8,
-      "team": "Synergy",
-      "division": "North",
-      "reason": "1–0 North; reported loss to Brighton",
-      "knownOverall": {
-        "wins": 1,
-        "losses": 1
-      }
-    },
-    {
-      "rank": 9,
-      "team": "CASA Academy",
-      "division": "North",
-      "reason": "1–2 North; beat Riverbend in crossover",
-      "knownOverall": {
-        "wins": 2,
-        "losses": 2
-      }
-    },
-    {
-      "rank": 10,
-      "team": "Edison School of Innovation",
-      "division": "Southwest",
-      "reason": "0–3 Southwest; reported crossover win over Milestones",
-      "knownOverall": {
-        "wins": 1,
-        "losses": 4
-      }
-    },
-    {
-      "rank": 11,
-      "team": "Riverbend Prep",
-      "division": "Southwest",
-      "reason": "0–3 Southwest; lost to CASA in crossover",
-      "knownOverall": {
-        "wins": 0,
-        "losses": 4
-      }
-    }
-  ],
   "knownCrossoverResults": [
     {
       "winner": "Explore Academy",
@@ -288,5 +174,119 @@
       "loser": "Milestones Charter",
       "note": "Reported crossover"
     }
-  ]
+  ],
+  "overallTeams": [
+    {
+      "tieOrder": 1,
+      "team": "Explore Academy",
+      "division": "North",
+      "id": "explore",
+      "reason": "5–0 overall; swept Painted Rock and Sueño",
+      "knownOverall": {
+        "wins": 5,
+        "losses": 0
+      }
+    },
+    {
+      "tieOrder": 2,
+      "team": "VCP–Sueño Park",
+      "division": "Southwest",
+      "reason": "Beat Brighton; two close sets against Explore",
+      "knownOverall": {
+        "wins": 1,
+        "losses": 1
+      }
+    },
+    {
+      "tieOrder": 3,
+      "team": "Academia del Pueblo",
+      "division": "Southwest",
+      "reason": "2–0 in Southwest; still untested against Explore",
+      "knownOverall": {
+        "wins": 2,
+        "losses": 0
+      }
+    },
+    {
+      "tieOrder": 4,
+      "team": "Painted Rock Academy",
+      "division": "North",
+      "reason": "Defending champion; swept by Explore",
+      "knownOverall": {
+        "wins": 0,
+        "losses": 1
+      }
+    },
+    {
+      "tieOrder": 5,
+      "team": "Brighton Charter",
+      "division": "Southwest",
+      "reason": "Beat Synergy; lost to Sueño; forfeited to Explore",
+      "knownOverall": {
+        "wins": 2,
+        "losses": 2
+      }
+    },
+    {
+      "tieOrder": 6,
+      "team": "Milestones Charter",
+      "division": "North",
+      "reason": "Posted 2–1 North; lost first Explore meeting",
+      "knownOverall": {
+        "wins": 2,
+        "losses": 2
+      }
+    },
+    {
+      "tieOrder": 7,
+      "team": "Scholars Academy",
+      "division": "North",
+      "reason": "1–0 North; limited current results",
+      "knownOverall": {
+        "wins": 1,
+        "losses": 0
+      }
+    },
+    {
+      "tieOrder": 8,
+      "team": "Synergy",
+      "division": "North",
+      "reason": "1–0 North; reported loss to Brighton",
+      "knownOverall": {
+        "wins": 1,
+        "losses": 1
+      }
+    },
+    {
+      "tieOrder": 9,
+      "team": "CASA Academy",
+      "division": "North",
+      "reason": "1–2 North; beat Riverbend in crossover",
+      "knownOverall": {
+        "wins": 2,
+        "losses": 2
+      }
+    },
+    {
+      "tieOrder": 10,
+      "team": "Edison School of Innovation",
+      "division": "Southwest",
+      "reason": "0–3 Southwest; reported crossover win over Milestones",
+      "knownOverall": {
+        "wins": 1,
+        "losses": 4
+      }
+    },
+    {
+      "tieOrder": 11,
+      "team": "Riverbend Prep",
+      "division": "Southwest",
+      "reason": "0–3 Southwest; lost to CASA in crossover",
+      "knownOverall": {
+        "wins": 0,
+        "losses": 4
+      }
+    }
+  ],
+  "overallRankingNote": "Sorted by best-known overall win percentage. Ties are ordered by total wins, then the prior analyst order; this is not the league's official tiebreak or playoff seed. Records combine posted division results with six reported crossovers, so unreported games could change them. Explore's 5–0 matches the coach's overall ledger."
 }
