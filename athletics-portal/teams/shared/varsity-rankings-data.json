@@ -141,7 +141,8 @@
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
     "Explore's 5–0 overall record includes Brighton's forfeit and the Sueño crossover win; the posted North record is 2–0.",
-    "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation."
+    "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation.",
+    "Scholars Academy coach reported 14 rostered players and said CASA was their only opponent so far (October 18, 2026)."
   ],
   "knownCrossoverResults": [
     {
@@ -241,7 +242,7 @@
       "tieOrder": 7,
       "team": "Scholars Academy",
       "division": "North",
-      "reason": "1–0 North; limited current results",
+      "reason": "Only opponent so far: CASA; posted 1–0 North",
       "knownOverall": {
         "wins": 1,
         "losses": 0
