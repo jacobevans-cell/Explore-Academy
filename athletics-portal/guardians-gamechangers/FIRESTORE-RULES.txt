@@ -1,0 +1,40 @@
+// Add this match inside the existing match /databases/{database}/documents block,
+// immediately before the existing DEFAULT DENY match. Keep every existing rule.
+// The existing isAdmin() function limits reads and changes to the organizer.
+
+match /guardianGamechangerSignups/{signupId} {
+  allow read: if isAdmin();
+  allow create: if
+    request.resource.data.keys().hasAll([
+      'eventId','playerName','playerAge','playerSkill','parentName','parentSkill',
+      'contactEmail','contactPhone','notes','status','feeStatus','submittedAt'
+    ]) &&
+    request.resource.data.keys().hasOnly([
+      'eventId','playerName','playerAge','playerSkill','parentName','parentSkill',
+      'contactEmail','contactPhone','notes','status','feeStatus','submittedAt'
+    ]) &&
+    request.resource.data.eventId == 'guardians-gamechangers-2026-11-07' &&
+    request.resource.data.playerName is string &&
+    request.resource.data.playerName.size() >= 2 &&
+    request.resource.data.playerName.size() <= 100 &&
+    request.resource.data.playerAge is int &&
+    request.resource.data.playerAge >= 5 &&
+    request.resource.data.playerAge <= 19 &&
+    request.resource.data.playerSkill in ['new','school','club'] &&
+    request.resource.data.parentName is string &&
+    request.resource.data.parentName.size() >= 2 &&
+    request.resource.data.parentName.size() <= 100 &&
+    request.resource.data.parentSkill in ['new','recreational','experienced'] &&
+    request.resource.data.contactEmail is string &&
+    request.resource.data.contactEmail.size() >= 5 &&
+    request.resource.data.contactEmail.size() <= 150 &&
+    request.resource.data.contactPhone is string &&
+    request.resource.data.contactPhone.size() <= 30 &&
+    request.resource.data.notes is string &&
+    request.resource.data.notes.size() <= 400 &&
+    request.resource.data.status == 'registered' &&
+    request.resource.data.feeStatus == 'due' &&
+    request.resource.data.submittedAt == request.time;
+  allow update, delete: if isAdmin();
+}
+

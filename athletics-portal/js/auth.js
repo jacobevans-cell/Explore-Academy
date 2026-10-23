@@ -34,5 +34,17 @@ if (location.pathname.endsWith('/admin.html')) {
       });
       sideLinks.appendChild(interestButton);
     }
+
+    if (!sideLinks.querySelector('[data-tournament-signups]')) {
+      const signupsButton = document.createElement('button');
+      signupsButton.type = 'button';
+      signupsButton.textContent = 'Tournament Signups';
+      signupsButton.dataset.tournamentSignups = 'true';
+      signupsButton.addEventListener('click', () => {
+        location.href = 'guardians-gamechangers/admin.html';
+      });
+      sideLinks.appendChild(signupsButton);
+    }
   });
 }
+

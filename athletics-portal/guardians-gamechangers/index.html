@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Register one Explore Academy player and one parent for the Guardians & Gamechangers 2v2 volleyball tournament on November 7, 2026.">
+  <title>Guardians & Gamechangers Signup | Explore Athletics</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#signup">Skip to signup</a>
+  <header class="hero">
+    <div class="wrap">
+      <nav class="nav" aria-label="Page navigation">
+        <a class="brand" href="../../athletics.html"><img src="../assets/explore-mark.svg" alt=""><span>EXPLORE<br><small>ATHLETICS</small></span></a>
+        <a class="back" href="../../athletics.html">← Eagles Athletics</a>
+      </nav>
+      <div class="hero-content">
+        <div class="eyebrow">EXPLORE ACADEMY × GEARED4 VOLLEYBALL</div>
+        <h1>Guardians <span>&</span><br>Gamechangers</h1>
+        <p class="subtitle">A 2v2 volleyball tournament for one player and one parent.</p>
+        <div class="facts" aria-label="Tournament details">
+          <div><strong>SATURDAY</strong><span>NOV 7, 2026</span></div>
+          <div><strong>EVENT WINDOW</strong><span>4–8 PM</span></div>
+          <div><strong>TEAM ENTRY</strong><span>$10</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="signup" class="wrap main">
+    <section class="intro card">
+      <div class="section-kicker">TEAM UP</div>
+      <h2>One player. One parent. One team.</h2>
+      <p>We’ll group teams by player age and skill. The event runs from 4–8 PM at Explore Academy; wave assignments and specific play times will be announced ahead of time.</p>
+      <div class="notice"><strong>Registration only.</strong> The $10 team fee is collected separately. No payment is taken on this page.</div>
+    </section>
+
+    <form id="signupForm" class="card form-card" novalidate>
+      <div class="section-kicker">SIGN UP</div>
+      <h2>Register your team</h2>
+      <p class="form-intro">Enter the player and the parent who will play together. We’ll use your email to share tournament details.</p>
+
+      <fieldset>
+        <legend><span>01</span> Player</legend>
+        <div class="grid">
+          <label>Player full name <em>*</em><input id="playerName" name="playerName" autocomplete="name" maxlength="100" required></label>
+          <label>Player age on November 7 <em>*</em><input id="playerAge" name="playerAge" type="number" min="5" max="19" inputmode="numeric" required></label>
+          <label class="wide">Player volleyball experience <em>*</em>
+            <select id="playerSkill" name="playerSkill" required>
+              <option value="">Choose a level</option>
+              <option value="new">New to volleyball</option>
+              <option value="school">School or recreational experience</option>
+              <option value="club">Club or competitive experience</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span>02</span> Playing parent</legend>
+        <div class="grid">
+          <label>Parent/guardian full name <em>*</em><input id="parentName" name="parentName" autocomplete="name" maxlength="100" required></label>
+          <label>Parent volleyball experience <em>*</em>
+            <select id="parentSkill" name="parentSkill" required>
+              <option value="">Choose a level</option>
+              <option value="new">New to volleyball</option>
+              <option value="recreational">Some recreational experience</option>
+              <option value="experienced">Experienced player</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span>03</span> Contact</legend>
+        <div class="grid">
+          <label>Email for tournament updates <em>*</em><input id="contactEmail" name="contactEmail" type="email" autocomplete="email" maxlength="150" required></label>
+          <label>Phone (optional)<input id="contactPhone" name="contactPhone" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label class="wide">Notes for age or skill grouping (optional)<textarea id="notes" name="notes" maxlength="400" rows="3" placeholder="Anything that would help us place your team fairly"></textarea></label>
+        </div>
+      </fieldset>
+
+      <div class="honeypot" aria-hidden="true"><label>Leave this field empty<input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <label class="confirm"><input id="confirm" type="checkbox" required><span>I’m registering one player and one parent/guardian as a 2v2 team. I understand the $10 team fee is collected separately and our wave assignment and play time will be announced before the event.</span></label>
+      <button id="submitBtn" class="submit" type="submit">Register our team →</button>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <p class="privacy">Registration details are visible only to the Explore Athletics organizer. No payment information is collected here.</p>
+    </form>
+    <footer>Explore Academy Athletics · Peoria, Arizona</footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
