@@ -78,7 +78,10 @@ $("rows").addEventListener("click", async event => {
     show("adminStatus", "Could not save this registration.");
   }
 });
-function csvCell(value) { return `"${String(value ?? "").replace(/"/g, '""')}"`; }
+function csvCell(value) {
+  const text = String(value ?? "").replace(/^[\t\r\n ]*[=+\-@]/, match => `'${match}`);
+  return `"${text.replace(/"/g, '""')}"`;
+}
 function exportCsv() {
   const columns = ["Player","Player Age","Player Skill","Playing Parent","Parent Skill","Email","Phone","Wave","Play Time","Fee Status","Registration Status","Notes","Submitted"];
   const lines = [columns.map(csvCell).join(",")];
