@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Guardians & Gamechangers Registrations | Explore Athletics</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+  <header class="admin-header"><div class="wrap"><div><h1>Guardians & Gamechangers</h1><p>Registration sheet · November 7, 2026</p></div><div class="admin-actions"><a href="index.html">Public signup</a><button id="refreshBtn" class="hidden">Refresh</button><button id="exportBtn" class="hidden">Export CSV</button><button id="signOutBtn" class="hidden">Sign out</button></div></div></header>
+  <main class="admin-main">
+    <section id="loginCard" class="admin-card login-card"><h2>Organizer sign in</h2><p>Use the authorized Explore Athletics Google account to view registrations.</p><button id="googleSignIn" class="admin-btn">Sign in with Google</button><div id="loginStatus" class="status" role="status" aria-live="polite"></div></section>
+    <div id="dashboard" class="hidden">
+      <div class="stats"><div class="stat"><span>Active teams</span><strong id="activeCount">0</strong></div><div class="stat"><span>Fees due</span><strong id="dueCount">0</strong></div><div class="stat"><span>Fees paid</span><strong id="paidCount">0</strong></div></div>
+      <section class="admin-card"><div class="admin-toolbar"><div><h2>Signup sheet</h2><p class="muted" id="updatedAt">Loading…</p></div><input id="searchBox" type="search" placeholder="Search player, parent, email…" aria-label="Search registrations"></div><div id="adminStatus" class="status" role="status" aria-live="polite"></div><div class="table-wrap"><table><thead><tr><th>Player</th><th>Skill</th><th>Playing parent</th><th>Contact</th><th>Wave / play time</th><th>Fee</th><th>Status</th><th>Notes</th><th>Submitted</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+    </div>
+  </main>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
+
