@@ -1,28 +1,28 @@
 {
-  "asOf": "October 16, 2026",
-  "source": "IYAC standings message reported by Coach Evans",
+  "asOf": "October 24, 2026",
+  "source": "IYAC standings snapshot plus Coach Evans game results",
   "overall": {
     "wins": 5,
-    "losses": 0,
+    "losses": 1,
     "playedWins": 4,
     "playedLosses": 0,
     "setsWon": 8,
-    "setsLost": 0,
-    "pointsFor": 200,
-    "pointsAgainst": 125
+    "setsLost": null,
+    "pointsFor": null,
+    "pointsAgainst": null
   },
   "north": [
     {
-      "rank": 1,
+      "rank": 2,
       "team": "Explore Academy",
       "wins": 2,
-      "losses": 0,
+      "losses": 1,
       "id": "explore"
     },
     {
-      "rank": 2,
+      "rank": 1,
       "team": "Milestones Charter",
-      "wins": 2,
+      "wins": 3,
       "losses": 1
     },
     {
@@ -85,37 +85,32 @@
   "forecasts": [
     {
       "label": "Make playoffs",
-      "range": "99%+",
-      "detail": "Strongly favored; not mathematically clinched"
+      "range": "Strong",
+      "detail": "Still in a current top-three North position"
     },
     {
       "label": "Win North",
-      "range": "80–88%",
-      "detail": "Division title forecast"
+      "range": "Open",
+      "detail": "Milestones now holds the best-known North record"
     },
     {
       "label": "Reach final",
-      "range": "65–73%",
-      "detail": "Combined six-team playoff"
+      "range": "Possible",
+      "detail": "Depends heavily on the remaining North games and playoff seed"
     },
     {
       "label": "Win championship",
-      "range": "48–57%",
-      "detail": "Current contender, not a guarantee"
+      "range": "Contender",
+      "detail": "Loss lowers the margin for error, but the path remains open"
     },
     {
       "label": "Undefeated overall",
-      "range": "45–55%",
-      "detail": "Includes the Sueño rematch"
+      "range": "0%",
+      "detail": "No longer possible after the Oct. 19 Milestones loss"
     }
   ],
-  "forecastNote": "Coach's working estimates from the season handoff, not a calibrated statistical model. They are dated and do not automatically change with pathway selections.",
+  "forecastNote": "Working outlook based on the latest coach-confirmed result and the most recent standings snapshot. Exact league tiebreaks and several opponent results remain unconfirmed, so these are directional labels rather than official probabilities.",
   "remainingNorth": [
-    {
-      "date": "Oct 19",
-      "opponent": "Milestones Charter",
-      "location": "Away"
-    },
     {
       "date": "Oct 27",
       "opponent": "Scholars Academy",
@@ -140,9 +135,9 @@
   "notes": [
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
-    "Explore's 5–0 overall record includes Brighton's forfeit and the Sueño crossover win; the posted North record is 2–0.",
-    "The September 23 Milestones match was originally advertised as a scrimmage; its inclusion in the posted 2–0 North record still needs formal confirmation.",
-    "Scholars Academy coach reported 14 rostered players and said CASA was their only opponent so far (October 18, 2026)."
+    "Explore is 5–1 overall after the October 19 loss at Milestones.",
+    "The best-known North record is now 2–1 for Explore; Milestones moves to 3–1 in this working snapshot.",
+    "Exact set and point totals from the Milestones loss were not supplied, so the page does not invent updated set or point-margin figures."
   ],
   "knownCrossoverResults": [
     {
@@ -182,10 +177,10 @@
       "team": "Explore Academy",
       "division": "North",
       "id": "explore",
-      "reason": "5–0 overall; swept Painted Rock and Sueño",
+      "reason": "5–1 overall; wins over Painted Rock and Sueño; loss at Milestones",
       "knownOverall": {
         "wins": 5,
-        "losses": 0
+        "losses": 1
       }
     },
     {
@@ -232,9 +227,9 @@
       "tieOrder": 6,
       "team": "Milestones Charter",
       "division": "North",
-      "reason": "Posted 2–1 North; lost first Explore meeting",
+      "reason": "3–1 best-known North; beat Explore on Oct. 19",
       "knownOverall": {
-        "wins": 2,
+        "wins": 3,
         "losses": 2
       }
     },
@@ -289,5 +284,5 @@
       }
     }
   ],
-  "overallRankingNote": "Sorted by best-known overall win percentage. Ties are ordered by total wins, then the prior analyst order; this is not the league's official tiebreak or playoff seed. Records combine posted division results with six reported crossovers, so unreported games could change them. Explore's 5–0 matches the coach's overall ledger."
+  "overallRankingNote": "Sorted by best-known overall win percentage using the latest coach-confirmed Explore result plus the most recent reconstructed opponent records. This is not the league's official overall ranking or playoff tiebreak order, and unreported opponent games could change the order."
 }
