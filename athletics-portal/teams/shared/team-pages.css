@@ -37,3 +37,14 @@
 .trunk-or-treat-event{margin-top:14px!important;padding:14px!important;border:2px solid #ff8a00!important;border-radius:16px!important;background:linear-gradient(135deg,#28113d,#160b22)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 .trunk-or-treat-tag{margin-top:8px;padding:9px 10px;border-radius:12px;background:linear-gradient(90deg,#ff8a00,#ffb000);color:#24110a;font-size:13px;font-weight:1000;letter-spacing:.06em;text-align:center}
 .trunk-or-treat-message{margin-top:8px;color:#f6e7ff;font-size:12px;font-weight:850;text-align:center}
+
+/* School-wide Trunk or Treat event */
+.trunk-event-card{background:radial-gradient(circle at 88% 12%,rgba(255,174,0,.30),transparent 24%),linear-gradient(145deg,#160b27 0%,#301046 48%,#0b0714 100%)!important;border-color:#ff8a00!important;box-shadow:0 22px 48px rgba(47,13,70,.30),inset 0 0 0 2px rgba(255,255,255,.08)!important}
+.trunk-event-card .banquet-kicker{color:#ffb23c!important;text-shadow:none!important}
+.trunk-event-card .banquet-title{background:linear-gradient(180deg,#ff9b00 0%,#ff7300 45%,#df4c00 52%,#ff8500 100%)!important;color:#1a0b24!important;border-color:#fff!important;text-shadow:0 1px 0 rgba(255,255,255,.45)!important}
+.trunk-event-card .banquet-subtitle{color:#fff!important}
+.trunk-event-card .banquet-date,.trunk-event-card .banquet-time{background:linear-gradient(180deg,#fff 0%,#ffe1b8 48%,#ffc56b 100%)!important;border-color:#ff9a1a!important}
+.trunk-event-card .banquet-feature{background:linear-gradient(145deg,#281039,#170a24)!important;color:#fff!important;border-color:#ff8a00!important}
+.trunk-event-card .banquet-feature-1,.trunk-event-card .banquet-feature-2,.trunk-event-card .banquet-feature-3{background:linear-gradient(145deg,#281039,#170a24)!important;color:#fff!important;border-color:#ff8a00!important}
+.trunk-event-card .banquet-location{background:linear-gradient(90deg,#ff8a00,#ffb000)!important;color:#211023!important;border-color:#ffd48d!important}
+.trunk-event-card .banquet-footer{background:linear-gradient(90deg,#2a103c,#160921,#2a103c)!important;color:#fff!important;border-color:#ff8a00!important}
