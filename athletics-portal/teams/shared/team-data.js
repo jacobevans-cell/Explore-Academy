@@ -57,6 +57,19 @@ export const TEAM_DATA = {
         address: '17300 W Cactus Rd, Surprise, AZ'
       },
       {
+        type: 'halloween',
+        date: 'Oct 29',
+        time: '5:30–7:30 PM',
+        title: 'Trunk or Treat',
+        subtitle: 'Explore Academy Peoria • School-Wide Family Event',
+        location: 'Explore Academy Peoria',
+        items: [
+          { icon: '🏆', title: 'Best Decorated Trunk', detail: '$50 cash prize for the winning trunk' },
+          { icon: '👻', title: 'Costume Contest + Pumpkin Carving', detail: 'Halloween fun for students and families' },
+          { icon: '🎪', title: 'Fall Festival', detail: 'Games, concessions, trunks, treats and more' }
+        ]
+      },
+      {
         type: 'banquet',
         date: 'Nov 18',
         time: '5:00–7:30 PM',
@@ -135,12 +148,16 @@ export const TEAM_DATA = {
       },
       {
         type: 'halloween',
-        weeklyOnly: true,
         date: 'Oct 29',
-        time: '4:15–6:15 PM',
+        time: '5:30–7:30 PM',
         title: 'Trunk or Treat',
-        subtitle: 'Halloween Team Event',
-        location: 'Explore Academy'
+        subtitle: 'Explore Academy Peoria • School-Wide Family Event',
+        location: 'Explore Academy Peoria',
+        items: [
+          { icon: '🏆', title: 'Best Decorated Trunk', detail: '$50 cash prize for the winning trunk' },
+          { icon: '👻', title: 'Costume Contest + Pumpkin Carving', detail: 'Halloween fun for students and families' },
+          { icon: '🎪', title: 'Fall Festival', detail: 'Games, concessions, trunks, treats and more' }
+        ]
       },
       {
         type: 'banquet',
@@ -202,6 +219,19 @@ export const TEAM_DATA = {
     ],
     events: [
       {
+        type: 'halloween',
+        date: 'Oct 29',
+        time: '5:30–7:30 PM',
+        title: 'Trunk or Treat',
+        subtitle: 'Explore Academy Peoria • School-Wide Family Event',
+        location: 'Explore Academy Peoria',
+        items: [
+          { icon: '🏆', title: 'Best Decorated Trunk', detail: '$50 cash prize for the winning trunk' },
+          { icon: '👻', title: 'Costume Contest + Pumpkin Carving', detail: 'Halloween fun for students and families' },
+          { icon: '🎪', title: 'Fall Festival', detail: 'Games, concessions, trunks, treats and more' }
+        ]
+      },
+      {
         type: 'banquet',
         date: 'Nov 18',
         time: '5:00–7:30 PM',
@@ -242,7 +272,22 @@ export const TEAM_DATA = {
       { name: 'Kataleya Eichberger', number: '67' }
     ],
     practice: [],
-    games: []
+    games: [],
+    events: [
+      {
+        type: 'halloween',
+        date: 'Oct 29',
+        time: '5:30–7:30 PM',
+        title: 'Trunk or Treat',
+        subtitle: 'Explore Academy Peoria • School-Wide Family Event',
+        location: 'Explore Academy Peoria',
+        items: [
+          { icon: '🏆', title: 'Best Decorated Trunk', detail: '$50 cash prize for the winning trunk' },
+          { icon: '👻', title: 'Costume Contest + Pumpkin Carving', detail: 'Halloween fun for students and families' },
+          { icon: '🎪', title: 'Fall Festival', detail: 'Games, concessions, trunks, treats and more' }
+        ]
+      },
+    ]
   }
 };
 
