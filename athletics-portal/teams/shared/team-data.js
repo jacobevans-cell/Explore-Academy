@@ -134,6 +134,15 @@ export const TEAM_DATA = {
         address: '17300 W Cactus Rd, Surprise, AZ'
       },
       {
+        type: 'halloween',
+        weeklyOnly: true,
+        date: 'Oct 29',
+        time: '4:15–6:15 PM',
+        title: 'Trunk or Treat',
+        subtitle: 'Halloween Team Event',
+        location: 'Explore Academy'
+      },
+      {
         type: 'banquet',
         date: 'Nov 18',
         time: '5:00–7:30 PM',
