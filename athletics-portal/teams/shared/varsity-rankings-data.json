@@ -1,6 +1,6 @@
 {
-  "asOf": "October 24, 2026",
-  "source": "IYAC standings snapshot plus confirmed coach-reported results through October 23",
+  "asOf": "October 26, 2026",
+  "source": "Official IYAC division standings shared October 26, 2026, plus confirmed crossover results",
   "overall": {
     "wins": 5,
     "losses": 1,
@@ -20,24 +20,22 @@
     },
     {
       "rank": 2,
-      "rankLabel": "T-2",
+      "team": "Scholars Academy",
+      "wins": 2,
+      "losses": 1
+    },
+    {
+      "rank": 3,
       "team": "Explore Academy",
       "wins": 2,
       "losses": 1,
       "id": "explore"
     },
     {
-      "rank": 2,
-      "rankLabel": "T-2",
-      "team": "Scholars Academy",
-      "wins": 2,
-      "losses": 1
-    },
-    {
       "rank": 4,
       "team": "Synergy",
       "wins": 1,
-      "losses": 0
+      "losses": 1
     },
     {
       "rank": 5,
@@ -48,21 +46,19 @@
     {
       "rank": 6,
       "team": "Painted Rock Academy",
-      "wins": 0,
+      "wins": 1,
       "losses": 2
     }
   ],
   "southwest": [
     {
       "rank": 1,
-      "rankLabel": "T-1",
       "team": "Academia del Pueblo",
-      "wins": 2,
+      "wins": 3,
       "losses": 0
     },
     {
-      "rank": 1,
-      "rankLabel": "T-1",
+      "rank": 2,
       "team": "VCP–Sueño Park",
       "wins": 2,
       "losses": 0
@@ -71,18 +67,16 @@
       "rank": 3,
       "team": "Brighton Charter",
       "wins": 2,
-      "losses": 1
+      "losses": 2
     },
     {
       "rank": 4,
-      "rankLabel": "T-4",
       "team": "Riverbend Prep",
       "wins": 0,
       "losses": 3
     },
     {
-      "rank": 4,
-      "rankLabel": "T-4",
+      "rank": 5,
       "team": "Edison School of Innovation",
       "wins": 0,
       "losses": 5
@@ -92,7 +86,7 @@
     {
       "label": "Make playoffs",
       "range": "Strong",
-      "detail": "Explore is tied 2–1 with Scholars in the working top-three North picture"
+      "detail": "Explore is officially listed third in the North at 2–1, inside the three-team playoff line"
     },
     {
       "label": "Win North",
@@ -115,7 +109,7 @@
       "detail": "No longer possible after the Oct. 19 Milestones loss"
     }
   ],
-  "forecastNote": "Working outlook based on the latest confirmed results. Exact league tiebreaks, the official updated seed order, and several opponent set scores remain unconfirmed, so these are directional labels rather than official probabilities.",
+  "forecastNote": "Working outlook based on the official October 26 division standings and confirmed crossover results. Exact league tiebreaks, bracket structure, byes, and several opponent set scores remain unconfirmed, so these are directional labels rather than official probabilities.",
   "remainingNorth": [
     {
       "date": "Oct 27",
@@ -141,8 +135,8 @@
   "notes": [
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
-    "Explore is 5–1 overall and 2–1 in the North after the October 19 loss at Milestones.",
-    "Milestones has the best-known North record at 4–1; Explore and Scholars are tied at 2–1, while Synergy is 1–0 with fewer games played.",
+    "Explore is 5–1 overall and officially listed 2–1 in third place in the North after the October 19 loss at Milestones.",
+    "Milestones leads the North at 4–1; Scholars and Explore are both 2–1, with Scholars listed second and Explore third in the league update.",
     "Exact set and point totals from the Milestones loss were not supplied, so the page does not invent updated set or point-margin figures."
   ],
   "knownCrossoverResults": [
@@ -187,9 +181,9 @@
       "tieOrder": 1,
       "team": "Academia del Pueblo",
       "division": "Southwest",
-      "reason": "2–0 in Southwest; still untested against Explore",
+      "reason": "3–0 in the official Southwest standings; still untested against Explore",
       "knownOverall": {
-        "wins": 2,
+        "wins": 3,
         "losses": 0
       }
     },
@@ -228,7 +222,7 @@
       "tieOrder": 5,
       "team": "VCP–Sueño Park",
       "division": "Southwest",
-      "reason": "2–0 Southwest; beat Brighton and Edison; lost to Explore 25–21 twice",
+      "reason": "2–0 Southwest; lost the Oct. 15 crossover at Explore, 25–21 and 25–21",
       "knownOverall": {
         "wins": 2,
         "losses": 1
@@ -236,16 +230,6 @@
     },
     {
       "tieOrder": 6,
-      "team": "Brighton Charter",
-      "division": "Southwest",
-      "reason": "2–1 Southwest; beat Synergy and Edison; lost to Sueño, Painted Rock, and Explore by forfeit",
-      "knownOverall": {
-        "wins": 3,
-        "losses": 3
-      }
-    },
-    {
-      "tieOrder": 7,
       "team": "CASA Academy",
       "division": "North",
       "reason": "1–2 North; beat Riverbend in crossover play",
@@ -255,20 +239,30 @@
       }
     },
     {
-      "tieOrder": 8,
-      "team": "Synergy",
+      "tieOrder": 7,
+      "team": "Painted Rock Academy",
       "division": "North",
-      "reason": "1–0 North with fewer games played; reported crossover loss to Brighton",
+      "reason": "1–2 North; beat Brighton in crossover play, 25–20 and 25–18",
       "knownOverall": {
-        "wins": 1,
-        "losses": 1
+        "wins": 2,
+        "losses": 2
+      }
+    },
+    {
+      "tieOrder": 8,
+      "team": "Brighton Charter",
+      "division": "Southwest",
+      "reason": "2–2 Southwest; beat Synergy, lost to Painted Rock, and forfeited to Explore in crossover play",
+      "knownOverall": {
+        "wins": 3,
+        "losses": 4
       }
     },
     {
       "tieOrder": 9,
-      "team": "Painted Rock Academy",
+      "team": "Synergy",
       "division": "North",
-      "reason": "0–2 North; beat Brighton in crossover play; lost to Explore and Scholars",
+      "reason": "1–1 North; reported crossover loss to Brighton",
       "knownOverall": {
         "wins": 1,
         "losses": 2
@@ -278,7 +272,7 @@
       "tieOrder": 10,
       "team": "Edison School of Innovation",
       "division": "Southwest",
-      "reason": "0–5 Southwest; beat Milestones in crossover play and lost to Explore",
+      "reason": "0–5 Southwest; beat Milestones and lost to Explore in crossover play",
       "knownOverall": {
         "wins": 1,
         "losses": 6
@@ -295,5 +289,5 @@
       }
     }
   ],
-  "overallRankingNote": "Sorted by best-known overall win percentage using the latest confirmed results. Equal percentages are displayed as ties because the league's official overall tiebreak order is unknown. This is a reconstructed comparison, not the league's official overall ranking, and unreported games could change the order."
+  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 26 division records plus confirmed crossover results. Equal percentages are displayed as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking, and unreported crossover games could change it."
 }
