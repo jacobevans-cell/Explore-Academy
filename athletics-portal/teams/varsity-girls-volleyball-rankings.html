@@ -80,7 +80,15 @@
         if (row.id === 'explore') tr.classList.add('explore');
         add(tr, 'td', row.rankLabel || row.rank); add(tr, 'td', row.team, 'team-name'); add(tr, 'td', record(row.wins, row.losses)); add(tr, 'td', pct(row));
         table.append(tr);
-        if (row.rank <= 3) add(field, 'li', row.team);
+      });
+      const slots = new Map();
+      rows.filter(row => row.rank <= 3).forEach(row => {
+        if (!slots.has(row.rank)) slots.set(row.rank, []);
+        slots.get(row.rank).push(row.team);
+      });
+      [...slots.entries()].sort((a, b) => a[0] - b[0]).forEach(([rank, teams]) => {
+        const label = teams.length > 1 ? `${teams.join(' / ')} (tied for #${rank})` : teams[0];
+        add(field, 'li', label);
       });
     }
     function renderForecasts(data) {
