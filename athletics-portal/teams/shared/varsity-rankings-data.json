@@ -133,6 +133,7 @@
     "All records on this page are shown as wins first, losses second.",
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
+    "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
     "Explore is 6 wins and 1 loss overall and 3 wins and 1 loss in the North.",
     "Milestones leads the North at 5 wins and 1 loss; Explore is second at 3 wins and 1 loss; Scholars and CASA are tied at 2 wins and 2 losses.",
     "Sueño Park leads the Southwest at 3 wins and 0 losses, followed by ADP at 3 wins and 1 loss and Brighton at 3 wins and 2 losses.",
@@ -288,5 +289,13 @@
       }
     }
   ],
-  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 30 division standings and confirmed crossover games. Every record is displayed as wins first, losses second. Equal percentages are shown as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking."
+  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 30 division standings and confirmed crossover games. Every record is displayed as wins first, losses second. Equal percentages are shown as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking.",
+  "postseason": {
+    "seasonEnds": "November 12, 2026",
+    "playoffWeek": "Week of November 16, 2026",
+    "championshipDate": "Thursday, November 19, 2026",
+    "championshipLocation": "Academia del Pueblo (ADP)",
+    "tentative": true,
+    "source": "IYAC season announcement"
+  }
 }
