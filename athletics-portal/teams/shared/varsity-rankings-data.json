@@ -1,6 +1,6 @@
 {
-  "asOf": "October 28, 2026",
-  "source": "Official IYAC division standings shared October 26, updated through confirmed October 27 results: Explore over Scholars 2–1 and CASA over Synergy 2–0",
+  "asOf": "October 30, 2026",
+  "source": "Official IYAC division standings shared October 30, 2026",
   "overall": {
     "wins": 6,
     "losses": 1,
@@ -15,7 +15,7 @@
     {
       "rank": 1,
       "team": "Milestones Charter",
-      "wins": 4,
+      "wins": 5,
       "losses": 1
     },
     {
@@ -41,43 +41,41 @@
     },
     {
       "rank": 5,
-      "rankLabel": "T-5",
       "team": "Synergy",
       "wins": 1,
       "losses": 2
     },
     {
-      "rank": 5,
-      "rankLabel": "T-5",
+      "rank": 6,
       "team": "Painted Rock Academy",
       "wins": 1,
-      "losses": 2
+      "losses": 3
     }
   ],
   "southwest": [
     {
       "rank": 1,
-      "team": "Academia del Pueblo",
+      "team": "VCP–Sueño Park",
       "wins": 3,
       "losses": 0
     },
     {
       "rank": 2,
-      "team": "VCP–Sueño Park",
-      "wins": 2,
-      "losses": 0
+      "team": "Academia del Pueblo",
+      "wins": 3,
+      "losses": 1
     },
     {
       "rank": 3,
       "team": "Brighton Charter",
-      "wins": 2,
+      "wins": 3,
       "losses": 2
     },
     {
       "rank": 4,
       "team": "Riverbend Prep",
       "wins": 0,
-      "losses": 3
+      "losses": 4
     },
     {
       "rank": 5,
@@ -90,22 +88,22 @@
     {
       "label": "Make playoffs",
       "range": "98–99%",
-      "detail": "Explore is second in the updated North picture at 3 wins and 1 loss"
+      "detail": "Explore is alone in second place in the North at 3 wins and 1 loss"
     },
     {
-      "label": "Win North",
-      "range": "Still open",
-      "detail": "Milestones leads at 4 wins and 1 loss; Explore can still finish 5 wins and 1 loss"
+      "label": "Tie for North lead",
+      "range": "55–65%",
+      "detail": "Winning the final two North games would produce a 5–1 tie with Milestones"
     },
     {
       "label": "Reach final",
-      "range": "Possible",
-      "detail": "Explore owns a direct win over Scholars and remains second in the working North standings"
+      "range": "45–55%",
+      "detail": "Explore is currently a top-two North seed and owns wins over Sueño Park and Scholars"
     },
     {
       "label": "Win championship",
-      "range": "Contender",
-      "detail": "The team is 6 wins and 1 loss overall, with victories over Sueño Park and Scholars"
+      "range": "30–40%",
+      "detail": "Explore is 6–1 overall and now leads the reconstructed league-wide ranking"
     },
     {
       "label": "Undefeated overall",
@@ -113,7 +111,7 @@
       "detail": "No longer possible after the October 19 Milestones loss"
     }
   ],
-  "forecastNote": "Working outlook based on the official October 26 division standings plus the confirmed October 27 Explore–Scholars and CASA–Synergy results. Exact league tiebreaks, bracket structure, byes, and several opponent set scores remain unconfirmed.",
+  "forecastNote": "Working outlook based on the official October 30 division standings and confirmed crossover results. Exact league tiebreaks, bracket structure, byes, and several opponent set scores remain unconfirmed.",
   "remainingNorth": [
     {
       "date": "Nov 3",
@@ -135,9 +133,9 @@
     "All records on this page are shown as wins first, losses second.",
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
-    "Explore is 6 wins and 1 loss overall and 3 wins and 1 loss in the North after defeating Scholars 2–1 on October 27.",
-    "Milestones leads the North at 4 wins and 1 loss; Explore is second at 3 wins and 1 loss; Scholars and CASA are tied at 2 wins and 2 losses.",
-    "CASA defeated Synergy 2–0, moving CASA to 2 wins and 2 losses and Synergy to 1 win and 2 losses in North play.",
+    "Explore is 6 wins and 1 loss overall and 3 wins and 1 loss in the North.",
+    "Milestones leads the North at 5 wins and 1 loss; Explore is second at 3 wins and 1 loss; Scholars and CASA are tied at 2 wins and 2 losses.",
+    "Sueño Park leads the Southwest at 3 wins and 0 losses, followed by ADP at 3 wins and 1 loss and Brighton at 3 wins and 2 losses.",
     "Exact set and point totals from the Milestones loss and the second Scholars set were not supplied, so the page does not invent complete set or point-margin figures."
   ],
   "knownCrossoverResults": [
@@ -180,16 +178,6 @@
   "overallTeams": [
     {
       "tieOrder": 1,
-      "team": "Academia del Pueblo",
-      "division": "Southwest",
-      "reason": "3 wins and 0 losses in the official Southwest standings; still untested against Explore",
-      "knownOverall": {
-        "wins": 3,
-        "losses": 0
-      }
-    },
-    {
-      "tieOrder": 2,
       "team": "Explore Academy",
       "division": "North",
       "id": "explore",
@@ -200,23 +188,33 @@
       }
     },
     {
-      "tieOrder": 3,
-      "team": "Milestones Charter",
-      "division": "North",
-      "reason": "4 wins and 1 loss in the North; split with Explore and lost a crossover to Edison",
+      "tieOrder": 2,
+      "team": "VCP–Sueño Park",
+      "division": "Southwest",
+      "reason": "3 wins and 0 losses in the Southwest; lost the October 15 crossover at Explore",
       "knownOverall": {
-        "wins": 4,
-        "losses": 2
+        "wins": 3,
+        "losses": 1
+      }
+    },
+    {
+      "tieOrder": 3,
+      "team": "Academia del Pueblo",
+      "division": "Southwest",
+      "reason": "3 wins and 1 loss in the official Southwest standings",
+      "knownOverall": {
+        "wins": 3,
+        "losses": 1
       }
     },
     {
       "tieOrder": 4,
-      "team": "VCP–Sueño Park",
-      "division": "Southwest",
-      "reason": "2 wins and 0 losses in the Southwest; lost the October 15 crossover at Explore",
+      "team": "Milestones Charter",
+      "division": "North",
+      "reason": "5 wins and 1 loss in the North; split with Explore and lost a crossover to Edison",
       "knownOverall": {
-        "wins": 2,
-        "losses": 1
+        "wins": 5,
+        "losses": 2
       }
     },
     {
@@ -241,22 +239,22 @@
     },
     {
       "tieOrder": 7,
-      "team": "Painted Rock Academy",
-      "division": "North",
-      "reason": "1 win and 2 losses in the North; beat Brighton in crossover play",
+      "team": "Brighton Charter",
+      "division": "Southwest",
+      "reason": "3 wins and 2 losses in the Southwest; 1 win and 2 losses in confirmed crossover play",
       "knownOverall": {
-        "wins": 2,
-        "losses": 2
+        "wins": 4,
+        "losses": 4
       }
     },
     {
       "tieOrder": 8,
-      "team": "Brighton Charter",
-      "division": "Southwest",
-      "reason": "2 wins and 2 losses in the Southwest; 1 win and 2 losses in confirmed crossover play",
+      "team": "Painted Rock Academy",
+      "division": "North",
+      "reason": "1 win and 3 losses in the North; beat Brighton in crossover play",
       "knownOverall": {
-        "wins": 3,
-        "losses": 4
+        "wins": 2,
+        "losses": 3
       }
     },
     {
@@ -283,12 +281,12 @@
       "tieOrder": 11,
       "team": "Riverbend Prep",
       "division": "Southwest",
-      "reason": "0 wins and 3 losses in the Southwest; lost to CASA in crossover play",
+      "reason": "0 wins and 4 losses in the Southwest; lost to CASA in crossover play",
       "knownOverall": {
         "wins": 0,
-        "losses": 4
+        "losses": 5
       }
     }
   ],
-  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 26 division records, the confirmed October 27 results, and confirmed crossover games. Every record is displayed as wins first, losses second. Equal percentages are shown as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking."
+  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 30 division standings and confirmed crossover games. Every record is displayed as wins first, losses second. Equal percentages are shown as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking."
 }
