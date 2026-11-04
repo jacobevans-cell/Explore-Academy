@@ -1,6 +1,6 @@
 {
-  "asOf": "November 3, 2026",
-  "source": "Official IYAC division standings shared October 30, updated with Explore’s confirmed November 3 victory over Synergy, 25–12 and 25–13",
+  "asOf": "November 4, 2026",
+  "source": "Official IYAC standings plus the commissioner’s November 4 clarification: Explore has six official ranking games, made up of five North opponents and the assigned crossover against Edison; only one Milestones meeting counts",
   "overall": {
     "wins": 7,
     "losses": 1,
@@ -89,13 +89,18 @@
   "forecasts": [
     {
       "label": "Make playoffs",
-      "range": "99%+",
-      "detail": "Explore is 4–1 in the North with only CASA remaining"
+      "range": "98–99%",
+      "detail": "Explore is 4–1 officially; beating CASA clinches, while a loss creates the only realistic tiebreak danger"
+    },
+    {
+      "label": "Miss playoffs",
+      "range": "1–2%",
+      "detail": "Requires a CASA loss plus unfavorable remaining results and tiebreaks"
     },
     {
       "label": "Tie for North lead",
       "range": "60–70%",
-      "detail": "A victory over CASA would produce a 5–1 tie with Milestones"
+      "detail": "A CASA victory produces a 5–1 tie with Milestones"
     },
     {
       "label": "Reach final",
@@ -105,15 +110,10 @@
     {
       "label": "Win championship",
       "range": "35–45%",
-      "detail": "Explore is 7–1 overall and leads the reconstructed league-wide ranking"
-    },
-    {
-      "label": "Undefeated overall",
-      "range": "0%",
-      "detail": "No longer possible after the October 19 Milestones loss"
+      "detail": "Explore is 7–1 across all matches, but playoff seeding uses the official six-game record"
     }
   ],
-  "forecastNote": "Working outlook based on the official October 30 division standings, Explore’s confirmed November 3 sweep of Synergy (25–12, 25–13), and confirmed crossover results. Exact league tiebreaks, bracket structure, and byes remain unconfirmed.",
+  "forecastNote": "Working outlook based on the official North table, Explore’s 4–1 counting record, the commissioner’s six-game clarification, and confirmed match results. Exact league tiebreaks, bracket structure, and byes remain unconfirmed.",
   "remainingNorth": [
     {
       "date": "Nov 9",
@@ -124,25 +124,26 @@
   "crossover": {
     "date": "Nov 4",
     "opponent": "VCP–Sueño Park",
-    "location": "Home"
+    "location": "Home",
+    "countsOfficial": false
   },
   "notes": [
     "All records on this page are shown as wins first, losses second.",
+    "Explore is 7 wins and 1 loss across all scheduled matches, but 4 wins and 1 loss in the six-game record used for playoff ranking.",
+    "Explore’s six official games are its five North opponents plus the assigned official crossover against Edison.",
+    "Only one Milestones meeting counts officially: the October 19 loss. The September 23 victory is part of the all-game record but not the playoff record.",
+    "CASA on November 9 is Explore’s sixth and final official ranking game.",
+    "The November 4 Sueño Park rematch is non-counting and changes only the all-game record.",
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
     "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
-    "Explore is 7 wins and 1 loss overall and 4 wins and 1 loss in the North after defeating Synergy 25–12 and 25–13 on November 3.",
-    "The Synergy victory produced a 50–25 match-point total and a plus-25 point margin.",
-    "Every available Explore player received a service opportunity, and Emma recorded her first successful serve for an ace.",
-    "Milestones leads the North at 5 wins and 1 loss; Explore is second at 4 wins and 1 loss; Scholars and CASA are tied at 2 wins and 2 losses.",
-    "Sueño Park leads the Southwest at 3 wins and 0 losses, followed by ADP at 3 wins and 1 loss and Brighton at 3 wins and 2 losses.",
     "Explore’s known played-set record is 12 wins and 3 losses. The exact score from the second Scholars set remains unavailable, so the page does not invent a complete season point margin."
   ],
   "knownCrossoverResults": [
     {
       "winner": "Explore Academy",
       "loser": "Edison School of Innovation",
-      "note": "Sep 30 played match"
+      "note": "Sep 30 assigned official crossover; counts in Explore’s six-game ranking record"
     },
     {
       "winner": "Explore Academy",
@@ -181,7 +182,7 @@
       "team": "Explore Academy",
       "division": "North",
       "id": "explore",
-      "reason": "7 wins and 1 loss overall; beat Synergy 25–12, 25–13 and owns wins over Sueño Park and Scholars",
+      "reason": "7 wins and 1 loss across all matches; this all-game comparison is not used for playoff seeding",
       "knownOverall": {
         "wins": 7,
         "losses": 1
@@ -288,7 +289,7 @@
       }
     }
   ],
-  "overallRankingNote": "Sorted by best-known overall win percentage using the official October 30 division standings, Explore’s confirmed November 3 win over Synergy (25–12, 25–13), and confirmed crossover games. Every record is displayed as wins first, losses second. Equal percentages are shown as ties because the league's official overall tiebreak order is unknown. This overall table is reconstructed, not an official league-wide ranking.",
+  "overallRankingNote": "This is a reconstructed all-game comparison using every confirmed result, including non-counting games. It is not an official league table and is not used for playoff qualification or seeding. Official playoff ranking uses Explore’s six counting games: five North opponents plus Edison.",
   "postseason": {
     "seasonEnds": "November 12, 2026",
     "playoffWeek": "Week of November 16, 2026",
@@ -312,5 +313,100 @@
       "Every available Explore player received a service opportunity.",
       "Emma recorded her first successful serve, scoring a point and an ace."
     ]
-  }
+  },
+  "official": {
+    "wins": 4,
+    "losses": 1,
+    "gamesTotal": 6,
+    "gamesPlayed": 5,
+    "gamesRemaining": 1,
+    "divisionOpponents": 5,
+    "countingCrossover": "Edison School of Innovation"
+  },
+  "officialGames": [
+    {
+      "date": "Sep 30",
+      "opponent": "Edison School of Innovation",
+      "result": "Win, 2–0",
+      "setScores": [
+        "25–10",
+        "25–10"
+      ],
+      "status": "played"
+    },
+    {
+      "date": "Oct 13",
+      "opponent": "Painted Rock Academy",
+      "result": "Win, 2–0",
+      "setScores": [
+        "25–19",
+        "25–12"
+      ],
+      "status": "played"
+    },
+    {
+      "date": "Oct 19",
+      "opponent": "Milestones Charter",
+      "result": "Loss, 0–2",
+      "setScores": [
+        "19–25",
+        "12–25"
+      ],
+      "status": "played"
+    },
+    {
+      "date": "Oct 27",
+      "opponent": "Scholars Academy",
+      "result": "Win, 2–1",
+      "setScores": [
+        "25–17",
+        "Set 2 score unavailable",
+        "15–13"
+      ],
+      "status": "played"
+    },
+    {
+      "date": "Nov 3",
+      "opponent": "Synergy",
+      "result": "Win, 2–0",
+      "setScores": [
+        "25–12",
+        "25–13"
+      ],
+      "status": "played"
+    },
+    {
+      "date": "Nov 9",
+      "opponent": "CASA Academy",
+      "result": "Scheduled",
+      "setScores": [],
+      "status": "scheduled"
+    }
+  ],
+  "nonCountingGames": [
+    {
+      "date": "Sep 23",
+      "opponent": "Milestones Charter",
+      "result": "Win, 2–0",
+      "note": "First Milestones meeting; only the October 19 meeting counts officially"
+    },
+    {
+      "date": "Oct 7",
+      "opponent": "Brighton Charter",
+      "result": "Win by forfeit",
+      "note": "Counts in the all-game record, not the six-game official ranking record"
+    },
+    {
+      "date": "Oct 15",
+      "opponent": "VCP–Sueño Park",
+      "result": "Win, 2–0",
+      "note": "25–21, 25–21; non-counting crossover"
+    },
+    {
+      "date": "Nov 4",
+      "opponent": "VCP–Sueño Park",
+      "result": "Scheduled rematch",
+      "note": "Non-counting; affects only the all-game record"
+    }
+  ]
 }
