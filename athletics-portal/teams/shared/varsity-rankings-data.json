@@ -2,12 +2,12 @@
   "asOf": "November 4, 2026",
   "source": "Official IYAC standings plus the commissioner’s November 4 clarification: Explore has six official ranking games, made up of five North opponents and the assigned crossover against Edison; only one Milestones meeting counts",
   "overall": {
-    "wins": 7,
+    "wins": 8,
     "losses": 1,
-    "playedWins": 6,
+    "playedWins": 7,
     "playedLosses": 1,
-    "setsWon": 12,
-    "setsLost": 3,
+    "setsWon": 14,
+    "setsLost": 4,
     "pointsFor": null,
     "pointsAgainst": null
   },
@@ -105,12 +105,12 @@
     {
       "label": "Reach final",
       "range": "50–60%",
-      "detail": "Explore is the current #2 North seed and owns wins over Sueño Park and Scholars"
+      "detail": "Explore is the current #2 North seed and has defeated Sueño Park twice plus Scholars"
     },
     {
       "label": "Win championship",
       "range": "35–45%",
-      "detail": "Explore is 7–1 across all matches, but playoff seeding uses the official six-game record"
+      "detail": "Explore is 8–1 across all matches, but playoff seeding uses the official six-game record"
     }
   ],
   "forecastNote": "Working outlook based on the official North table, Explore’s 4–1 counting record, the commissioner’s six-game clarification, and confirmed match results. Exact league tiebreaks, bracket structure, and byes remain unconfirmed.",
@@ -125,19 +125,25 @@
     "date": "Nov 4",
     "opponent": "VCP–Sueño Park",
     "location": "Home",
-    "countsOfficial": false
+    "countsOfficial": false,
+    "result": "Win, 2–1",
+    "setScores": [
+      "16–25",
+      "25–14",
+      "15–11"
+    ]
   },
   "notes": [
     "All records on this page are shown as wins first, losses second.",
-    "Explore is 7 wins and 1 loss across all scheduled matches, but 4 wins and 1 loss in the six-game record used for playoff ranking.",
+    "Explore is 8 wins and 1 loss across all scheduled matches, but 4 wins and 1 loss in the six-game record used for playoff ranking.",
     "Explore’s six official games are its five North opponents plus the assigned official crossover against Edison.",
     "Only one Milestones meeting counts officially: the October 19 loss. The September 23 victory is part of the all-game record but not the playoff record.",
     "CASA on November 9 is Explore’s sixth and final official ranking game.",
-    "The November 4 Sueño Park rematch is non-counting and changes only the all-game record.",
+    "The November 4 Sueño Park rematch was a 2–1 Explore victory and changes only the all-game record.",
     "Top three from each division reach one combined six-team playoff.",
     "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
     "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
-    "Explore’s known played-set record is 12 wins and 3 losses. The exact score from the second Scholars set remains unavailable, so the page does not invent a complete season point margin."
+    "Explore’s known played-set record is 14 wins and 4 losses. The exact score from the second Scholars set remains unavailable, so the page does not invent a complete season point margin."
   ],
   "knownCrossoverResults": [
     {
@@ -154,6 +160,11 @@
       "winner": "Explore Academy",
       "loser": "VCP–Sueño Park",
       "note": "Oct 15 played match, 25–21 and 25–21"
+    },
+    {
+      "winner": "Explore Academy",
+      "loser": "VCP–Sueño Park",
+      "note": "Nov 4 non-counting rematch; Explore won 16–25, 25–14, 15–11"
     },
     {
       "winner": "Brighton Charter",
@@ -182,9 +193,9 @@
       "team": "Explore Academy",
       "division": "North",
       "id": "explore",
-      "reason": "7 wins and 1 loss across all matches; this all-game comparison is not used for playoff seeding",
+      "reason": "8 wins and 1 loss across all matches; this all-game comparison is not used for playoff seeding",
       "knownOverall": {
-        "wins": 7,
+        "wins": 8,
         "losses": 1
       }
     },
@@ -192,10 +203,10 @@
       "tieOrder": 2,
       "team": "VCP–Sueño Park",
       "division": "Southwest",
-      "reason": "3 wins and 0 losses in the Southwest; lost the October 15 crossover at Explore",
+      "reason": "3 wins and 0 losses in the Southwest; lost both non-counting matches against Explore",
       "knownOverall": {
         "wins": 3,
-        "losses": 1
+        "losses": 2
       }
     },
     {
@@ -299,19 +310,20 @@
     "source": "IYAC season announcement"
   },
   "latestResult": {
-    "date": "November 3, 2026",
-    "opponent": "Synergy",
-    "result": "Win, 2–0",
+    "date": "November 4, 2026",
+    "opponent": "VCP–Sueño Park",
+    "result": "Win, 2–1",
     "setScores": [
-      "25–12",
-      "25–13"
+      "16–25",
+      "25–14",
+      "15–11"
     ],
-    "pointsFor": 50,
-    "pointsAgainst": 25,
-    "pointMargin": 25,
+    "pointsFor": 56,
+    "pointsAgainst": 50,
+    "pointMargin": 6,
     "highlights": [
-      "Every available Explore player received a service opportunity.",
-      "Emma recorded her first successful serve, scoring a point and an ace."
+      "Explore responded to a 25–16 first-set loss by winning the second set 25–14.",
+      "Explore closed the three-set comeback 15–11 and defeated Sueño Park for the second time this season."
     ]
   },
   "official": {
@@ -405,8 +417,8 @@
     {
       "date": "Nov 4",
       "opponent": "VCP–Sueño Park",
-      "result": "Scheduled rematch",
-      "note": "Non-counting; affects only the all-game record"
+      "result": "Win, 2–1",
+      "note": "16–25, 25–14, 15–11; non-counting rematch that affects only the all-game record"
     }
   ]
 }
