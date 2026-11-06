@@ -1,6 +1,6 @@
 {
-  "asOf": "November 4, 2026",
-  "source": "Official IYAC standings plus the commissioner’s November 4 clarification: Explore has six official ranking games, made up of five North opponents and the assigned crossover against Edison; only one Milestones meeting counts",
+  "asOf": "November 6, 2026",
+  "source": "Official IYAC North standings posted November 6 plus the commissioner’s six-game clarification: Explore has six official ranking games, made up of five North opponents and the assigned crossover against Edison; only one Milestones meeting counts",
   "overall": {
     "wins": 8,
     "losses": 1,
@@ -27,31 +27,29 @@
     },
     {
       "rank": 3,
-      "rankLabel": "T-3",
       "team": "Scholars Academy",
-      "wins": 2,
+      "wins": 3,
       "losses": 2
     },
     {
-      "rank": 3,
-      "rankLabel": "T-3",
+      "rank": 4,
+      "rankLabel": "T-4",
+      "team": "Painted Rock Academy",
+      "wins": 2,
+      "losses": 3
+    },
+    {
+      "rank": 4,
+      "rankLabel": "T-4",
       "team": "CASA Academy",
       "wins": 2,
-      "losses": 2
+      "losses": 3
     },
     {
-      "rank": 5,
-      "rankLabel": "T-5",
+      "rank": 6,
       "team": "Synergy",
       "wins": 1,
-      "losses": 3
-    },
-    {
-      "rank": 5,
-      "rankLabel": "T-5",
-      "team": "Painted Rock Academy",
-      "wins": 1,
-      "losses": 3
+      "losses": 4
     }
   ],
   "southwest": [
@@ -89,18 +87,18 @@
   "forecasts": [
     {
       "label": "Make playoffs",
-      "range": "98–99%",
-      "detail": "Explore is 4–1 officially; beating CASA clinches, while a loss creates the only realistic tiebreak danger"
+      "range": "100%",
+      "detail": "Clinched: even a CASA loss leaves Explore at 4–2, safely inside the North top three"
     },
     {
       "label": "Miss playoffs",
-      "range": "1–2%",
-      "detail": "Requires a CASA loss plus unfavorable remaining results and tiebreaks"
+      "range": "0%",
+      "detail": "Explore cannot finish below third based on the remaining possible records"
     },
     {
       "label": "Tie for North lead",
-      "range": "60–70%",
-      "detail": "A CASA victory produces a 5–1 tie with Milestones"
+      "range": "One win",
+      "detail": "Beat CASA to finish 5–1 and tie Milestones for the North lead"
     },
     {
       "label": "Reach final",
@@ -113,7 +111,7 @@
       "detail": "Explore is 8–1 across all matches, but playoff seeding uses the official six-game record"
     }
   ],
-  "forecastNote": "Working outlook based on the official North table, Explore’s 4–1 counting record, the commissioner’s six-game clarification, and confirmed match results. Exact league tiebreaks, bracket structure, and byes remain unconfirmed.",
+  "forecastNote": "Explore has mathematically clinched a playoff berth. CASA determines only the final seed: a win produces a 5–1 tie for the North lead; a loss produces a 4–2 finish. The league’s tiebreak order, bracket structure, and byes remain unconfirmed.",
   "remainingNorth": [
     {
       "date": "Nov 9",
@@ -141,7 +139,8 @@
     "CASA on November 9 is Explore’s sixth and final official ranking game.",
     "The November 4 Sueño Park rematch was a 2–1 Explore victory and changes only the all-game record.",
     "Top three from each division reach one combined six-team playoff.",
-    "The league has not published the bracket, byes, cross-division seeding, or tiebreak order.",
+    "Explore has clinched a top-three North finish: even a CASA loss leaves Explore at 4–2, while Painted Rock and CASA can finish no better than 3–3 and Synergy no better than 2–4.",
+    "The playoff schedule is expected by Thursday, November 12. ADP will host volleyball, but the league has not yet published the bracket, byes, cross-division seeding, or tiebreak order.",
     "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
     "Explore’s known played-set record is 14 wins and 4 losses. The exact score from the second Scholars set remains unavailable, so the page does not invent a complete season point margin."
   ],
@@ -233,19 +232,19 @@
       "tieOrder": 5,
       "team": "CASA Academy",
       "division": "North",
-      "reason": "2 wins and 2 losses in the North; beat Synergy 2–0 and Riverbend in crossover play",
+      "reason": "2 wins and 3 losses in the North; also beat Riverbend in crossover play",
       "knownOverall": {
         "wins": 3,
-        "losses": 2
+        "losses": 3
       }
     },
     {
       "tieOrder": 6,
       "team": "Scholars Academy",
       "division": "North",
-      "reason": "2 wins and 2 losses in the North; lost to Milestones and Explore",
+      "reason": "3 wins and 2 losses in the North; lost to Milestones and Explore",
       "knownOverall": {
-        "wins": 2,
+        "wins": 3,
         "losses": 2
       }
     },
@@ -263,9 +262,9 @@
       "tieOrder": 8,
       "team": "Painted Rock Academy",
       "division": "North",
-      "reason": "1 win and 3 losses in the North; beat Brighton in crossover play",
+      "reason": "2 wins and 3 losses in the North; also beat Brighton in crossover play",
       "knownOverall": {
-        "wins": 2,
+        "wins": 3,
         "losses": 3
       }
     },
@@ -273,10 +272,10 @@
       "tieOrder": 9,
       "team": "Synergy",
       "division": "North",
-      "reason": "1 win and 3 losses in the North; also lost crossover to Brighton",
+      "reason": "1 win and 4 losses in the North; also lost crossover to Brighton",
       "knownOverall": {
         "wins": 1,
-        "losses": 4
+        "losses": 5
       }
     },
     {
