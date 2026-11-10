@@ -1,13 +1,13 @@
 {
-  "asOf": "November 6, 2026",
-  "source": "Official IYAC North standings posted November 6 plus the commissioner’s six-game clarification: Explore has six official ranking games, made up of five North opponents and the assigned crossover against Edison; only one Milestones meeting counts",
+  "asOf": "November 9, 2026",
+  "source": "Official IYAC North standings through November 6, Explore’s November 9 result against CASA, and the commissioner’s six-game clarification",
   "overall": {
     "wins": 8,
-    "losses": 1,
+    "losses": 2,
     "playedWins": 7,
-    "playedLosses": 1,
+    "playedLosses": 2,
     "setsWon": 14,
-    "setsLost": 4,
+    "setsLost": 6,
     "pointsFor": null,
     "pointsAgainst": null
   },
@@ -22,7 +22,7 @@
       "rank": 2,
       "team": "Explore Academy",
       "wins": 4,
-      "losses": 1,
+      "losses": 2,
       "id": "explore"
     },
     {
@@ -33,15 +33,13 @@
     },
     {
       "rank": 4,
-      "rankLabel": "T-4",
-      "team": "Painted Rock Academy",
-      "wins": 2,
+      "team": "CASA Academy",
+      "wins": 3,
       "losses": 3
     },
     {
-      "rank": 4,
-      "rankLabel": "T-4",
-      "team": "CASA Academy",
+      "rank": 5,
+      "team": "Painted Rock Academy",
       "wins": 2,
       "losses": 3
     },
@@ -88,37 +86,36 @@
     {
       "label": "Make playoffs",
       "range": "100%",
-      "detail": "Clinched: even a CASA loss leaves Explore at 4–2, safely inside the North top three"
+      "detail": "Clinched. Explore’s 4–2 record cannot fall below the North top three."
     },
     {
       "label": "Miss playoffs",
       "range": "0%",
-      "detail": "Explore cannot finish below third based on the remaining possible records"
+      "detail": "Mathematically impossible under the confirmed top-three qualification rule."
     },
     {
-      "label": "Tie for North lead",
-      "range": "One win",
-      "detail": "Beat CASA to finish 5–1 and tie Milestones for the North lead"
+      "label": "Finish North #2",
+      "range": "70–95%",
+      "detail": "Guaranteed if Scholars loses its final game; also likely if head-to-head breaks a 4–2 tie because Explore beat Scholars."
     },
     {
-      "label": "Reach final",
-      "range": "50–60%",
-      "detail": "Explore is the current #2 North seed and has defeated Sueño Park twice plus Scholars"
+      "label": "Finish North #3",
+      "range": "5–30%",
+      "detail": "Possible only if Scholars wins to reach 4–2 and the league uses a tiebreak that favors Scholars over Explore."
+    },
+    {
+      "label": "Reach championship match",
+      "range": "45–55%",
+      "detail": "Explore has beaten Sueño Park twice and Scholars, but the bracket and byes remain unpublished."
     },
     {
       "label": "Win championship",
-      "range": "35–45%",
-      "detail": "Explore is 8–1 across all matches, but playoff seeding uses the official six-game record"
+      "range": "25–35%",
+      "detail": "Explore has championship-level wins, but the losses to Milestones and CASA show meaningful consistency risk."
     }
   ],
-  "forecastNote": "Explore has mathematically clinched a playoff berth. CASA determines only the final seed: a win produces a 5–1 tie for the North lead; a loss produces a 4–2 finish. The league’s tiebreak order, bracket structure, and byes remain unconfirmed.",
-  "remainingNorth": [
-    {
-      "date": "Nov 9",
-      "opponent": "CASA Academy",
-      "location": "Away"
-    }
-  ],
+  "forecastNote": "Qualification is certain, not estimated. The seed ranges reflect two unknowns: Scholars’ final result and the league’s unpublished tiebreak order. Explore finishes #2 if Scholars loses. If Scholars wins and reaches 4–2, Explore is still #2 under a head-to-head tiebreak because Explore defeated Scholars; another tiebreak could place Explore #3. Final and championship ranges are model estimates, not official league probabilities.",
+  "remainingNorth": [],
   "crossover": {
     "date": "Nov 4",
     "opponent": "VCP–Sueño Park",
@@ -133,16 +130,16 @@
   },
   "notes": [
     "All records on this page are shown as wins first, losses second.",
-    "Explore is 8 wins and 1 loss across all scheduled matches, but 4 wins and 1 loss in the six-game record used for playoff ranking.",
+    "Explore finished 8 wins and 2 losses across all scheduled matches and 4 wins and 2 losses in the six-game record used for playoff ranking.",
     "Explore’s six official games are its five North opponents plus the assigned official crossover against Edison.",
     "Only one Milestones meeting counts officially: the October 19 loss. The September 23 victory is part of the all-game record but not the playoff record.",
-    "CASA on November 9 is Explore’s sixth and final official ranking game.",
+    "CASA defeated Explore 2–0 on November 9. The individual set scores are intentionally not published.",
     "The November 4 Sueño Park rematch was a 2–1 Explore victory and changes only the all-game record.",
     "Top three from each division reach one combined six-team playoff.",
-    "Explore has clinched a top-three North finish: even a CASA loss leaves Explore at 4–2, while Painted Rock and CASA can finish no better than 3–3 and Synergy no better than 2–4.",
+    "Explore has clinched a top-three North finish at 4–2. Painted Rock can finish no better than 3–3, CASA finished 3–3, and Synergy can finish no better than 2–4.",
     "The playoff schedule is expected by Thursday, November 12. ADP will host volleyball, but the league has not yet published the bracket, byes, cross-division seeding, or tiebreak order.",
     "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
-    "Explore’s known played-set record is 14 wins and 4 losses. The exact score from the second Scholars set remains unavailable, so the page does not invent a complete season point margin."
+    "Explore’s known played-set record is 14 wins and 6 losses. The exact second-set score against Scholars and both CASA set scores remain unpublished, so the page does not invent a complete season point margin."
   ],
   "knownCrossoverResults": [
     {
@@ -192,10 +189,10 @@
       "team": "Explore Academy",
       "division": "North",
       "id": "explore",
-      "reason": "8 wins and 1 loss across all matches; this all-game comparison is not used for playoff seeding",
+      "reason": "8 wins and 2 losses across all matches; this all-game comparison is not used for playoff seeding",
       "knownOverall": {
         "wins": 8,
-        "losses": 1
+        "losses": 2
       }
     },
     {
@@ -232,9 +229,9 @@
       "tieOrder": 5,
       "team": "CASA Academy",
       "division": "North",
-      "reason": "2 wins and 3 losses in the North; also beat Riverbend in crossover play",
+      "reason": "3 wins and 3 losses in the North; also beat Riverbend in crossover play",
       "knownOverall": {
-        "wins": 3,
+        "wins": 4,
         "losses": 3
       }
     },
@@ -309,28 +306,24 @@
     "source": "IYAC season announcement"
   },
   "latestResult": {
-    "date": "November 4, 2026",
-    "opponent": "VCP–Sueño Park",
-    "result": "Win, 2–1",
-    "setScores": [
-      "16–25",
-      "25–14",
-      "15–11"
-    ],
-    "pointsFor": 56,
-    "pointsAgainst": 50,
-    "pointMargin": 6,
+    "date": "November 9, 2026",
+    "opponent": "CASA Academy",
+    "result": "Loss, 0–2",
+    "setScores": [],
+    "pointsFor": null,
+    "pointsAgainst": null,
+    "pointMargin": null,
     "highlights": [
-      "Explore responded to a 25–16 first-set loss by winning the second set 25–14.",
-      "Explore closed the three-set comeback 15–11 and defeated Sueño Park for the second time this season."
+      "Explore completed its official ranking schedule at 4–2.",
+      "The playoff berth remains mathematically secured."
     ]
   },
   "official": {
     "wins": 4,
-    "losses": 1,
+    "losses": 2,
     "gamesTotal": 6,
-    "gamesPlayed": 5,
-    "gamesRemaining": 1,
+    "gamesPlayed": 6,
+    "gamesRemaining": 0,
     "divisionOpponents": 5,
     "countingCrossover": "Edison School of Innovation"
   },
@@ -389,9 +382,9 @@
     {
       "date": "Nov 9",
       "opponent": "CASA Academy",
-      "result": "Scheduled",
+      "result": "Loss, 0–2",
       "setScores": [],
-      "status": "scheduled"
+      "status": "played"
     }
   ],
   "nonCountingGames": [
