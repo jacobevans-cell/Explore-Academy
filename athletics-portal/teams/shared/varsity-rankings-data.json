@@ -1,6 +1,6 @@
 {
-  "asOf": "November 9, 2026",
-  "source": "Official IYAC North standings through November 6, Explore’s November 9 result against CASA, and the commissioner’s six-game clarification",
+  "asOf": "November 10, 2026",
+  "source": "Final IYAC division seeds and the commissioner’s confirmed playoff schedule released November 10, 2026",
   "overall": {
     "wins": 8,
     "losses": 2,
@@ -28,7 +28,7 @@
     {
       "rank": 3,
       "team": "Scholars Academy",
-      "wins": 3,
+      "wins": 4,
       "losses": 2
     },
     {
@@ -59,15 +59,15 @@
     },
     {
       "rank": 2,
-      "team": "Academia del Pueblo",
-      "wins": 3,
-      "losses": 1
-    },
-    {
-      "rank": 3,
       "team": "Brighton Charter",
       "wins": 3,
       "losses": 2
+    },
+    {
+      "rank": 3,
+      "team": "Academia del Pueblo",
+      "wins": 3,
+      "losses": 1
     },
     {
       "rank": 4,
@@ -82,40 +82,6 @@
       "losses": 5
     }
   ],
-  "forecasts": [
-    {
-      "label": "Make playoffs",
-      "range": "100%",
-      "detail": "Clinched. Explore’s 4–2 record cannot fall below the North top three."
-    },
-    {
-      "label": "Miss playoffs",
-      "range": "0%",
-      "detail": "Mathematically impossible under the confirmed top-three qualification rule."
-    },
-    {
-      "label": "Finish North #2",
-      "range": "70–95%",
-      "detail": "Guaranteed if Scholars loses its final game; also likely if head-to-head breaks a 4–2 tie because Explore beat Scholars."
-    },
-    {
-      "label": "Finish North #3",
-      "range": "5–30%",
-      "detail": "Possible only if Scholars wins to reach 4–2 and the league uses a tiebreak that favors Scholars over Explore."
-    },
-    {
-      "label": "Reach championship match",
-      "range": "45–55%",
-      "detail": "Explore has beaten Sueño Park twice and Scholars, but the bracket and byes remain unpublished."
-    },
-    {
-      "label": "Win championship",
-      "range": "25–35%",
-      "detail": "Explore has championship-level wins, but the losses to Milestones and CASA show meaningful consistency risk."
-    }
-  ],
-  "forecastNote": "Qualification is certain, not estimated. The seed ranges reflect two unknowns: Scholars’ final result and the league’s unpublished tiebreak order. Explore finishes #2 if Scholars loses. If Scholars wins and reaches 4–2, Explore is still #2 under a head-to-head tiebreak because Explore defeated Scholars; another tiebreak could place Explore #3. Final and championship ranges are model estimates, not official league probabilities.",
-  "remainingNorth": [],
   "crossover": {
     "date": "Nov 4",
     "opponent": "VCP–Sueño Park",
@@ -129,17 +95,18 @@
     ]
   },
   "notes": [
-    "All records on this page are shown as wins first, losses second.",
-    "Explore finished 8 wins and 2 losses across all scheduled matches and 4 wins and 2 losses in the six-game record used for playoff ranking.",
-    "Explore’s six official games are its five North opponents plus the assigned official crossover against Edison.",
-    "Only one Milestones meeting counts officially: the October 19 loss. The September 23 victory is part of the all-game record but not the playoff record.",
-    "CASA defeated Explore 2–0 on November 9. The individual set scores are intentionally not published.",
-    "The November 4 Sueño Park rematch was a 2–1 Explore victory and changes only the all-game record.",
-    "Top three from each division reach one combined six-team playoff.",
-    "Explore has clinched a top-three North finish at 4–2. Painted Rock can finish no better than 3–3, CASA finished 3–3, and Synergy can finish no better than 2–4.",
-    "The playoff schedule is expected by Thursday, November 12. ADP will host volleyball, but the league has not yet published the bracket, byes, cross-division seeding, or tiebreak order.",
-    "The regular season is scheduled to end November 12, playoffs are scheduled for the week of November 16, and the championship is tentatively scheduled for Thursday, November 19 at ADP.",
-    "Explore’s known played-set record is 14 wins and 6 losses. The exact second-set score against Scholars and both CASA set scores remain unpublished, so the page does not invent a complete season point margin."
+    "All records are shown as wins first and losses second.",
+    "Explore finished 8–2 across all scheduled matches and 4–2 in the six-game record used for playoff ranking.",
+    "Explore’s six official games were its five North opponents plus the assigned official crossover against Edison.",
+    "Four additional matches strengthened Explore’s complete-season record and broke the 4–2 ranking tie with Scholars, securing the North #2 seed.",
+    "Only one Milestones meeting counted officially: the October 19 loss. The September 23 victory remained part of the all-game record.",
+    "CASA defeated Explore 2–0 on November 9. Individual set scores are intentionally not published.",
+    "The November 4 Sueño Park rematch was a 2–1 Explore victory and affected only the all-game record.",
+    "The top three teams from each division qualified for the combined six-team playoff.",
+    "The commissioner confirmed the bracket on November 10. Explore plays Scholars on November 16 at 5:30 PM.",
+    "If Explore advances, it plays VCP–Sueño Park on November 17 at 5:30 PM. The championship is November 19 at 4:45 PM.",
+    "All playoff matches are single elimination and will be played at Academia del Pueblo.",
+    "Explore’s known played-set record is 14–6. The exact second-set score against Scholars and both CASA set scores remain unpublished."
   ],
   "knownCrossoverResults": [
     {
@@ -209,7 +176,7 @@
       "tieOrder": 3,
       "team": "Academia del Pueblo",
       "division": "Southwest",
-      "reason": "3 wins and 1 loss in the official Southwest standings",
+      "reason": "Confirmed Southwest #3 playoff seed and host of every postseason match",
       "knownOverall": {
         "wins": 3,
         "losses": 1
@@ -239,9 +206,9 @@
       "tieOrder": 6,
       "team": "Scholars Academy",
       "division": "North",
-      "reason": "3 wins and 2 losses in the North; lost to Milestones and Explore",
+      "reason": "4 wins and 2 losses in the official North standings; seeded #3 after the tiebreak with Explore",
       "knownOverall": {
-        "wins": 3,
+        "wins": 4,
         "losses": 2
       }
     },
@@ -249,7 +216,7 @@
       "tieOrder": 7,
       "team": "Brighton Charter",
       "division": "Southwest",
-      "reason": "3 wins and 2 losses in the Southwest; 1 win and 2 losses in confirmed crossover play",
+      "reason": "Confirmed Southwest #2 playoff seed; 3 wins and 2 losses in the last published division record",
       "knownOverall": {
         "wins": 4,
         "losses": 4
@@ -296,14 +263,14 @@
       }
     }
   ],
-  "overallRankingNote": "This is a reconstructed all-game comparison using every confirmed result, including non-counting games. It is not an official league table and is not used for playoff qualification or seeding. Official playoff ranking uses Explore’s six counting games: five North opponents plus Edison.",
+  "overallRankingNote": "This comparison uses every confirmed result, including Explore’s four additional matches. The extra matches became the tiebreaking insurance policy: Explore’s 8–2 complete-season record secured the North #2 seed over Scholars after both finished 4–2 in ranking play.",
   "postseason": {
-    "seasonEnds": "November 12, 2026",
-    "playoffWeek": "Week of November 16, 2026",
-    "championshipDate": "Thursday, November 19, 2026",
+    "seasonEnds": "Regular season complete",
+    "playoffWeek": "November 16–17, 2026",
+    "championshipDate": "Thursday, November 19, 2026 at 4:45 PM",
     "championshipLocation": "Academia del Pueblo (ADP)",
-    "tentative": true,
-    "source": "IYAC season announcement"
+    "tentative": false,
+    "source": "Commissioner’s November 10 playoff announcement"
   },
   "latestResult": {
     "date": "November 9, 2026",
@@ -325,7 +292,11 @@
     "gamesPlayed": 6,
     "gamesRemaining": 0,
     "divisionOpponents": 5,
-    "countingCrossover": "Edison School of Innovation"
+    "countingCrossover": "Edison School of Innovation",
+    "rank": 2,
+    "seed": "North #2",
+    "tiebreakOpponent": "Scholars Academy",
+    "tiebreakBasis": "Explore’s stronger complete-season record after four additional matches"
   },
   "officialGames": [
     {
@@ -412,5 +383,59 @@
       "result": "Win, 2–1",
       "note": "16–25, 25–14, 15–11; non-counting rematch that affects only the all-game record"
     }
-  ]
+  ],
+  "playoffBracket": {
+    "confirmed": true,
+    "confirmedDate": "November 10, 2026",
+    "format": "Six-team single-elimination",
+    "location": "Academia del Pueblo",
+    "matches": [
+      {
+        "id": "q1",
+        "round": "Quarterfinal",
+        "date": "Monday, November 16",
+        "time": "4:30 PM",
+        "teamA": "Brighton Charter",
+        "seedA": "SW2",
+        "teamB": "Academia del Pueblo",
+        "seedB": "SW3"
+      },
+      {
+        "id": "q2",
+        "round": "Quarterfinal",
+        "date": "Monday, November 16",
+        "time": "5:30 PM",
+        "teamA": "Explore Academy",
+        "seedA": "N2",
+        "teamB": "Scholars Academy",
+        "seedB": "N3"
+      },
+      {
+        "id": "s1",
+        "round": "Semifinal",
+        "date": "Tuesday, November 17",
+        "time": "4:30 PM",
+        "teamA": "Milestones Charter",
+        "seedA": "N1",
+        "teamBSource": "q1"
+      },
+      {
+        "id": "s2",
+        "round": "Semifinal",
+        "date": "Tuesday, November 17",
+        "time": "5:30 PM",
+        "teamA": "VCP–Sueño Park",
+        "seedA": "SW1",
+        "teamBSource": "q2"
+      },
+      {
+        "id": "f1",
+        "round": "Championship",
+        "date": "Thursday, November 19",
+        "time": "4:45 PM",
+        "teamASource": "s1",
+        "teamBSource": "s2"
+      }
+    ]
+  }
 }
