@@ -133,7 +133,10 @@ export const TEAM_DATA = {
       { date: 'Oct 27', time: '4:45 PM', opponent: 'Scholars Academy', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:15 PM' },
       { date: 'Nov 3', time: '4:30 PM', opponent: 'Synergy', location: 'Away', address: '2701 W Bethany Home Rd, Phoenix, AZ 85017', drive: '30–45 min', leave: '3:15 PM', arrival: '4:00 PM' },
       { date: 'Nov 4', time: '4:30 PM', opponent: 'Vista College Prep–Sueño Park', location: 'Home', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '4:00 PM', detail: 'OFFICIAL' },
-      { date: 'Nov 9', time: '4:45 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⚠️ OUTDOOR • CONCRETE COURT' }
+      { date: 'Nov 9', time: '4:45 PM', opponent: 'CASA Academy', location: 'Away', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⚠️ OUTDOOR • CONCRETE COURT' },
+      { date: 'Nov 16', time: '5:30 PM', opponent: 'Scholars Academy', location: 'Neutral Site', address: '201 E Durango St, Phoenix, AZ 85004', drive: 'Live route', leave: 'TBA', arrival: '5:00 PM', detail: '⏳ PENDING • PLAYOFF QUARTERFINAL • SINGLE ELIMINATION' },
+      { date: 'Nov 17', time: '5:30 PM', opponent: 'VCP–Sueño Park', location: 'Neutral Site', address: '201 E Durango St, Phoenix, AZ 85004', drive: 'Live route', leave: 'TBA', arrival: '5:00 PM', detail: '⏳ PENDING • PLAYOFF SEMIFINAL • SINGLE ELIMINATION' },
+      { date: 'Nov 19', time: '4:45 PM', opponent: 'Championship Opponent Pending', location: 'Neutral Site', address: '201 E Durango St, Phoenix, AZ 85004', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '⏳ PENDING • CHAMPIONSHIP • SINGLE ELIMINATION' }
     ],
     events: [
       {
