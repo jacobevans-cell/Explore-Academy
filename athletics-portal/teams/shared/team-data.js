@@ -72,7 +72,7 @@ export const TEAM_DATA = {
       {
         type: 'banquet',
         date: 'Nov 18',
-        time: '5:00–7:30 PM',
+        time: '6:00–8:00 PM',
         title: 'End-of-Season Volleyball Banquet',
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
@@ -165,7 +165,7 @@ export const TEAM_DATA = {
       {
         type: 'banquet',
         date: 'Nov 18',
-        time: '5:00–7:30 PM',
+        time: '6:00–8:00 PM',
         title: 'End-of-Season Volleyball Banquet',
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
@@ -237,7 +237,7 @@ export const TEAM_DATA = {
       {
         type: 'banquet',
         date: 'Nov 18',
-        time: '5:00–7:30 PM',
+        time: '6:00–8:00 PM',
         title: 'End-of-Season Volleyball Banquet',
         subtitle: 'JV Girls + Varsity Girls + Boys Volleyball • Season Celebration',
         location: 'TBA',
