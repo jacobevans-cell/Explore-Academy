@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261113-banquet-6to8';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261115-boys-week-playoffs';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -19,7 +19,8 @@ const COACH_UNAVAILABLE_DATES = new Map([
 // Friday/playoff decisions are settled.
 const FIXED_PRACTICE_WINDOWS = [
   ['2026-10-05','2026-10-23'],
-  ['2026-11-02','2026-11-13']
+  ['2026-11-02','2026-11-13'],
+  ['2026-11-16','2026-11-20']
 ];
 const FIXED_PRACTICE_SCHEDULE = {
   'boys-volleyball': new Map([
@@ -30,7 +31,10 @@ const FIXED_PRACTICE_SCHEDULE = {
     ['2026-11-03','3:15–4:45 PM'],
     ['2026-11-05','3:15–4:45 PM'],
     ['2026-11-12','3:15–4:45 PM'],
-    ['2026-11-13','1:15–3:45 PM']
+    ['2026-11-13','1:15–3:45 PM'],
+    ['2026-11-16','3:15–5:15 PM'],
+    ['2026-11-17','3:15–5:15 PM'],
+    ['2026-11-19','3:15–5:15 PM']
   ]),
   'varsity-girls-volleyball': new Map([
     ['2026-10-07','1:00–4:45 PM'],
