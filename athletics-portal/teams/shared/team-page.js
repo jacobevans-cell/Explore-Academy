@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261115-boys-week-playoffs';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261115-boys-playoff-week-override';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -164,6 +164,7 @@ function practice(team,weekOffset=0){
     if(isTrunkOrTreat)return `<div class="card practice-card trunk-or-treat-only"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status halloween">TRUNK OR TREAT</span></div>${eventNote}</div>`;
     if(!teamIsInPracticeSeason(team,date)&&!dayEvents.length)return outOfSeasonCard(team,day,date);
     const conflicts=conflictsByDate.get(key)||[];
+    const boysPlayoffWeekPracticeOverride=team.id==='boys-volleyball'&&['2026-11-16','2026-11-17','2026-11-19'].includes(key);
     if(conflicts.length)return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(conflictText(conflicts))}</div>${eventNote}<div class="practice-note">Volleyball practice is canceled on game days because the same coach covers the volleyball teams.</div></div>`;
     const time=scheduledPracticeTime(team,date,day);
     if(day==='Friday'){
