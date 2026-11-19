@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-thanksgiving-break';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-thanksgiving-hearn-exception';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -161,7 +161,8 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const key=dateKey(date);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    if(VOLLEYBALL_TEAM_IDS.includes(team.id)&&THANKSGIVING_BREAK_DATES.has(key))return thanksgivingBreakCard(day,date);
+    const thanksgivingGameException=team.id==='boys-volleyball'&&key==='2026-11-24'&&((team.games||[]).some(game=>dateKey(gameDate(game))===key));
+    if(VOLLEYBALL_TEAM_IDS.includes(team.id)&&THANKSGIVING_BREAK_DATES.has(key)&&!thanksgivingGameException)return thanksgivingBreakCard(day,date);
     const schoolClosure=SCHOOL_CLOSED_DATES.get(key);
     if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
     const coachUnavailable=COACH_UNAVAILABLE_DATES.get(key);
