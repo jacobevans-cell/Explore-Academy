@@ -223,11 +223,15 @@ $("interestForm").addEventListener("submit",async ev=>{
       windowId:team.windowId||"ms-winter",
       status:"submitted", conflictTeamIds:[], submittedAt:serverTimestamp()
     });
-    message("formStatus","Interest saved! "+first+" has been added to the "+team.displayName+" interest list. This is not a guaranteed roster spot. You can view the submission in the family athletics portal.","success");
-    await refreshAthletes();
-    $("savedAthlete").value=athleteId;
-    setAthleteMode();
-    // setAthleteMode clears its own status, so restore the confirmation.
+    // The database write above is the source of truth. A later UI refresh failure
+    // must never misreport a successfully saved registration as a failed submission.
+    try{
+      await refreshAthletes();
+      if(athletes.some(a=>a.id===athleteId)){
+        $("savedAthlete").value=athleteId;
+        setAthleteMode();
+      }
+    }catch(refreshError){console.warn("Registration saved, but student list refresh failed:",refreshError);}
     message("formStatus","Interest saved! "+first+" has been added to the "+team.displayName+" interest list. This is not a guaranteed roster spot. You can view the submission in the family athletics portal.","success");
     $("interestForm").querySelector('input[name="guardianConsent"]').checked=false;
   }catch(err){
