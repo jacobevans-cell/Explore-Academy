@@ -35,6 +35,17 @@ if (location.pathname.endsWith('/admin.html')) {
       sideLinks.appendChild(interestButton);
     }
 
+    if (!sideLinks.querySelector('[data-basketball-interest]')) {
+      const basketballButton = document.createElement('button');
+      basketballButton.type = 'button';
+      basketballButton.textContent = 'Basketball Interest';
+      basketballButton.dataset.basketballInterest = 'true';
+      basketballButton.addEventListener('click', () => {
+        location.href = 'basketball-interest-admin.html';
+      });
+      sideLinks.appendChild(basketballButton);
+    }
+
     if (!sideLinks.querySelector('[data-tournament-signups]')) {
       const signupsButton = document.createElement('button');
       signupsButton.type = 'button';
