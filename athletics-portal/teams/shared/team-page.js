@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-thanksgiving-hearn-exception';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-hearn-game-card-v2';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -161,8 +161,9 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const key=dateKey(date);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    const thanksgivingGameException=team.id==='boys-volleyball'&&key==='2026-11-24'&&((team.games||[]).some(game=>dateKey(gameDate(game))===key));
-    if(VOLLEYBALL_TEAM_IDS.includes(team.id)&&THANKSGIVING_BREAK_DATES.has(key)&&!thanksgivingGameException)return thanksgivingBreakCard(day,date);
+    const thanksgivingGame=(team.id==='boys-volleyball'&&key==='2026-11-24')?(team.games||[]).find(game=>{const gd=gameDate(game);return gd&&dateKey(gd)===key;}):null;
+    if(thanksgivingGame)return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">🏐 BOYS VOLLEYBALL</div><div class="practice-reason">${esc(thanksgivingGame.time)} • vs. ${esc(thanksgivingGame.opponent)}</div><div class="practice-note">Thanksgiving Break • No school practice today. Confirmed game remains scheduled.</div></div>`;
+    if(VOLLEYBALL_TEAM_IDS.includes(team.id)&&THANKSGIVING_BREAK_DATES.has(key))return thanksgivingBreakCard(day,date);
     const schoolClosure=SCHOOL_CLOSED_DATES.get(key);
     if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
     const coachUnavailable=COACH_UNAVAILABLE_DATES.get(key);
