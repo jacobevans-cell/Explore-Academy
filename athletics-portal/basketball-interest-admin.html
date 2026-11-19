@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Basketball Interest • Explore Athletics Admin</title>
+<style>
+:root{--navy:#0a2b54;--red:#bf1e2e;--ink:#223149;--line:#d7e0eb}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,-apple-system,Arial,sans-serif;background:#f5f7fb;color:var(--ink);margin:0;line-height:1.5}
+header{background:var(--navy);color:#fff}
+header .wrap{max-width:1140px;margin:auto;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+header h1{font-size:1.65rem;margin:0}header p{color:#d6e2f0;margin:0}
+a{color:inherit}
+main{max-width:1140px;margin:25px auto;padding:0 18px}
+.card{background:#fff;border:1px solid var(--line);padding:23px;border-radius:15px;box-shadow:0 12px 32px rgba(13,36,66,.07);margin-bottom:18px}
+button{background:var(--red);border:0;border-radius:9px;padding:10px 16px;min-height:41px;color:white;font:inherit;font-weight:750;cursor:pointer}
+button:disabled{opacity:.55}
+button.secondary{background:var(--navy)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#search{font:inherit;min-height:42px;border:1px solid var(--line);border-radius:9px;padding:9px 12px;flex:1;min-width:210px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{border-radius:12px;border:1px solid var(--line);padding:14px;background:#f7fafd}
+.stat strong{font-size:1.6rem;display:block;color:var(--navy)}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin-top:18px;font-size:.89rem}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:#f1f5f9;color:var(--navy);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+td.wrap{white-space:normal;min-width:140px}
+.status{padding:12px 15px;background:#ecf4fd;border:1px solid #bad6ed;border-radius:9px;margin-top:12px}
+.status.error{background:#fff2f2;color:#8c1f2c;border-color:#edc1c1}
+[hidden]{display:none!important}
+@media(max-width:650px){.stats{grid-template-columns:1fr}table{font-size:.8rem}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div><h1>🏀 Basketball Interest</h1><p>Winter 2026–27 • Explore Academy Athletics</p></div><div class="actions"><a href="admin.html">Athletics admin</a><a href="basketball-interest.html">Parent form</a></div></div></header>
+<main>
+<section id="signInPanel" class="card">
+<h2>Administrator sign-in</h2><p>Interest submissions are private. Sign in using your Explore Athletics administrator Google account.</p>
+<button id="signIn" class="secondary" type="button">Sign in with Google</button>
+<div id="loginStatus" class="status" hidden role="status"></div>
+</section>
+<section id="responsesPanel" hidden>
+<div class="card"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+<div><h2 style="margin:0">Student interest list</h2><p style="margin:5px 0 0;color:#697b8b" id="lastLoaded"></p></div>
+<div class="actions"><button id="refresh" type="button" class="secondary">Refresh</button><button id="export" type="button">Export CSV</button><button id="signOut" type="button" class="secondary">Sign out</button></div>
+</div><div class="stats" style="margin-top:16px">
+<div class="stat"><span>Total interested</span><strong id="total">0</strong></div>
+<div class="stat"><span>Boys</span><strong id="boys">0</strong></div>
+<div class="stat"><span>Girls</span><strong id="girls">0</strong></div>
+</div></div>
+<div class="card">
+<div class="actions"><input type="search" id="search" placeholder="Search names, team, grade, contact…" aria-label="Search interest responses"></div>
+<div id="listStatus" class="status" hidden role="status"></div>
+<div class="table-wrap"><table><thead><tr><th>Student</th><th>Grade</th><th>Team</th><th>Parent / guardian</th><th>Contact</th><th>Submitted</th></tr></thead><tbody id="responses"></tbody></table></div>
+</div>
+</section>
+</main>
+<script type="module" src="js/basketball-interest-admin.js"></script>
+</body></html>
