@@ -1,0 +1,57 @@
+// FIREBASE CONFIGURATION STEP (must be applied to the LIVE Firebase project)
+// Project: explore-sports-interest
+//
+// This GitHub Pages site cannot deploy Firestore rules by itself.
+// In Firebase Console > Firestore Database > Rules, add the match block
+// below INSIDE the existing:
+//   service cloud.firestore { match /databases/{database}/documents { ... } }
+//
+// Place it BEFORE any final fallback deny rule.
+// Preserve all existing rules for family accounts, other sports, and events.
+// Save / publish the complete rule set to activate the no-login interest form.
+//
+// The parent form writes to winterBasketballInterest2027.
+// The private dashboard is basketball-interest-admin.html
+// No student or parent details are stored in the public GitHub repository.
+//
+// Add this match block:
+
+match /winterBasketballInterest2027/{responseId} {
+  // Public, append-only interest collection. No authentication required.
+  // An applicant cannot read other families' details, edit, or erase records.
+  allow create: if
+    request.resource.data.keys().hasAll([
+      'studentName','grade','team','parentName','contact',
+      'status','source','submittedAt'
+    ]) &&
+    request.resource.data.keys().hasOnly([
+      'studentName','grade','team','parentName','contact',
+      'status','source','submittedAt'
+    ]) &&
+    request.resource.data.studentName is string &&
+    request.resource.data.studentName.size() >= 2 &&
+    request.resource.data.studentName.size() <= 100 &&
+    request.resource.data.grade in ['6','7','8'] &&
+    request.resource.data.team in ['Boys Basketball','Girls Basketball'] &&
+    request.resource.data.parentName is string &&
+    request.resource.data.parentName.size() >= 2 &&
+    request.resource.data.parentName.size() <= 100 &&
+    request.resource.data.contact is string &&
+    request.resource.data.contact.size() >= 5 &&
+    request.resource.data.contact.size() <= 150 &&
+    request.resource.data.status == 'interested' &&
+    request.resource.data.source == 'basketball-2026-27' &&
+    request.resource.data.submittedAt == request.time;
+
+  // Only the verified athletics administrator can view the interest list.
+  allow read, update, delete: if
+    request.auth != null &&
+    request.auth.token.email_verified == true &&
+    request.auth.token.email == 'jacobicusjax@gmail.com';
+}
+
+// IMPORTANT SECURITY NOTE:
+// This is intentionally open to unauthenticated CREATE requests,
+// so automated spam remains possible. For stronger bot protection,
+// use Firebase App Check or a server-validated request endpoint.
+// Never change the read rule to allow public access.
