@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261115-boys-week-livefix2';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-thanksgiving-break';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -7,6 +7,9 @@ const VOLLEYBALL_WORK_FRIDAYS = new Set([
 const VOLLEYBALL_FRIDAY_TIME = '1:15–3:45 PM';
 const SCHOOL_CLOSED_DATES = new Map([
   ['2026-09-07','Labor Day • No School']
+]);
+const THANKSGIVING_BREAK_DATES = new Set([
+  '2026-11-23','2026-11-24','2026-11-25','2026-11-26','2026-11-27'
 ]);
 const COACH_UNAVAILABLE_DATES = new Map([
   ['2026-10-05','Coach at Great Wolf Lodge'],
@@ -133,6 +136,10 @@ function scheduledPracticeTime(team,date,day){const key=dateKey(date);if(day==='
 function practiceGameConflicts(){const map=new Map();for(const team of Object.values(TEAM_DATA)){if(!VOLLEYBALL_TEAM_IDS.includes(team.id))continue;for(const game of team.games||[]){const date=gameDate(game);if(!date||!teamIsInSeason(team,date))continue;const key=dateKey(date);if(!map.has(key))map.set(key,[]);map.get(key).push({team,game});}}return map;}
 function weekRangeLabel(dates){if(!dates.length)return'';const first=dates[0],last=dates[dates.length-1];const sameMonth=first.getMonth()===last.getMonth();return sameMonth?`${first.toLocaleDateString('en-US',{month:'short'})} ${first.getDate()}–${last.getDate()}`:`${first.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${last.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;}
 function conflictText(conflicts){return conflicts.map(({team,game})=>`${team.title} game at ${game.time} vs. ${game.opponent}`).join(' • ');}
+function thanksgivingBreakCard(day,date){
+  const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  return `<div class="card practice-card thanksgiving-break"><div class="thanksgiving-leaves">🍂</div><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status thanksgiving">THANKSGIVING BREAK</span></div><div class="thanksgiving-icon">🦃</div><div class="thanksgiving-title">NO VOLLEYBALL PRACTICE</div><div class="thanksgiving-message">Enjoy Thanksgiving Break with your family. School volleyball resumes after the holiday.</div></div>`;
+}
 function schoolClosureCard(day,date,reason){
   const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
   return `<div class="card practice-card practice-off"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status off">NO PRACTICE</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🏫 ${esc(reason)}</div></div>`;
@@ -154,6 +161,7 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const key=dateKey(date);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    if(VOLLEYBALL_TEAM_IDS.includes(team.id)&&THANKSGIVING_BREAK_DATES.has(key))return thanksgivingBreakCard(day,date);
     const schoolClosure=SCHOOL_CLOSED_DATES.get(key);
     if(schoolClosure)return schoolClosureCard(day,date,schoolClosure);
     const coachUnavailable=COACH_UNAVAILABLE_DATES.get(key);
