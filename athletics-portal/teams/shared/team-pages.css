@@ -48,3 +48,14 @@
 .trunk-event-card .banquet-feature-1,.trunk-event-card .banquet-feature-2,.trunk-event-card .banquet-feature-3{background:linear-gradient(145deg,#281039,#170a24)!important;color:#fff!important;border-color:#ff8a00!important}
 .trunk-event-card .banquet-location{background:linear-gradient(90deg,#ff8a00,#ffb000)!important;color:#211023!important;border-color:#ffd48d!important}
 .trunk-event-card .banquet-footer{background:linear-gradient(90deg,#2a103c,#160921,#2a103c)!important;color:#fff!important;border-color:#ff8a00!important}
+
+/* Thanksgiving break practice cards */
+.practice-card.thanksgiving-break{position:relative;overflow:hidden!important;border:3px solid #b8611b!important;background:radial-gradient(circle at 88% 12%,rgba(255,203,120,.34),transparent 26%),linear-gradient(145deg,#fff4df 0%,#f6d19a 52%,#e8a85d 100%)!important;color:#5b2f13!important;box-shadow:0 14px 30px rgba(121,66,24,.18)!important}
+.practice-card.thanksgiving-break:before{content:'🍁';position:absolute;right:10px;bottom:-10px;font-size:72px;opacity:.15;transform:rotate(-12deg);pointer-events:none}
+.practice-card.thanksgiving-break .card-title{color:#6d3516!important}
+.practice-card.thanksgiving-break .practice-date{color:#95511e!important}
+.practice-status.thanksgiving{background:#7d3f16!important;color:#fff8ec!important;border:1px solid #a85d25!important}
+.thanksgiving-leaves{position:absolute;right:14px;top:12px;font-size:22px;opacity:.75}
+.thanksgiving-icon{font-size:44px;line-height:1;margin:14px 0 8px}
+.thanksgiving-title{font-size:19px;font-weight:1000;letter-spacing:.02em;color:#7b3118}
+.thanksgiving-message{margin-top:8px;font-size:12px;line-height:1.45;font-weight:800;color:#6b4426;max-width:26ch}
