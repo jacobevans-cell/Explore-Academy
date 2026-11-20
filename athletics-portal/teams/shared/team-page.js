@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-boys-nov23-practice';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-nov23-force-practice';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -163,6 +163,7 @@ function practice(team,weekOffset=0){
     const date=dates[index];
     const key=dateKey(date);
     const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    if(team.id==='boys-volleyball'&&key==='2026-11-23')return `<div class="card practice-card practice-active"><div class="practice-day-row"><div><div class="card-title">Monday</div><div class="practice-date">Nov 23</div></div><span class="practice-status active">PRACTICE</span></div><div class="card-value practice-time">3:15–5:15 PM</div><div class="practice-note">🏐 Full two-hour Boys practice before Tuesday's Hearn Academy game.</div></div>`;
     const thanksgivingGame=(team.id==='boys-volleyball'&&key==='2026-11-24')?(team.games||[]).find(game=>{const gd=gameDate(game);return gd&&dateKey(gd)===key;}):null;
     if(thanksgivingGame)return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">🏐 BOYS VOLLEYBALL</div><div class="practice-reason">${esc(thanksgivingGame.time)} • vs. ${esc(thanksgivingGame.opponent)}</div><div class="practice-note">Thanksgiving Break • No school practice today. Confirmed game remains scheduled.</div></div>`;
     const boysThanksgivingPracticeException=team.id==='boys-volleyball'&&key==='2026-11-23';
