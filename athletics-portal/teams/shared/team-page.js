@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261119-hearn-game-card-v2';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-liberty-dec2-dec3';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
