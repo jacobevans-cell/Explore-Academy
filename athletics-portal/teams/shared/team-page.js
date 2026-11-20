@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-venue-labels';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-boys-nov30-practice';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -23,7 +23,8 @@ const COACH_UNAVAILABLE_DATES = new Map([
 const FIXED_PRACTICE_WINDOWS = [
   ['2026-10-05','2026-10-23'],
   ['2026-11-02','2026-11-13'],
-  ['2026-11-16','2026-11-20']
+  ['2026-11-16','2026-11-20'],
+  ['2026-11-30','2026-12-04']
 ];
 const FIXED_PRACTICE_SCHEDULE = {
   'boys-volleyball': new Map([
@@ -37,7 +38,8 @@ const FIXED_PRACTICE_SCHEDULE = {
     ['2026-11-13','1:15–3:45 PM'],
     ['2026-11-16','3:15–5:15 PM'],
     ['2026-11-17','3:15–5:15 PM'],
-    ['2026-11-19','3:15–5:15 PM']
+    ['2026-11-19','3:15–5:15 PM'],
+    ['2026-11-30','3:15–5:15 PM']
   ]),
   'varsity-girls-volleyball': new Map([
     ['2026-10-07','1:00–4:45 PM'],
