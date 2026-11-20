@@ -1,4 +1,4 @@
-import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-nov23-force-practice';
+import { TEAM_DATA, TEAM_PAGE_LINKS } from './team-data.js?v=20261120-boys-weekly-home-theme';
 
 const VOLLEYBALL_TEAM_IDS = ['jv-girls-volleyball','varsity-girls-volleyball','boys-volleyball'];
 const VOLLEYBALL_WORK_FRIDAYS = new Set([
@@ -179,7 +179,7 @@ function practice(team,weekOffset=0){
     if(!teamIsInPracticeSeason(team,date)&&!dayEvents.length)return outOfSeasonCard(team,day,date);
     const conflicts=conflictsByDate.get(key)||[];
     const boysPlayoffWeekPracticeOverride=team.id==='boys-volleyball'&&['2026-11-16','2026-11-17','2026-11-19'].includes(key);
-    if(conflicts.length&&!boysPlayoffWeekPracticeOverride)return `<div class="card practice-card practice-conflict"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status conflict">GAME DAY</span></div><div class="practice-cancel">NO PRACTICE</div><div class="practice-reason">🚫 ${esc(conflictText(conflicts))}</div>${eventNote}<div class="practice-note">Volleyball practice is canceled on game days because the same coach covers the volleyball teams.</div></div>`;
+    if(conflicts.length&&!boysPlayoffWeekPracticeOverride){const boysHomeSpotlight=team.id==='boys-volleyball'&&key==='2026-12-02';const cls=boysHomeSpotlight?'card practice-card practice-conflict boys-home-weekly':'card practice-card practice-conflict';const status=boysHomeSpotlight?'ONLY HOME GAME':'GAME DAY';const title=boysHomeSpotlight?'🏠 EAGLES HOME SPOTLIGHT':'NO PRACTICE';const reason=boysHomeSpotlight?'4:00 PM • vs. Liberty Traditional School':`🚫 ${esc(conflictText(conflicts))}`;const note=boysHomeSpotlight?'Our only home game of the season. Unofficial scrimmage at Explore Academy.':'Volleyball practice is canceled on game days because the same coach covers the volleyball teams.';return `<div class="${cls}"><div class="practice-day-row"><div><div class="card-title">${day}</div><div class="practice-date">${esc(dateLabel)}</div></div><span class="practice-status ${boysHomeSpotlight?'home-spotlight':'conflict'}">${status}</span></div><div class="practice-cancel">${title}</div><div class="practice-reason">${reason}</div>${eventNote}<div class="practice-note">${note}</div></div>`}
     const time=scheduledPracticeTime(team,date,day);
     if(day==='Friday'){
       if(fixedPracticeWindow(key)&&FIXED_PRACTICE_SCHEDULE[team.id]){
