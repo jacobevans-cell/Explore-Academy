@@ -24,17 +24,16 @@
 import { requireVerifiedUser, logout } from './js/auth.js';import { TEAM_DATA } from './teams/shared/team-data.js?v=20260911-specials2';
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
 const ADMIN_BOYS_GAMES=[
-  {date:'Oct 19',time:'',opponent:'Empower College Prep',location:'Away'},
-  {date:'Oct 21',time:'',opponent:'Adams Traditional Academy',location:'Home'},
-  {date:'Oct 26',time:'',opponent:'Academy of Math and Science Flower',location:'Away'},
-  {date:'Oct 28',time:'',opponent:'Imagine at Cortez Park',location:'Home'},
-  {date:'Nov 2',time:'',opponent:'Pensar Academy',location:'Away'},
-  {date:'Nov 4',time:'',opponent:'Freedom Academy',location:'Away'},
-  {date:'Nov 9',time:'',opponent:'Hearn Academy',location:'Away'},
-  {date:'Nov 11',time:'',opponent:'ALA West Foothills Team 2',location:'Home',detail:'Required Non-Region'},
-  {date:'Nov 16',time:'',opponent:'Stepping Stones Academy',location:'Home'},
-  {date:'Nov 18',time:'',opponent:'Liberty Traditional School',location:'Home'}
-];
+  {date:'Oct 28',time:'4:00 PM',opponent:'Empower College Prep',location:'Away'},
+  {date:'Nov 2',time:'4:45 PM',opponent:'Pensar Academy',location:'Away'},
+  {date:'Nov 6',time:'4:30 PM',opponent:'Freedom Academy',location:'Away'},
+  {date:'Nov 10',time:'4:30 PM',opponent:'Academy of Math and Science Flower',location:'Away'},
+  {date:'Nov 12',time:'4:30 PM',opponent:'ALA West Foothills Team 2',location:'Home',detail:'Required Non-Region'},
+  {date:'Nov 24',time:'4:30 PM',opponent:'Hearn Academy',location:'Away'},
+  {date:'Dec 1',time:'4:45 PM',opponent:'Stepping Stones Academy',location:'Home'},
+  {date:'Dec 2',time:'',opponent:'Liberty Traditional School',location:'Home',detail:'Unofficial Scrimmage'},
+  {date:'Dec 3',time:'4:00 PM',opponent:'Liberty Traditional School',location:'Away'}
+]
 const teams=Object.values(TEAM_DATA).map(t=>t.id==='boys-volleyball'?{...t,games:ADMIN_BOYS_GAMES}:t),YEAR=2026;
 function teamClass(t){if(t.id==='jv-girls-volleyball')return'jv';if(t.id==='varsity-girls-volleyball')return'varsity';if(t.id==='boys-volleyball')return'boys';if(t.id==='co-ed-flag-football')return'flag';return'jv'}function teamLabel(t){if(t.id==='jv-girls-volleyball')return'JV Girls';if(t.id==='varsity-girls-volleyball')return'Varsity Girls';if(t.id==='boys-volleyball')return'Boys';if(t.id==='co-ed-flag-football')return'Co-ed';return t.title}function teamShort(t){if(t.id==='jv-girls-volleyball')return'JV GIRLS';if(t.id==='varsity-girls-volleyball')return'VARSITY';if(t.id==='boys-volleyball')return'BOYS';if(t.id==='co-ed-flag-football')return'CO-ED';return teamLabel(t)}function sportLabel(t){return /flag/i.test(t.sport)?'Flag Football':'Volleyball'}function sportIcon(t){return /flag/i.test(t.sport)?'🏈':'🏐'}function isPink(g){return /pink out/i.test(String(g.detail||''))}function isGlow(g){return /glow in the dark/i.test(String(g.detail||''))}function isCampus(g){return /staff vs students/i.test(String(g.detail||''))}
 function parseTime(x){const m=String(x||'').trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/i);if(!m)return null;let h=+m[1],n=+(m[2]||0),a=m[3].toUpperCase();if(h===12)h=0;if(a==='PM')h+=12;return h*60+n}function parseDate(g){let d=new Date(`${g.date}, ${YEAR} ${g.time||'12:00 PM'}`);if(Number.isNaN(d.getTime()))d=new Date(`${g.date}, ${YEAR} 12:00 PM`);return Number.isNaN(d.getTime())?null:d}function gameRange(g){const s=parseTime(g.time);return s==null?null:{start:s,end:s+90}}function overlap(a,b){return a&&b&&a.start<b.end&&b.start<a.end}
