@@ -59,3 +59,12 @@
 .thanksgiving-icon{font-size:44px;line-height:1;margin:14px 0 8px}
 .thanksgiving-title{font-size:19px;font-weight:1000;letter-spacing:.02em;color:#7b3118}
 .thanksgiving-message{margin-top:8px;font-size:12px;line-height:1.45;font-weight:800;color:#6b4426;max-width:26ch}
+
+/* Boys only home game spotlight */
+.game-card.boys-home-spotlight{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef9f1 0%,#d9f0df 48%,#fff5cf 100%)!important;border:3px solid #2f7d45!important;border-left:10px solid #d6a72f!important;box-shadow:0 14px 30px rgba(47,125,69,.18)!important}
+.game-card.boys-home-spotlight:before{content:'🏠';position:absolute;right:18px;bottom:-8px;font-size:76px;opacity:.10;transform:rotate(-8deg);pointer-events:none}
+.game-card.boys-home-spotlight .date-block{background:#e8f5eb!important;color:#1f6035!important}
+.game-card.boys-home-spotlight .sport-icon{background:#fff4c3!important;border-color:#d6a72f!important}
+.game-card.boys-home-spotlight .event-badge{background:#1f6035!important;color:#fff!important;border-color:#1f6035!important}
+.game-card.boys-home-spotlight .travel-head{background:linear-gradient(90deg,#1f6035,#2f7d45)!important}
+.boys-home-banner{grid-column:1/-1;margin:-2px -1px 6px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,#1f6035,#2f7d45 65%,#d6a72f);color:#fff;font-size:12px;font-weight:1000;letter-spacing:.06em;text-align:center;box-shadow:0 6px 16px rgba(47,125,69,.18)}
