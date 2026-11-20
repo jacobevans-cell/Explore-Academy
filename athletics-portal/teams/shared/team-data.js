@@ -210,16 +210,11 @@ export const TEAM_DATA = {
       { date: 'Nov 10', time: '4:30 PM', opponent: 'Academy of Math and Science Flower', location: 'Away', address: 'Academy of Math and Science Glendale Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED • Glendale hosting due to lack of facility' },
       { date: 'Nov 12', time: '4:30 PM', opponent: 'ALA West Foothills Team 2', location: 'Home', address: 'Adams Traditional Academy JH Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED • HOME GAME AT ADAMS • Required Non-Region • Does Not Count Toward Regional Standings' },
       { date: 'Nov 24', time: '4:30 PM', opponent: 'Hearn Academy', location: 'Away', address: 'Hearn Academy Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
-      { date: 'Dec 1', time: '4:45 PM', opponent: 'Stepping Stones Academy', location: 'Home', address: 'Stepping Stones Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' }
+      { date: 'Dec 1', time: '4:45 PM', opponent: 'Stepping Stones Academy', location: 'Home', address: 'Stepping Stones Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' },
+      { date: 'Dec 2', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home', address: 'Peoria gym off 101 & Bell', drive: 'On site', leave: '—', arrival: 'TBA', detail: '🏐 UNOFFICIAL SCRIMMAGE • Off the record' },
+      { date: 'Dec 3', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Away', address: 'Liberty Traditional School Gym', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED • OFFICIAL GAME' }
     ],
-    pendingGames: [
-
-
-
-
-
-      { date: 'Nov 18', time: 'TBA', opponent: 'Liberty Traditional School', location: 'Home', detail: 'Week 5' }
-    ],
+    pendingGames: [],
     events: [
       {
         type: 'halloween',
