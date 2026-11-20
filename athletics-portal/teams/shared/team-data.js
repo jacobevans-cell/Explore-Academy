@@ -212,7 +212,7 @@ export const TEAM_DATA = {
       { date: 'Nov 24', time: '4:30 PM', opponent: 'Hearn Academy', location: 'Away', address: 'Hearn Academy Gym', drive: 'Live route', leave: 'TBA', arrival: '4:00 PM', detail: '✅ CONFIRMED' },
       { date: 'Dec 1', time: '4:45 PM', opponent: 'Stepping Stones Academy', location: 'Home', address: 'Stepping Stones Academy', drive: 'Live route', leave: 'TBA', arrival: '4:15 PM', detail: '✅ CONFIRMED' },
       { date: 'Dec 2', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Home', venue: 'Explore Academy Peoria', address: '17667 N 91st Ave, Peoria, AZ 85382', drive: 'On campus', leave: '—', arrival: '3:30 PM', detail: '🏠 ONLY HOME GAME • EAGLES HOME SPOTLIGHT • UNOFFICIAL SCRIMMAGE' },
-      { date: 'Dec 3', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Away', address: 'Liberty Traditional School Gym', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED • OFFICIAL GAME' }
+      { date: 'Dec 3', time: '4:00 PM', opponent: 'Liberty Traditional School', location: 'Away', venue: 'Liberty Traditional Charter School - Phoenix', address: '4027 N 45th Ave, Phoenix, AZ 85031', drive: 'Live route', leave: 'TBA', arrival: '3:30 PM', detail: '✅ CONFIRMED • OFFICIAL GAME' }
     ],
     pendingGames: [],
     events: [
