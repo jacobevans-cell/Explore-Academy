@@ -68,3 +68,12 @@
 .game-card.boys-home-spotlight .event-badge{background:#1f6035!important;color:#fff!important;border-color:#1f6035!important}
 .game-card.boys-home-spotlight .travel-head{background:linear-gradient(90deg,#1f6035,#2f7d45)!important}
 .boys-home-banner{grid-column:1/-1;margin:-2px -1px 6px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,#1f6035,#2f7d45 65%,#d6a72f);color:#fff;font-size:12px;font-weight:1000;letter-spacing:.06em;text-align:center;box-shadow:0 6px 16px rgba(47,125,69,.18)}
+
+/* Boys weekly home spotlight */
+.practice-card.boys-home-weekly{border:3px solid #2f7d45!important;background:linear-gradient(145deg,#eef9f1 0%,#d9f0df 52%,#fff4c6 100%)!important;box-shadow:0 14px 30px rgba(47,125,69,.16)!important;color:#1f4f30!important}
+.practice-card.boys-home-weekly .card-title{color:#174c2b!important}
+.practice-card.boys-home-weekly .practice-date{color:#4e7659!important}
+.practice-card.boys-home-weekly .practice-cancel{color:#1f6035!important}
+.practice-card.boys-home-weekly .practice-reason{color:#2e593b!important}
+.practice-card.boys-home-weekly .practice-note{color:#4a644f!important}
+.practice-status.home-spotlight{background:linear-gradient(90deg,#1f6035,#2f7d45 70%,#d6a72f)!important;color:#fff!important;border:1px solid #c99b29!important}
